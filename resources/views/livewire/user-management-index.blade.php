@@ -1,56 +1,56 @@
 <div class="max-w-6xl mx-auto pb-12">
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-                <i data-lucide="users-round" class="w-8 h-8 text-[#58A6FF]"></i>
+            <h1 class="text-2xl md:text-3xl font-black text-[#0A1931] dark:text-white tracking-tight flex items-center gap-3 transition-colors duration-300 ease-in-out">
+                <i data-lucide="users-round" class="w-8 h-8 text-[#58A6FF] transition-colors duration-300 ease-in-out"></i>
                 Manajemen Pengguna
             </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Kelola akses, jabatan, dan kata sandi akun karyawan Anda.</p>
+            <p class="text-[#4A7FA7]/70 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Kelola akses, jabatan, dan kata sandi akun karyawan Anda.</p>
         </div>
         <div>
-            <button wire:click="openModal" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#238636] hover:bg-[#2EA043] rounded-xl transition-colors shadow-lg shadow-[#238636]/20">
+            <button wire:click="openModal" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#238636] hover:bg-[#2EA043] rounded-xl transition-colors shadow-lg shadow-[#1A3D63]/20 dark:shadow-[#3FB950]/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Pengguna
             </button>
         </div>
     </div>
 
     <!-- User Table List -->
-    <div class="bg-[#161B22] border border-[#30363D] rounded-3xl p-6 shadow-xl relative overflow-hidden">
+    <div class="bg-white dark:bg-[#161B22] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto no-scrollbar">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse transition-colors duration-300 ease-in-out">
                 <thead>
-                    <tr class="border-b border-[#30363D]">
-                        <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama & Email</th>
-                        <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Peran (Role)</th>
-                        <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Aksi</th>
+                    <tr class="border-b border-[#B3CFE5]/30 dark:border-[#30363D] transition-colors duration-300 ease-in-out">
+                        <th class="py-3 px-4 text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">Nama & Email</th>
+                        <th class="py-3 px-4 text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">Peran (Role)</th>
+                        <th class="py-3 px-4 text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider text-right transition-colors duration-300 ease-in-out">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-[#30363D]/50 text-slate-700 dark:text-slate-300">
+                <tbody class="divide-y divide-[#30363D]/50 text-[#4A7FA7] dark:text-slate-300 transition-colors duration-300 ease-in-out">
                     @forelse($users as $user)
-                        <tr class="hover:bg-[#0D1117] transition-colors group">
+                        <tr class="hover:bg-[#F6FAFD] dark:bg-[#0D1117] transition-colors group">
                             <td class="py-4 px-4">
-                                <p class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:text-white transition-colors">{{ $user->name }}
+                                <p class="font-bold text-[#1A3D63] dark:text-slate-200 group-hover:text-[#0A1931] dark:text-white transition-colors">{{ $user->name }}
                                     @if(auth()->id() === $user->id)
-                                        <span class="ml-2 px-2 py-0.5 rounded-full bg-[#1F6FEB]/10 text-[#58A6FF] text-[10px] font-bold uppercase tracking-wider">Anda</span>
+                                        <span class="ml-2 px-2 py-0.5 rounded-full bg-[#1F6FEB]/10 text-[#58A6FF] text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Anda</span>
                                     @endif
                                 </p>
-                                <p class="text-xs text-slate-500 font-mono">{{ $user->email }}</p>
+                                <p class="text-xs text-slate-500 font-mono transition-colors duration-300 ease-in-out">{{ $user->email }}</p>
                             </td>
                             <td class="py-4 px-4">
                                 @if($user->hasRole('Admin'))
-                                    <span class="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-full text-xs font-bold">Admin</span>
+                                    <span class="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-full text-xs font-bold transition-colors duration-300 ease-in-out">Admin</span>
                                 @else
-                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-xs font-bold">Pelaksana</span>
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-xs font-bold transition-colors duration-300 ease-in-out">Pelaksana</span>
                                 @endif
                             </td>
-                            <td class="py-4 px-4 text-right">
+                            <td class="py-4 px-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#1F6FEB] hover:bg-[#388BFD] text-slate-900 dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
-                                        <i data-lucide="pencil" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold">Edit</span>
+                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#1F6FEB] hover:bg-[#388BFD] text-[#0A1931] dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
+                                        <i data-lucide="pencil" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold transition-colors duration-300 ease-in-out">Edit</span>
                                     </button>
                                     @if(auth()->id() !== $user->id)
-                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" class="p-2 sm:px-3 sm:py-2 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg transition-colors border border-rose-600 shadow-lg shadow-rose-600/20 flex items-center gap-2" title="Hapus Pengguna">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold">Hapus</span>
+                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" class="p-2 sm:px-3 sm:py-2 bg-rose-600 hover:bg-rose-500 text-[#0A1931] dark:text-white rounded-lg transition-colors border border-rose-600 shadow-lg shadow-rose-600/20 flex items-center gap-2" title="Hapus Pengguna">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold transition-colors duration-300 ease-in-out">Hapus</span>
                                     </button>
                                     @endif
                                 </div>
@@ -58,7 +58,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-12 text-center text-slate-500">
+                            <td colspan="3" class="py-12 text-center text-slate-500 transition-colors duration-300 ease-in-out">
                                 <i data-lucide="users" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
                                 Belum ada data pengguna lainnya.
                             </td>
@@ -71,47 +71,47 @@
 
     <!-- Modal Form Tambah/Edit -->
     @if($isModalOpen)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div class="bg-[#161B22] border border-[#30363D] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in duration-200">
-                <div class="flex items-center justify-between p-6 border-b border-[#30363D]">
-                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <i data-lucide="user-cog" class="w-5 h-5 text-[#58A6FF]"></i>
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-colors duration-300 ease-in-out">
+            <div class="bg-white dark:bg-[#161B22] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in duration-200 transition-colors duration-300 ease-in-out">
+                <div class="flex items-center justify-between p-6 border-b border-[#B3CFE5]/30 dark:border-[#30363D] transition-colors duration-300 ease-in-out">
+                    <h2 class="text-lg font-bold text-[#0A1931] dark:text-white flex items-center gap-2 transition-colors duration-300 ease-in-out">
+                        <i data-lucide="user-cog" class="w-5 h-5 text-[#58A6FF] transition-colors duration-300 ease-in-out"></i>
                         {{ $editingUserId ? 'Edit Pengguna & Sandi' : 'Tambah Pengguna Baru' }}
                     </h2>
-                    <button wire:click="closeModal" class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <button wire:click="closeModal" class="text-[#4A7FA7]/70 dark:text-slate-400 hover:text-[#0A1931] dark:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 
                 <form wire:submit="simpan" class="p-6 space-y-5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                        <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-[#58A6FF]">
-                        @error('name') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
+                        <label class="block text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Nama Lengkap</label>
+                        <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-xl text-[#1A3D63] dark:text-slate-200 outline-none focus:border-[#58A6FF] transition-colors duration-300 ease-in-out">
+                        @error('name') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Email Login</label>
-                        <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-[#58A6FF]">
-                        @error('email') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
+                        <label class="block text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Email Login</label>
+                        <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-xl text-[#1A3D63] dark:text-slate-200 outline-none focus:border-[#58A6FF] transition-colors duration-300 ease-in-out">
+                        @error('email') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Peran (Role Akses)</label>
-                        <select wire:model="role" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-[#58A6FF]">
+                        <label class="block text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Peran (Role Akses)</label>
+                        <select wire:model="role" class="w-full px-4 py-3 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-xl text-[#1A3D63] dark:text-slate-200 outline-none focus:border-[#58A6FF] transition-colors duration-300 ease-in-out">
                             @foreach($roles as $r)
                                 <option value="{{ $r }}">{{ $r }}</option>
                             @endforeach
                         </select>
-                        @error('role') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
+                        @error('role') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div class="pt-2">
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        <label class="block text-xs font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">
                             Kata Sandi (Password)
-                            @if($editingUserId) <span class="text-[#58A6FF] font-normal lowercase normal-case">(Kosongkan jika tidak ingin merubah sandi)</span> @endif
+                            @if($editingUserId) <span class="text-[#58A6FF] font-normal lowercase normal-case transition-colors duration-300 ease-in-out">(Kosongkan jika tidak ingin merubah sandi)</span> @endif
                         </label>
-                        <input type="password" wire:model="password" placeholder="Minimal 8 karakter" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-[#58A6FF]">
-                        @error('password') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
+                        <input type="password" wire:model="password" placeholder="Minimal 8 karakter" class="w-full px-4 py-3 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-xl text-[#1A3D63] dark:text-slate-200 outline-none focus:border-[#58A6FF] transition-colors duration-300 ease-in-out">
+                        @error('password') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="pt-6 border-t border-[#30363D]/50 flex justify-end gap-3">
-                        <button type="button" wire:click="closeModal" class="px-6 py-2.5 bg-[#21262D] hover:bg-[#30363D] text-slate-700 dark:text-slate-300 font-bold rounded-xl transition-colors">Batal</button>
+                    <div class="pt-6 border-t border-[#B3CFE5]/30 dark:border-[#30363D]/50 flex justify-end gap-3 transition-colors duration-300 ease-in-out">
+                        <button type="button" wire:click="closeModal" class="px-6 py-2.5 bg-[#F6FAFD] dark:bg-[#21262D] hover:bg-[#30363D] text-[#4A7FA7] dark:text-slate-300 font-bold rounded-xl transition-colors">Batal</button>
                         <button type="submit" class="px-6 py-2.5 bg-[#1F6FEB] hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 flex items-center" wire:loading.attr="disabled">
                             <span wire:loading.remove wire:target="simpan"><i data-lucide="save" class="w-4 h-4 inline-block mr-2 -mt-0.5"></i> Simpan Data</span>
                             <span wire:loading wire:target="simpan"><i data-lucide="loader-2" class="w-4 h-4 animate-spin inline-block mr-2 -mt-0.5"></i> Menyimpan...</span>

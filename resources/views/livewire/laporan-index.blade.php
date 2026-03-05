@@ -1,25 +1,25 @@
 <div class="w-full">
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Laporan & Export</h1>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Export transaksi stok dan daily log ke berbagai format.</p>
+        <h1 class="text-2xl font-bold text-[#0A1931] dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Laporan & Export</h1>
+        <p class="text-[#4A7FA7]/70 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Export transaksi stok dan daily log ke berbagai format.</p>
     </div>
     
-    <div class="bg-[#161B22] border border-[#30363D] rounded-2xl p-5 lg:p-6 mb-6 shadow-xl">
-        <h2 class="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
-            <i data-lucide="printer" class="w-4 h-4 text-[#58A6FF]"></i> Export & Cetak
+    <div class="bg-white dark:bg-[#161B22] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-2xl p-5 lg:p-6 mb-6 shadow-xl transition-colors duration-300 ease-in-out">
+        <h2 class="font-bold text-[#1A3D63] dark:text-slate-200 mb-4 flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="printer" class="w-4 h-4 text-[#58A6FF] transition-colors duration-300 ease-in-out"></i> Export & Cetak
         </h2>
         <div class="flex flex-col lg:flex-row flex-wrap gap-4 items-end">
             <div class="w-full lg:w-auto">
-                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Mulai Tanggal</label>
-                <input type="date" wire:model.live="tanggalMulai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <label class="block text-[11px] font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Mulai Tanggal</label>
+                <input type="date" wire:model.live="tanggalMulai" class="w-full lg:w-40 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:border-[#8B949E] rounded-xl text-[#1A3D63] dark:text-slate-200 focus:bg-white dark:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto">
-                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Sampai Tanggal</label>
-                <input type="date" wire:model.live="tanggalSelesai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <label class="block text-[11px] font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Sampai Tanggal</label>
+                <input type="date" wire:model.live="tanggalSelesai" class="w-full lg:w-40 bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:border-[#8B949E] rounded-xl text-[#1A3D63] dark:text-slate-200 focus:bg-white dark:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto flex-1 max-w-xs">
-                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Tipe Transaksi</label>
-                <select wire:model.live="tipeTransaksi" class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
+                <label class="block text-[11px] font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Tipe Transaksi</label>
+                <select wire:model.live="tipeTransaksi" class="w-full bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:border-[#8B949E] rounded-xl text-[#1A3D63] dark:text-slate-200 focus:bg-white dark:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
                     <option value="">Semua Transaksi</option>
                     <option value="IN">Masuk (IN)</option>
                     <option value="OUT">Keluar (OUT)</option>
@@ -27,8 +27,8 @@
                 </select>
             </div>
             <div class="w-full lg:w-auto flex-1">
-                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Urutkan Log</label>
-                <select wire:model.live="sortBy" class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
+                <label class="block text-[11px] font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Urutkan Log</label>
+                <select wire:model.live="sortBy" class="w-full bg-[#F6FAFD] dark:bg-[#0D1117] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:border-[#8B949E] rounded-xl text-[#1A3D63] dark:text-slate-200 focus:bg-white dark:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
                     <option value="terbaru">Terbaru (Waktu)</option>
                     <option value="terlama">Terlama (Waktu)</option>
                     <option value="terbanyak">Terbanyak (Jml)</option>
@@ -38,58 +38,58 @@
             
             <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-2 mt-2 lg:mt-0">
                 <a href="{{ route('laporan.export-transaksi', ['tanggalMulai' => $tanggalMulai, 'tanggalSelesai' => $tanggalSelesai, 'tipeTransaksi' => $tipeTransaksi]) }}"
-                    class="inline-flex justify-center items-center px-4 py-2 bg-[#21262D] border border-[#30363D] hover:bg-[#30363D] text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-[#3FB950]"></i> CSV Transaksi
+                    class="inline-flex justify-center items-center px-4 py-2 bg-[#F6FAFD] dark:bg-[#21262D] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:bg-[#30363D] text-[#0A1931] dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-[#3FB950] transition-colors duration-300 ease-in-out"></i> CSV Transaksi
                 </a>
                 <a href="{{ route('laporan.export-harian', ['tanggalMulai' => $tanggalMulai]) }}"
-                    class="inline-flex justify-center items-center px-4 py-2 bg-[#21262D] border border-[#30363D] hover:bg-[#30363D] text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-400"></i> Harian (Tgl Mulai)
+                    class="inline-flex justify-center items-center px-4 py-2 bg-[#F6FAFD] dark:bg-[#21262D] border border-[#B3CFE5]/30 dark:border-[#30363D] hover:bg-[#30363D] text-[#0A1931] dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-400 transition-colors duration-300 ease-in-out"></i> Harian (Tgl Mulai)
                 </a>
                 <a href="{{ route('laporan.pdf', ['tanggalMulai' => $tanggalMulai, 'tanggalSelesai' => $tanggalSelesai, 'tipeTransaksi' => $tipeTransaksi]) }}"
                     class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-100 font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-text" class="w-4 h-4 mr-2 text-rose-500"></i> Cetak PDF
+                    <i data-lucide="file-text" class="w-4 h-4 mr-2 text-rose-500 transition-colors duration-300 ease-in-out"></i> Cetak PDF
                 </a>
             </div>
         </div>
     </div>
     
-    <div class="bg-[#161B22] border border-[#30363D] rounded-2xl overflow-hidden shadow-xl">
-        <div class="px-6 py-4 border-b border-[#30363D] flex items-center justify-between">
-            <h2 class="font-bold text-slate-800 dark:text-slate-200">Daily Log (Transaksi)</h2>
+    <div class="bg-white dark:bg-[#161B22] border border-[#B3CFE5]/30 dark:border-[#30363D] rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+        <div class="px-6 py-4 border-b border-[#B3CFE5]/30 dark:border-[#30363D] flex items-center justify-between transition-colors duration-300 ease-in-out">
+            <h2 class="font-bold text-[#1A3D63] dark:text-slate-200 transition-colors duration-300 ease-in-out">Daily Log (Transaksi)</h2>
         </div>
         
         <div class="w-full overflow-x-auto no-scrollbar">
-            <table class="w-full text-left border-collapse min-w-[700px]">
+            <table class="w-full text-left border-collapse min-w-[700px] transition-colors duration-300 ease-in-out">
                 <thead>
-                    <tr class="border-b border-[#30363D] bg-[#0D1117] text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <tr class="border-b border-[#B3CFE5]/30 dark:border-[#30363D] bg-[#F6FAFD] dark:bg-[#0D1117] text-[11px] font-bold text-[#4A7FA7]/70 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">
                         <th class="px-6 py-4 font-semibold whitespace-nowrap">Tanggal & Waktu</th>
                         <th class="px-6 py-4 font-semibold">Produk / Item</th>
-                        <th class="px-6 py-4 font-semibold text-center w-24">Tipe</th>
-                        <th class="px-6 py-4 font-semibold text-center w-24">Jumlah</th>
-                        <th class="px-6 py-4 font-semibold text-right">Penanggung Jawab</th>
+                        <th class="px-6 py-4 font-semibold text-center w-24 transition-colors duration-300 ease-in-out">Tipe</th>
+                        <th class="px-6 py-4 font-semibold text-center w-24 transition-colors duration-300 ease-in-out">Jumlah</th>
+                        <th class="px-6 py-4 font-semibold text-right transition-colors duration-300 ease-in-out">Penanggung Jawab</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#30363D]">
                     @forelse($transaksi as $t)
-                        <tr class="hover:bg-[#21262D] transition-colors group">
-                            <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono">{{ $t->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium">{{ $t->product->name ?? '-' }}</td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-[#238636]/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30') }}">
+                        <tr class="hover:bg-[#F6FAFD] dark:bg-[#21262D] transition-colors group">
+                            <td class="px-6 py-4 text-[#4A7FA7]/70 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $t->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-6 py-4 text-[#1A3D63] dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $t->product->name ?? '-' }}</td>
+                            <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
+                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-[#238636]/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30') }} transition-colors duration-300 ease-in-out">
                                     {{ $t->type }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-center text-slate-900 dark:text-white font-bold">{{ $t->quantity }}</td>
-                            <td class="px-6 py-4 text-right text-slate-500 dark:text-slate-400 text-sm">{{ $t->user->name ?? 'Sistem' }}</td>
+                            <td class="px-6 py-4 text-center text-[#0A1931] dark:text-white font-bold transition-colors duration-300 ease-in-out">{{ $t->quantity }}</td>
+                            <td class="px-6 py-4 text-right text-[#4A7FA7]/70 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out">{{ $t->user->name ?? 'Sistem' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-16 text-center">
-                                <div class="w-16 h-16 bg-[#21262D] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#30363D]">
-                                    <i data-lucide="clipboard-list" class="w-8 h-8 text-slate-500"></i>
+                            <td colspan="5" class="py-16 text-center transition-colors duration-300 ease-in-out">
+                                <div class="w-16 h-16 bg-[#F6FAFD] dark:bg-[#21262D] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#B3CFE5]/30 dark:border-[#30363D] transition-colors duration-300 ease-in-out">
+                                    <i data-lucide="clipboard-list" class="w-8 h-8 text-slate-500 transition-colors duration-300 ease-in-out"></i>
                                 </div>
-                                <p class="text-slate-700 dark:text-slate-300 font-medium mb-1">Log kosong</p>
-                                <p class="text-slate-500 text-sm">Tidak ada transaksi pada periode yang dipilih.</p>
+                                <p class="text-[#4A7FA7] dark:text-slate-300 font-medium mb-1 transition-colors duration-300 ease-in-out">Log kosong</p>
+                                <p class="text-slate-500 text-sm transition-colors duration-300 ease-in-out">Tidak ada transaksi pada periode yang dipilih.</p>
                             </td>
                         </tr>
                     @endforelse
@@ -98,7 +98,7 @@
         </div>
         
         @if($transaksi->hasPages())
-        <div class="px-6 py-4 border-t border-[#30363D] bg-[#0D1117]/50">
+        <div class="px-6 py-4 border-t border-[#B3CFE5]/30 dark:border-[#30363D] bg-[#F6FAFD] dark:bg-[#0D1117]/50 transition-colors duration-300 ease-in-out">
             {{ $transaksi->links() }}
         </div>
         @endif
