@@ -14,11 +14,13 @@ class BarangKeluarForm extends Component
     public ?int $product_id = null;
     public string $barcodeTerpilih = '';
     public int $jumlah = 1;
+    public string $tanggal = '';
     public ?int $customer_id = null;
     public string $catatan = '';
 
     public function mount(): void
     {
+        $this->tanggal = now()->format('Y-m-d\TH:i');
         if (request()->has('product_id')) {
             $this->product_id = (int) request()->query('product_id');
         }
@@ -40,6 +42,7 @@ class BarangKeluarForm extends Component
         $this->validate([
             'product_id' => 'required|exists:products,id',
             'jumlah' => 'required|integer|min:1',
+            'tanggal' => 'required|date',
         ]);
         $service = app(StockService::class);
         try {
@@ -49,7 +52,7 @@ class BarangKeluarForm extends Component
             $sj = SuratJalan::create([
                 'nomor_surat_jalan' => $nomor,
                 'customer_id' => $this->customer_id ?: null,
-                'tanggal' => now()->toDateString(),
+                'tanggal' => \Carbon\Carbon::parse($this->tanggal)->toDateString(),
                 'status' => 'selesai',
                 'created_by' => auth()->id(),
             ]);
@@ -60,7 +63,8 @@ class BarangKeluarForm extends Component
                 $this->jumlah,
                 auth()->id(),
                 (string) $sj->id,
-                $this->catatan ?: null
+                $this->catatan ?: null,
+                $this->tanggal
             );
             });
         } catch (\App\Exceptions\InsufficientStockException $e) {
@@ -70,6 +74,7 @@ class BarangKeluarForm extends Component
 
         $this->dispatch('transaksi-sukses', message: 'Barang keluar berhasil dicatat.', sjId: $sjId);
         $this->reset(['product_id', 'barcodeTerpilih', 'jumlah', 'customer_id', 'catatan']);
+        $this->tanggal = now()->format('Y-m-d\TH:i');
     }
 
     public function render()

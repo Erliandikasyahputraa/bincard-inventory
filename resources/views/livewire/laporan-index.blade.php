@@ -26,7 +26,7 @@
                     <option value="ADJUST">Penyesuaian (ADJUST)</option>
                 </select>
             </div>
-            <div class="w-full lg:w-auto flex-1 max-w-[150px]">
+            <div class="w-full lg:w-auto flex-1">
                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Urutkan Log</label>
                 <select wire:model.live="sortBy" class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
                     <option value="terbaru">Terbaru (Waktu)</option>
@@ -58,7 +58,7 @@
             <h2 class="font-bold text-slate-200">Daily Log (Transaksi)</h2>
         </div>
         
-        <div class="overflow-x-auto">
+        <div class="w-full overflow-x-auto no-scrollbar">
             <table class="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                     <tr class="border-b border-[#30363D] bg-[#0D1117] text-[11px] font-bold text-slate-400 uppercase tracking-wider">

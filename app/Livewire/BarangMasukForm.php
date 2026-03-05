@@ -11,11 +11,13 @@ class BarangMasukForm extends Component
     public ?int $product_id = null;
     public string $barcodeTerpilih = '';
     public int $jumlah = 1;
+    public string $tanggal = '';
     public string $referensi = '';
     public string $catatan = '';
 
     public function mount(): void
     {
+        $this->tanggal = now()->format('Y-m-d\TH:i');
         if (request()->has('product_id')) {
             $this->product_id = (int) request()->query('product_id');
         }
@@ -37,6 +39,7 @@ class BarangMasukForm extends Component
         $this->validate([
             'product_id' => 'required|exists:products,id',
             'jumlah' => 'required|integer|min:1',
+            'tanggal' => 'required|date',
         ]);
         $service = app(StockService::class);
         $service->barangMasuk(
@@ -44,11 +47,13 @@ class BarangMasukForm extends Component
             $this->jumlah,
             auth()->id(),
             $this->referensi ?: null,
-            $this->catatan ?: null
+            $this->catatan ?: null,
+            $this->tanggal
         );
 
         $this->dispatch('transaksi-sukses', message: 'Barang masuk berhasil dicatat.');
         $this->reset(['product_id', 'barcodeTerpilih', 'jumlah', 'referensi', 'catatan']);
+        $this->tanggal = now()->format('Y-m-d\TH:i');
     }
 
     public function render()

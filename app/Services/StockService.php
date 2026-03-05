@@ -19,7 +19,8 @@ class StockService
         int $quantity,
         int $userId,
         ?string $referenceId = null,
-        ?string $note = null
+        ?string $note = null,
+        ?string $tanggal = null
     ): StockTransaction {
         $product = Product::findOrFail($productId);
 
@@ -36,8 +37,8 @@ class StockService
             }
         }
 
-        return DB::transaction(function () use ($productId, $type, $quantity, $userId, $referenceId, $note) {
-            $transaksi = StockTransaction::create([
+        return DB::transaction(function () use ($productId, $type, $quantity, $userId, $referenceId, $note, $tanggal) {
+            $transaksi = new StockTransaction([
                 'product_id' => $productId,
                 'type' => $type,
                 'quantity' => $quantity,
@@ -45,6 +46,13 @@ class StockService
                 'user_id' => $userId,
                 'note' => $note,
             ]);
+            
+            if ($tanggal) {
+                // Combine provided date with current time so it orders correctly if multiple on same day
+                $transaksi->created_at = \Carbon\Carbon::parse($tanggal)->format('Y-m-d H:i:s');
+                $transaksi->updated_at = \Carbon\Carbon::parse($tanggal)->format('Y-m-d H:i:s');
+            }
+            $transaksi->save();
 
             $product = Product::lockForUpdate()->findOrFail($productId);
             $product->increment('current_stock', $quantity);
@@ -59,7 +67,8 @@ class StockService
         int $jumlah,
         int $userId,
         ?string $referensiId = null,
-        ?string $catatan = null
+        ?string $catatan = null,
+        ?string $tanggal = null
     ): StockTransaction {
         return $this->catatTransaksiStok(
             $productId,
@@ -67,7 +76,8 @@ class StockService
             abs($jumlah),
             $userId,
             $referensiId,
-            $catatan
+            $catatan,
+            $tanggal
         );
     }
 
@@ -77,7 +87,8 @@ class StockService
         int $jumlah,
         int $userId,
         ?string $referensiId = null,
-        ?string $catatan = null
+        ?string $catatan = null,
+        ?string $tanggal = null
     ): StockTransaction {
         return $this->catatTransaksiStok(
             $productId,
@@ -85,7 +96,8 @@ class StockService
             $jumlah,
             $userId,
             $referensiId,
-            $catatan
+            $catatan,
+            $tanggal
         );
     }
 
@@ -95,7 +107,8 @@ class StockService
         int $selisih,
         int $userId,
         ?string $referensiId = null,
-        ?string $catatan = null
+        ?string $catatan = null,
+        ?string $tanggal = null
     ): StockTransaction {
         return $this->catatTransaksiStok(
             $productId,
@@ -103,7 +116,8 @@ class StockService
             $selisih,
             $userId,
             $referensiId,
-            $catatan
+            $catatan,
+            $tanggal
         );
     }
 }

@@ -49,6 +49,13 @@
                             class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-rose-400 font-bold text-lg focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-4 py-2.5">
                         @error('jumlah') <span class="text-rose-500 text-xs mt-1 block font-medium flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
                     </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tanggal Transaksi <span class="text-rose-500">*</span></label>
+                        <input type="datetime-local" wire:model="tanggal" 
+                            class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-4 py-2.5 [color-scheme:dark] text-sm">
+                        @error('tanggal') <span class="text-rose-500 text-xs mt-1 block font-medium flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
+                    </div>
                 </div>
 
                 <!-- Kolom Kanan -->

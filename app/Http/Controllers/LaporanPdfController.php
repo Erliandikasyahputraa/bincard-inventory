@@ -10,9 +10,9 @@ class LaporanPdfController extends Controller
 {
     public function transaksi(Request $request)
     {
-        $tanggalMulai = $request->input('tanggalMulai', now()->startOfMonth()->format('Y-m-d'));
-        $tanggalSelesai = $request->input('tanggalSelesai', now()->format('Y-m-d'));
-        $tipe = $request->input('tipeTransaksi', '');
+        $tanggalMulai = filled($request->input('tanggalMulai')) ? $request->input('tanggalMulai') : now()->startOfMonth()->format('Y-m-d');
+        $tanggalSelesai = filled($request->input('tanggalSelesai')) ? $request->input('tanggalSelesai') : now()->format('Y-m-d');
+        $tipe = $request->input('tipeTransaksi', null) ?: '';
 
         $query = StockTransaction::with(['product', 'user'])
             ->whereDate('created_at', '>=', $tanggalMulai)
