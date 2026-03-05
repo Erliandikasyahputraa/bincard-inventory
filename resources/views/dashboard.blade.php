@@ -3,57 +3,57 @@
 @section('content')
 
 <div class="mb-4 lg:mb-8">
-    <h1 class="text-xl lg:text-2xl font-bold text-white tracking-tight">Overview</h1>
-    <p class="text-slate-400 text-xs lg:text-sm mt-1">Status gudang dan statistik hari ini.</p>
+    <h1 class="text-xl lg:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Overview</h1>
+    <p class="text-slate-500 dark:text-slate-400 text-xs lg:text-sm mt-1">Status gudang dan statistik hari ini.</p>
 </div>
 
 <!-- Stats Row -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
     <!-- Total Inventory -->
-    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#1F6FEB]/10 text-[#58A6FF]">
+    <div class="bg-white dark:bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-[#21262D] transition-colors shadow-sm dark:shadow-none">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-blue-50 dark:bg-[#1F6FEB]/10 text-blue-600 dark:text-[#58A6FF]">
             <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Total Produk & Stok</p>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Total Produk & Stok</p>
             <div class="flex items-baseline gap-2">
-                <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-xs text-slate-400 font-normal">Jenis</span></h3>
-                <span class="hidden sm:inline text-sm font-bold text-[#58A6FF]">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-[#58A6FF]/70 font-normal">Fisik</span></span>
+                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-xs text-slate-400 dark:text-slate-500 font-normal">Jenis</span></h3>
+                <span class="hidden sm:inline text-sm font-bold text-blue-600 dark:text-[#58A6FF]">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-400 dark:text-[#58A6FF]/70 font-normal">Fisik</span></span>
             </div>
-            <p class="sm:hidden text-xs font-bold text-[#58A6FF] mt-1">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-[#58A6FF]/70 font-normal">Fisik</span></p>
+            <p class="sm:hidden text-xs font-bold text-blue-600 dark:text-[#58A6FF] mt-1">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-400 dark:text-[#58A6FF]/70 font-normal">Fisik</span></p>
         </div>
     </div>
 
     <!-- Low Stock Alert -->
-    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-500/10 text-rose-400">
+    <div class="bg-white dark:bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-[#21262D] transition-colors shadow-sm dark:shadow-none">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400">
             <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Kritis</p>
-            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Kritis</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
         </div>
     </div>
 
     <!-- Masuk 24h -->
-    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#238636]/10 text-[#3FB950]">
+    <div class="bg-white dark:bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-[#21262D] transition-colors shadow-sm dark:shadow-none">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-[#238636]/10 text-emerald-600 dark:text-[#3FB950]">
             <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Masuk</p>
-            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['masuk_24h'], 0, ',', '.') }}</h3>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Masuk</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['masuk_24h'], 0, ',', '.') }}</h3>
         </div>
     </div>
 
     <!-- Keluar 24h -->
-    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-orange-500/10 text-orange-400">
+    <div class="bg-white dark:bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-[#21262D] transition-colors shadow-sm dark:shadow-none">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 dark:text-orange-400">
             <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Keluar</p>
-            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['keluar_24h'], 0, ',', '.') }}</h3>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Keluar</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['keluar_24h'], 0, ',', '.') }}</h3>
         </div>
     </div>
 </div>
@@ -62,9 +62,9 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
     <!-- Grafik Transaksi -->
-    <div class="xl:col-span-2 bg-[#161B22] rounded-2xl border border-[#30363D] p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px]">
+    <div class="xl:col-span-2 bg-white dark:bg-[#161B22] rounded-2xl border border-slate-200 dark:border-[#30363D] p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px] shadow-sm dark:shadow-none">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <h2 class="text-md lg:text-lg font-bold text-slate-200">Grafik Transaksi (6 Bulan Terakhir)</h2>
+            <h2 class="text-md lg:text-lg font-bold text-slate-800 dark:text-slate-200">Grafik Transaksi (6 Bulan Terakhir)</h2>
         </div>
         
         <div class="flex-1 w-full relative min-h-[300px] overflow-hidden">
@@ -103,33 +103,33 @@
         </div>
 
         <!-- Aktivitas Terbaru -->
-        <div class="bg-[#161B22] rounded-2xl border border-[#30363D] p-5 flex-1">
-            <div class="flex items-center justify-between mb-4 border-b border-[#30363D] pb-3">
-                <h3 class="text-sm font-bold text-slate-200">10 Transaksi Terakhir</h3>
-                <a href="{{ route('laporan.index') }}" class="text-xs font-medium text-[#58A6FF] hover:text-[#79C0FF]">Lihat</a>
+        <div class="bg-white dark:bg-[#161B22] rounded-2xl border border-slate-200 dark:border-[#30363D] p-5 flex-1 shadow-sm dark:shadow-none">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-[#30363D] pb-3">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">10 Transaksi Terakhir</h3>
+                <a href="{{ route('laporan.index') }}" class="text-xs font-medium text-blue-600 dark:text-[#58A6FF] hover:text-blue-800 dark:hover:text-[#79C0FF]">Lihat</a>
             </div>
             
             <div class="space-y-4">
                 @forelse($aktivitas as $act)
                     <div class="flex gap-3 items-start group">
                         <div class="mt-0.5">
-                            <span class="inline-block px-1.5 py-0.5 text-[9px] font-bold rounded {{ $act->type == 'IN' ? 'bg-[#238636]/20 text-[#3FB950] border border-[#238636]/30' : ($act->type == 'OUT' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30') }}">
+                            <span class="inline-block px-1.5 py-0.5 text-[9px] font-bold rounded {{ $act->type == 'IN' ? 'bg-emerald-100 dark:bg-[#238636]/20 text-emerald-600 dark:text-[#3FB950] border border-emerald-200 dark:border-[#238636]/30' : ($act->type == 'OUT' ? 'bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30' : 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30') }}">
                                 {{ $act->type == 'IN' ? 'Masuk' : ($act->type == 'OUT' ? 'Keluar' : 'Adjust') }}
                             </span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-baseline mb-0.5">
-                                <p class="text-xs font-bold text-slate-200 truncate">{{ $act->product->name }}</p>
-                                <p class="text-[10px] text-slate-500 whitespace-nowrap ml-2">{{ $act->created_at->format('d/m') }}</p>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ $act->product->name }}</p>
+                                <p class="text-[10px] text-slate-400 dark:text-slate-500 whitespace-nowrap ml-2">{{ $act->created_at->format('d/m') }}</p>
                             </div>
-                            <p class="text-[10px] text-slate-400 truncate">
-                                <span class="text-white">{{ $act->quantity }} Unit</span> &bull; {{ $act->user?->name ?? 'Sistem' }}
+                            <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                <span class="text-slate-800 dark:text-white">{{ $act->quantity }} Unit</span> &bull; {{ $act->user?->name ?? 'Sistem' }}
                             </p>
                         </div>
                     </div>
                 @empty
                     <div class="text-center py-4">
-                        <p class="text-xs text-slate-500">Belum ada aktivitas.</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Belum ada aktivitas.</p>
                     </div>
                 @endforelse
             </div>
@@ -191,23 +191,23 @@
                 labels: { style: { colors: '#8B949E', fontSize: '11px' } },
             },
             grid: {
-                borderColor: '#30363D',
+                borderColor: document.documentElement.classList.contains('dark') ? '#30363D' : '#e2e8f0',
                 strokeDashArray: 4,
                 yaxis: { lines: { show: true } },
                 xaxis: { lines: { show: true } },
                 padding: { top: 0, right: 0, bottom: 0, left: 10 }
             },
-            theme: { mode: 'dark' },
+            theme: { mode: document.documentElement.classList.contains('dark') ? 'dark' : 'light' },
             legend: {
                 position: 'top',
                 horizontalAlign: 'right', // Moved to right for a cleaner look
                 offsetY: -20,
-                labels: { colors: '#c9d1d9' },
+                labels: { colors: document.documentElement.classList.contains('dark') ? '#c9d1d9' : '#1e293b' },
                 itemMargin: { horizontal: 10, vertical: 0 },
                 markers: { offsetX: -2 }
             },
             tooltip: {
-                theme: 'dark',
+                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
                 shared: true, // Show both IN and OUT values at once
                 intersect: false,
                 style: { fontSize: '12px' },
@@ -223,6 +223,22 @@
                 wrapper.scrollLeft = wrapper.scrollWidth;
             }
         });
+
+        // Watch for theme changes on html tag to update chart colors dynamically
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === "class") {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    chart.updateOptions({
+                        theme: { mode: isDark ? 'dark' : 'light' },
+                        tooltip: { theme: isDark ? 'dark' : 'light' },
+                        grid: { borderColor: isDark ? '#30363D' : '#e2e8f0' },
+                        legend: { labels: { colors: isDark ? '#c9d1d9' : '#1e293b' } }
+                    });
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
     });
 </script>
 @endpush

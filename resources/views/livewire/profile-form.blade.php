@@ -2,14 +2,14 @@
     <!-- Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
                 <i data-lucide="user-cog" class="w-8 h-8 text-[#58A6FF]"></i>
                 Pengaturan Profil
             </h1>
-            <p class="text-slate-400 text-sm mt-1">Ubah identitas akun dan perbarui kata sandi Anda disini.</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Ubah identitas akun dan perbarui kata sandi Anda disini.</p>
         </div>
         <div>
-            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-300 bg-[#21262D] hover:bg-[#30363D] hover:text-white rounded-xl transition-colors border border-[#30363D]">
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-300 bg-[#21262D] hover:bg-[#30363D] hover:text-slate-900 dark:text-white rounded-xl transition-colors border border-[#30363D]">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
             </a>
         </div>
@@ -21,8 +21,8 @@
         <div class="bg-[#161B22] border border-[#30363D] rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-[#58A6FF]/5 rounded-full blur-3xl"></div>
             
-            <h2 class="text-lg font-bold text-white mb-6 border-b border-[#30363D] pb-3 flex items-center gap-2">
-                <i data-lucide="contact" class="w-5 h-5 text-slate-400"></i> Informasi Pribadi
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6 border-b border-[#30363D] pb-3 flex items-center gap-2">
+                <i data-lucide="contact" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i> Informasi Pribadi
             </h2>
 
             <!-- Success/Error Output logic will be natively handled by the global sweet alert in app.blade.php.
@@ -30,14 +30,14 @@
             
             <form wire:submit="updateProfile" class="space-y-5 relative z-10">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                    <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                    <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
                     @error('name') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Alamat Email</label>
-                    <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Email</label>
+                    <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
                     @error('email') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
@@ -57,26 +57,26 @@
         <div class="bg-[#161B22] border border-[#30363D] rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl"></div>
             
-            <h2 class="text-lg font-bold text-white mb-6 border-b border-[#30363D] pb-3 flex items-center gap-2">
-                <i data-lucide="shield-alert" class="w-5 h-5 text-slate-400"></i> Pembaruan Kata Sandi
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6 border-b border-[#30363D] pb-3 flex items-center gap-2">
+                <i data-lucide="shield-alert" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i> Pembaruan Kata Sandi
             </h2>
             
             <form wire:submit="updatePassword" class="space-y-5 relative z-10">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Kata Sandi Saat Ini</label>
-                    <input type="password" wire:model="current_password" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Kata Sandi Saat Ini</label>
+                    <input type="password" wire:model="current_password" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
                     @error('current_password') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Kata Sandi Baru</label>
-                    <input type="password" wire:model="password" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Kata Sandi Baru</label>
+                    <input type="password" wire:model="password" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
                     @error('password') <span class="text-rose-500 text-[11px] font-bold mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Konfirmasi Kata Sandi Baru</label>
-                    <input type="password" wire:model="password_confirmation" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Konfirmasi Kata Sandi Baru</label>
+                    <input type="password" wire:model="password_confirmation" class="w-full px-4 py-3 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all">
                 </div>
 
                 <div class="pt-4 border-t border-[#30363D]/50">

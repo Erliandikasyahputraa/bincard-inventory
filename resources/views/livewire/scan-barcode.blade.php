@@ -1,7 +1,7 @@
 <div x-data="scanBarcode()" x-init="init()" class="max-w-4xl mx-auto">
     <div class="mb-6 text-center lg:text-left">
-        <h1 class="text-2xl font-black text-white tracking-tight">Scanner Interaktif</h1>
-        <p class="text-slate-400 text-sm mt-1">Arahkan kamera ke barcode/QR. Sistem akan mencari produk secara otomatis.</p>
+        <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Scanner Interaktif</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Arahkan kamera ke barcode/QR. Sistem akan mencari produk secara otomatis.</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -30,14 +30,14 @@
             <div class="relative group">
                 <i data-lucide="keyboard" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
                 <input type="text" wire:model.live.debounce.300ms="barcodeTerpilih" placeholder="Atau ketik Barcode / SKU secara manual..."
-                    class="w-full pl-12 pr-4 py-4 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-2xl text-slate-200 placeholder-slate-500 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all duration-300 font-mono text-sm">
+                    class="w-full pl-12 pr-4 py-4 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-2xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all duration-300 font-mono text-sm">
             </div>
 
             <!-- Pre-loading or Idle State (hidden if found/error) -->
             @if(!$produkDitemukan && $barcodeTerpilih === '')
                 <div class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-[#30363D] rounded-3xl p-10 text-center opacity-50">
                     <i data-lucide="scan-line" class="w-16 h-16 text-slate-500 mb-4"></i>
-                    <p class="text-sm font-bold text-slate-400 tracking-wider uppercase">Menunggu Hasil Scan...</p>
+                    <p class="text-sm font-bold text-slate-500 dark:text-slate-400 tracking-wider uppercase">Menunggu Hasil Scan...</p>
                 </div>
             @endif
 
@@ -51,14 +51,14 @@
                             <i data-lucide="check-circle-2" class="w-4 h-4"></i> Produk Dikenali
                         </div>
                         
-                        <h2 class="text-2xl font-black text-white leading-tight mb-2">{{ $produkDitemukan['name'] }}</h2>
-                        <div class="flex gap-4 text-xs font-mono text-slate-400 mb-8 border-b border-[#30363D] pb-6">
-                            <span>SKU: <span class="text-white">{{ $produkDitemukan['barcode'] }}</span></span>
+                        <h2 class="text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">{{ $produkDitemukan['name'] }}</h2>
+                        <div class="flex gap-4 text-xs font-mono text-slate-500 dark:text-slate-400 mb-8 border-b border-[#30363D] pb-6">
+                            <span>SKU: <span class="text-slate-900 dark:text-white">{{ $produkDitemukan['barcode'] }}</span></span>
                             <span>&bull;</span>
                             <span>Stok Valid: <span class="{{ $produkDitemukan['current_stock'] > 0 ? 'text-[#58A6FF]' : 'text-rose-400' }} text-sm font-black">{{ $produkDitemukan['current_stock'] }}</span></span>
                         </div>
 
-                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-4">Pilih Jenis Transaksi</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mb-4">Pilih Jenis Transaksi</p>
                         
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Tombol Barang Masuk Seamless -->
@@ -67,7 +67,7 @@
                                 <div class="w-10 h-10 rounded-full bg-[#238636]/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                                     <i data-lucide="arrow-down-left" class="w-5 h-5 text-[#3FB950]"></i>
                                 </div>
-                                <span class="text-white font-bold text-sm">Masuk</span>
+                                <span class="text-slate-900 dark:text-white font-bold text-sm">Masuk</span>
                                 <span class="text-[10px] text-slate-500 mt-1">Tambah Stok</span>
                             </a>
 
@@ -77,7 +77,7 @@
                                 <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5 text-orange-400"></i>
                                 </div>
-                                <span class="text-white font-bold text-sm">Keluar</span>
+                                <span class="text-slate-900 dark:text-white font-bold text-sm">Keluar</span>
                                 <span class="text-[10px] text-slate-500 mt-1">Kurangi Stok</span>
                             </a>
                         </div>
@@ -91,7 +91,7 @@
                         <i data-lucide="file-x-2" class="w-8 h-8 text-rose-500"></i>
                     </div>
                     <h3 class="text-lg font-bold text-rose-400 mb-1">Produk Tidak Ditemukan</h3>
-                    <p class="text-xs text-slate-400">Barcode/SKU <span class="font-mono text-white bg-black/20 px-1 rounded">{{ $barcodeTerpilih }}</span> tidak terdaftar di sistem.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Barcode/SKU <span class="font-mono text-slate-900 dark:text-white bg-black/20 px-1 rounded">{{ $barcodeTerpilih }}</span> tidak terdaftar di sistem.</p>
                 </div>
             @endif
         </div>
