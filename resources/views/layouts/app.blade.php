@@ -247,8 +247,11 @@
     <script>
         document.addEventListener('livewire:initialized', () => {
             window.addEventListener('transaksi-sukses', (event) => {
-                let msg = event.detail[0].message;
-                let sjId = event.detail[0].sjId ?? null;
+                // Livewire v3 wraps dispatches, but if sent as object parameter it's often directly accessible
+                // or under detail[0]. Let's safely extract it.
+                let detail = event.detail[0] || event.detail;
+                let msg = detail.message || 'Transaksi Berhasil';
+                let sjId = detail.sjId ?? null;
                 
                 Swal.fire({
                     title: 'Berhasil!',
@@ -269,9 +272,12 @@
             });
 
             window.addEventListener('transaksi-gagal', (event) => {
+                let detail = event.detail[0] || event.detail;
+                let msg = detail.message || 'Terjadi kesalahan sistem.';
+
                 Swal.fire({
                     title: 'Gagal!',
-                    text: event.detail[0].message,
+                    text: msg,
                     icon: 'error',
                     background: '#161B22',
                     color: '#c9d1d9',

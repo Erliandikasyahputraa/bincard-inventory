@@ -10,6 +10,7 @@ use App\Livewire\PelangganIndex;
 use App\Livewire\PemasokForm;
 use App\Livewire\PemasokIndex;
 use App\Livewire\ProdukForm;
+use App\Livewire\ProdukIndex;
 use App\Livewire\PengaturanPerusahaan;
 use App\Livewire\ProfileForm;
 use App\Livewire\ScanBarcode;
