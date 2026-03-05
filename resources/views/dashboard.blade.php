@@ -1,0 +1,194 @@
+@extends('layouts.app')
+@section('title', 'Dashboard - Bincard Pro')
+@section('content')
+
+<div class="mb-4 lg:mb-8">
+    <h1 class="text-xl lg:text-2xl font-bold text-white tracking-tight">Overview</h1>
+    <p class="text-slate-400 text-xs lg:text-sm mt-1">Status gudang dan statistik hari ini.</p>
+</div>
+
+<!-- Stats Row -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
+    <!-- Total Inventory -->
+    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#1F6FEB]/10 text-[#58A6FF]">
+            <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        </div>
+        <div>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Total Produk</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['total_inventory'], 0, ',', '.') }}</h3>
+        </div>
+    </div>
+
+    <!-- Low Stock Alert -->
+    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-500/10 text-rose-400">
+            <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        </div>
+        <div>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Kritis</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
+        </div>
+    </div>
+
+    <!-- Masuk 24h -->
+    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#238636]/10 text-[#3FB950]">
+            <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        </div>
+        <div>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Masuk</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['masuk_24h'], 0, ',', '.') }}</h3>
+        </div>
+    </div>
+
+    <!-- Keluar 24h -->
+    <div class="bg-[#161B22] p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#30363D] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-[#21262D] transition-colors">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-orange-500/10 text-orange-400">
+            <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        </div>
+        <div>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Stok Keluar</p>
+            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['keluar_24h'], 0, ',', '.') }}</h3>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <!-- Grafik Transaksi -->
+    <div class="xl:col-span-2 bg-[#161B22] rounded-2xl border border-[#30363D] p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h2 class="text-md lg:text-lg font-bold text-slate-200">Grafik Transaksi (6 Bulan Terakhir)</h2>
+        </div>
+        
+        <div class="flex-1 w-full relative" id="transaction-chart">
+            <!-- Chart renders here -->
+        </div>
+    </div>
+
+
+    <!-- Right Column Layout -->
+    <div class="flex flex-col gap-6">
+        
+        <!-- Quick Scan Widget -->
+        <div class="bg-[#1F6FEB] rounded-2xl p-5 lg:p-6 flex flex-col text-white relative overflow-hidden group border border-[#388BFD]">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+            
+            <div class="relative z-10 flex flex-row lg:flex-col justify-between items-center lg:items-start gap-4 lg:gap-0">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 lg:gap-3 mb-1 lg:mb-2">
+                        <div class="p-1.5 lg:p-2 bg-white/20 rounded-lg backdrop-blur-sm hidden sm:block">
+                            <i data-lucide="qr-code" class="w-4 h-4 lg:w-5 lg:h-5"></i>
+                        </div>
+                        <h3 class="text-base lg:text-lg font-bold tracking-tight">Quick Scan QR</h3>
+                    </div>
+                    <p class="text-blue-100 text-[10px] lg:text-xs mb-0 lg:mb-6 opacity-80 leading-tight">Pindai barang via kamera secara instan.</p>
+                </div>
+                
+                <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">
+                    <i data-lucide="camera" class="w-6 h-6 lg:w-8 lg:h-8 text-white lg:mx-auto mb-0 lg:mb-2 opacity-80 group-hover:scale-110 transition-transform inline-block lg:block"></i>
+                    <span class="font-bold tracking-widest text-[9px] lg:text-[10px] uppercase text-white hidden lg:block">Buka Kamera</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Aktivitas Terbaru -->
+        <div class="bg-[#161B22] rounded-2xl border border-[#30363D] p-5 flex-1">
+            <div class="flex items-center justify-between mb-4 border-b border-[#30363D] pb-3">
+                <h3 class="text-sm font-bold text-slate-200">10 Transaksi Terakhir</h3>
+                <a href="{{ route('laporan.index') }}" class="text-xs font-medium text-[#58A6FF] hover:text-[#79C0FF]">Lihat</a>
+            </div>
+            
+            <div class="space-y-4">
+                @forelse($aktivitas as $act)
+                    <div class="flex gap-3 items-start group">
+                        <div class="mt-0.5">
+                            <span class="inline-block px-1.5 py-0.5 text-[9px] font-bold rounded {{ $act->type == 'IN' ? 'bg-[#238636]/20 text-[#3FB950] border border-[#238636]/30' : ($act->type == 'OUT' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30') }}">
+                                {{ $act->type == 'IN' ? 'Masuk' : ($act->type == 'OUT' ? 'Keluar' : 'Adjust') }}
+                            </span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <p class="text-xs font-bold text-slate-200 truncate">{{ $act->product->name }}</p>
+                                <p class="text-[10px] text-slate-500 whitespace-nowrap ml-2">{{ $act->created_at->format('d/m') }}</p>
+                            </div>
+                            <p class="text-[10px] text-slate-400 truncate">
+                                <span class="text-white">{{ $act->quantity }} Unit</span> &bull; {{ $act->user?->name ?? 'Sistem' }}
+                            </p>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-4">
+                        <p class="text-xs text-slate-500">Belum ada aktivitas.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chartData = @json($chartData ?? ['labels' => [], 'masuk' => [], 'keluar' => []]);
+        
+        const options = {
+            series: [
+                { name: 'Barang Masuk', data: chartData.masuk.reverse() },
+                { name: 'Barang Keluar', data: chartData.keluar.reverse() }
+            ],
+            chart: {
+                parentHeightOffset: 0,
+                type: 'bar',
+                height: '100%',
+                toolbar: { show: false },
+                background: 'transparent',
+                fontFamily: 'inherit'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    columnWidth: '55%',
+                }
+            },
+            colors: ['#238636', '#f43f5e'],
+            dataLabels: { enabled: false },
+            stroke: { show: true, width: 2, colors: ['transparent'] },
+            xaxis: {
+                categories: chartData.labels.reverse(),
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { style: { colors: '#8B949E', fontSize: '10px' } }
+            },
+            yaxis: {
+                labels: { style: { colors: '#8B949E', fontSize: '10px' } },
+            },
+            grid: {
+                borderColor: '#30363D',
+                strokeDashArray: 4,
+                yaxis: { lines: { show: true } },
+                xaxis: { lines: { show: false } },
+                padding: { top: 0, right: 0, bottom: 0, left: 10 }
+            },
+            theme: { mode: 'dark' },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'center',
+                labels: { colors: '#c9d1d9' }
+            },
+            tooltip: {
+                theme: 'dark',
+                y: { formatter: function (val) { return val + " item" } }
+            }
+        };
+
+        const chart = new ApexCharts(document.querySelector("#transaction-chart"), options);
+        chart.render();
+    });
+</script>
+@endpush
+@endsection

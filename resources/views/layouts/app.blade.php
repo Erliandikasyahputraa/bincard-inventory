@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', config('app.name', 'Bincard Pro'))</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-[#13151A] text-slate-300 antialiased font-sans selection:bg-blue-500/30 selection:text-blue-200" x-data="{ sidebarOpen: true }">
+    
+    <!-- Mobile sidebar backdrop -->
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-[#0A0D14]/80 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar - Dark Enterprise Style -->
+        <aside :class="sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'" class="bg-[#161B22] transition-all duration-500 fixed h-full z-50 flex flex-col border-r border-[#21262D] shadow-xl">
+            <div class="p-8 flex items-center space-x-3 h-24 border-b border-[#21262D]">
+                <div class="w-10 h-10 bg-[#238636] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#238636]/20 flex-shrink-0">
+                    <i data-lucide="scan" stroke-width="2.5" class="w-5 h-5"></i>
+                </div>
+                <span x-show="sidebarOpen" class="text-xl font-bold text-white tracking-tight whitespace-nowrap flex-1">BINCARD</span>
+                <button x-show="sidebarOpen" @click="sidebarOpen = false" class="lg:hidden p-1.5 text-slate-400 hover:text-white transition-colors bg-[#0D1117] rounded-lg border border-[#30363D]">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <nav class="flex-1 px-4 space-y-8 overflow-y-auto no-scrollbar py-6">
+                
+                @auth
+                <!-- MAIN -->
+                <div>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('dashboard') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="layout-dashboard" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Dashboard</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- MASTER DATA -->
+                <div>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('produk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('produk.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="package" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Produk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('pemasok.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pemasok.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="truck" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Supplier</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('pelanggan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="users" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Customer</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- OPERATIONS -->
+                <div>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('barang-masuk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-masuk.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="arrow-down-left" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm whitespace-nowrap">Barang Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('barang-keluar.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-keluar.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="arrow-up-right" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm whitespace-nowrap">Barang Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('scan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('scan.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="scan-line" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm whitespace-nowrap">Scan Barcode</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('opname.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('opname.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="check-square" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm whitespace-nowrap">Stok Opname</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ANALYTICS & SETTINGS -->
+                <div>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('laporan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('laporan.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Laporan Opname</span>
+                            </a>
+                        </li>
+                        <!-- Tambahan Menu Cetak QR -->
+                        <li>
+                            <a href="/qr-print" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->is('qr-print*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="qr-code" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Cetak QR</span>
+                            </a>
+                        </li>
+                        @if(auth()->user()?->hasRole('Admin'))
+                        <li>
+                            <a href="{{ route('pengaturan.perusahaan') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.*') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="settings" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Pengaturan</span>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </div>
+                @endauth
+            </nav>
+
+            <!-- User Profile (Hidden in smaller widths or when collapsed, but hoverable) -->
+            @auth
+            <div class="px-6 py-4 border-t border-[#21262D] relative group">
+                <div class="flex items-center p-2 rounded-xl bg-[#0D1117] hover:bg-[#21262D] transition-colors cursor-pointer border border-[#30363D]">
+                    <div class="w-9 h-9 flex-shrink-0 rounded-xl bg-[#21262D] flex items-center justify-center text-slate-300 font-bold text-xs uppercase">
+                        {{ substr(auth()->user()->name, 0, 2) }}
+                    </div>
+                    <div x-show="sidebarOpen" class="ml-3 overflow-hidden text-left flex-1" style="display: none;" x-transition>
+                        <p class="text-xs font-bold text-slate-200 truncate">{{ auth()->user()->name }}</p>
+                        <p class="text-[10px] text-slate-500 truncate tracking-tight">{{ auth()->user()->roles->first()?->name ?? 'User' }}</p>
+                    </div>
+                </div>
+                <!-- Logout Dropdown -->
+                <div class="absolute bottom-full left-0 w-full p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all -translate-y-2 group-hover:translate-y-0 z-[60]">
+                    <form method="POST" action="{{ route('logout') }}" class="bg-[#161B22] rounded-2xl shadow-2xl border border-[#30363D] p-2 ring-1 ring-white/10">
+                        @csrf
+                        <button type="submit" class="w-full px-4 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/10 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endauth
+        </aside>
+
+        <!-- Main Content Area -->
+        <main :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'" class="flex-1 transition-all duration-500 w-full min-h-screen flex flex-col pt-0 bg-[#0D1117]">
+            
+            <div class="flex-1 p-6 md:p-8 lg:p-10 h-screen overflow-y-auto">
+                <!-- Top Header -->
+                <header class="flex flex-wrap items-center justify-between mb-10 gap-6 mt-4 lg:mt-0">
+                    <div class="flex items-center gap-4 flex-1">
+                        <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-slate-400 bg-[#161B22] border border-[#30363D] rounded-xl shadow-sm lg:hidden">
+                            <i data-lucide="menu" class="w-6 h-6"></i>
+                        </button>
+                        <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:block p-2 text-slate-400 hover:text-white transition-colors bg-[#161B22] border border-[#30363D] rounded-xl shadow-sm">
+                            <i data-lucide="menu" class="w-5 h-5"></i>
+                        </button>
+                        <div class="relative group flex-1 max-w-xl hidden sm:block">
+                            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#58A6FF] transition-colors w-5 h-5"></i>
+                            <input 
+                                type="text" 
+                                placeholder="Cari nama, barcode, SKU..." 
+                                class="w-full pl-12 pr-4 py-3 bg-[#161B22] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:bg-[#0D1117] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all duration-300"
+                            />
+                        </div>
+                    </div>
+                
+                    <div class="flex items-center space-x-4">
+                        <div class="flex flex-col items-end mr-2 hidden sm:block text-right">
+                            <span class="text-xs text-slate-200">Selamat Malam, <i data-lucide="user" class="inline w-3 h-3 text-slate-400 mx-1"></i>{{ auth()->user()->email ?? 'admin@example.com' }}</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Notifications -->
+                @if (session('sukses'))
+                    <div class="mb-8 p-4 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-100 flex items-center gap-3 shadow-sm">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                            <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                        </div>
+                        <p class="font-bold text-sm">{{ session('sukses') }}</p>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="mb-8 p-4 bg-rose-50 text-rose-700 rounded-2xl border border-rose-100 flex items-center gap-3 shadow-sm">
+                        <div class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+                            <i data-lucide="x" class="w-4 h-4 text-rose-600"></i>
+                        </div>
+                        <p class="font-bold text-sm">{{ session('error') }}</p>
+                    </div>
+                @endif
+
+                <!-- Page Content -->
+                @isset($slot)
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endisset
+            </div>
+            
+        </main>
+    </div>
+
+    @livewireScripts
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+        document.addEventListener('livewire:navigated', function() {
+            lucide.createIcons();
+        });
+    </script>
+    @stack('scripts')
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('transaksi-sukses', (event) => {
+                let msg = event[0].message;
+                let sjId = event[0].sjId ?? null;
+                
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: msg,
+                    icon: 'success',
+                    showCancelButton: sjId ? true : false,
+                    confirmButtonText: sjId ? 'Download Surat Jalan' : 'OK',
+                    cancelButtonText: 'Tutup',
+                    background: '#161B22',
+                    color: '#c9d1d9',
+                    confirmButtonColor: '#1F6FEB',
+                    cancelButtonColor: '#30363D'
+                }).then((result) => {
+                    if (result.isConfirmed && sjId) {
+                        window.open('/barang-keluar/pdf/' + sjId, '_blank');
+                    }
+                });
+            });
+
+            Livewire.on('transaksi-gagal', (event) => {
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: event[0].message,
+                    icon: 'error',
+                    background: '#161B22',
+                    color: '#c9d1d9',
+                    confirmButtonColor: '#1F6FEB'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
