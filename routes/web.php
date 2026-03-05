@@ -11,6 +11,7 @@ use App\Livewire\PemasokForm;
 use App\Livewire\PemasokIndex;
 use App\Livewire\ProdukForm;
 use App\Livewire\ProdukIndex;
+use App\Livewire\ProfileForm;
 use App\Livewire\PengaturanPerusahaan;
 use App\Livewire\ScanBarcode;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/login', function () {
@@ -112,4 +113,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengaturan/perusahaan', PengaturanPerusahaan::class)
         ->middleware('role.admin')
         ->name('pengaturan.perusahaan');
+        
+    Route::get('/profil', ProfileForm::class)->name('profil');
 });

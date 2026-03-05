@@ -63,8 +63,8 @@
             <h2 class="text-md lg:text-lg font-bold text-slate-200">Grafik Transaksi (6 Bulan Terakhir)</h2>
         </div>
         
-        <div class="flex-1 w-full relative" id="transaction-chart">
-            <!-- Chart renders here -->
+        <div class="flex-1 w-full relative min-h-[300px] overflow-hidden" id="transaction-chart">
+            <!-- ApexCharts will render here -->
         </div>
     </div>
 
@@ -88,7 +88,7 @@
                 </div>
                 
                 <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">
-                    <i data-lucide="camera" class="w-6 h-6 lg:w-8 lg:h-8 text-white lg:mx-auto mb-0 lg:mb-2 opacity-80 group-hover:scale-110 transition-transform inline-block lg:block"></i>
+                    <i data-lucide="camera" class="w-6 h-6 lg:w-8 h-8 text-white lg:mx-auto mb-0 lg:mb-2 opacity-80 group-hover:scale-110 transition-transform inline-block lg:block"></i>
                     <span class="font-bold tracking-widest text-[9px] lg:text-[10px] uppercase text-white hidden lg:block">Buka Kamera</span>
                 </a>
             </div>
@@ -138,8 +138,8 @@
         
         const options = {
             series: [
-                { name: 'Barang Masuk', data: chartData.masuk.reverse() },
-                { name: 'Barang Keluar', data: chartData.keluar.reverse() }
+                { name: 'Barang Masuk', data: chartData.masuk },
+                { name: 'Barang Keluar', data: chartData.keluar }
             ],
             chart: {
                 parentHeightOffset: 0,
@@ -159,7 +159,7 @@
             dataLabels: { enabled: false },
             stroke: { show: true, width: 2, colors: ['transparent'] },
             xaxis: {
-                categories: chartData.labels.reverse(),
+                categories: chartData.labels,
                 axisBorder: { show: false },
                 axisTicks: { show: false },
                 labels: { style: { colors: '#8B949E', fontSize: '10px' } }

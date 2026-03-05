@@ -4,36 +4,55 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - Bincard & Inventory</title>
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <h1 class="text-xl font-semibold mb-4">Login</h1>
+<body class="bg-[#0D1117] text-slate-300 antialiased font-sans min-h-screen flex items-center justify-center p-4 selection:bg-blue-500/30 selection:text-blue-200">
+    <div class="w-full max-w-md bg-[#161B22] border border-[#30363D] rounded-3xl shadow-2xl p-8 sm:p-10 relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#238636] to-[#58A6FF]"></div>
+        
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-[#238636] rounded-2xl mx-auto flex items-center justify-center text-white shadow-lg shadow-[#238636]/20 mb-5 relative top-0 hover:-top-1 transition-all">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            </div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">BINCARD PRO</h1>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Sistem Manajemen Inventaris Digital</p>
+        </div>
+        
         @if ($errors->any())
-            <div class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+            <div class="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-xl text-sm font-medium text-center shadow-inner">
                 {{ $errors->first() }}
             </div>
         @endif
-        <form method="POST" action="{{ route('login.submit') }}">
+        
+        <form method="POST" action="{{ route('login.submit') }}" class="space-y-6">
             @csrf
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                    class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <div>
+                <label for="email" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Alamat Email</label>
+                <div class="relative">
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
+                        class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all pl-11 pr-4 py-3" placeholder="admin@example.com">
+                    <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input type="password" name="password" id="password" required
-                    class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <div>
+                <label for="password" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password" required
+                        class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 placeholder-slate-600 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all pl-11 pr-4 py-3" placeholder="••••••••">
+                    <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="remember" class="rounded border-gray-300">
-                    <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+            <div class="flex items-center justify-between pt-1">
+                <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="remember" class="w-4 h-4 rounded bg-[#0D1117] border-[#30363D] text-[#58A6FF] focus:ring-[#58A6FF] focus:ring-offset-[#161B22]">
+                    <span class="ml-2 text-sm text-slate-400 group-hover:text-slate-200 transition-colors">Ingat sesi saya</span>
                 </label>
             </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-                Masuk
+            <button type="submit" class="w-full bg-[#238636] hover:bg-[#2EA043] text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-[#238636]/20 flex justify-center items-center mt-2 group">
+                Masuk ke Sistem 
+                <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </form>
     </div>

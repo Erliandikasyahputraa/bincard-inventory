@@ -23,7 +23,7 @@
         }
     </style>
 </head>
-<body class="bg-[#13151A] text-slate-300 antialiased font-sans selection:bg-blue-500/30 selection:text-blue-200" x-data="{ sidebarOpen: true }">
+<body class="bg-[#13151A] text-slate-300 antialiased font-sans selection:bg-blue-500/30 selection:text-blue-200" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
     
     <!-- Mobile sidebar backdrop -->
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-[#0A0D14]/80 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false"></div>
@@ -151,14 +151,19 @@
                         <p class="text-[10px] text-slate-500 truncate tracking-tight">{{ auth()->user()->roles->first()?->name ?? 'User' }}</p>
                     </div>
                 </div>
-                <!-- Logout Dropdown -->
+                <!-- Dropdown -->
                 <div class="absolute bottom-full left-0 w-full p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all -translate-y-2 group-hover:translate-y-0 z-[60]">
-                    <form method="POST" action="{{ route('logout') }}" class="bg-[#161B22] rounded-2xl shadow-2xl border border-[#30363D] p-2 ring-1 ring-white/10">
-                        @csrf
-                        <button type="submit" class="w-full px-4 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/10 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-                        </button>
-                    </form>
+                    <div class="bg-[#161B22] rounded-2xl shadow-2xl border border-[#30363D] p-2 ring-1 ring-white/10 flex flex-col gap-1">
+                        <a href="{{ route('profil') }}" class="w-full px-4 py-2 text-xs font-bold text-slate-300 hover:text-white hover:bg-[#21262D] rounded-xl flex items-center justify-center gap-2 transition-colors">
+                            <i data-lucide="user-cog" class="w-4 h-4"></i> Edit Profil
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <button type="submit" class="w-full px-4 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/10 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             @endauth
@@ -234,10 +239,10 @@
     </script>
     @stack('scripts')
     <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('transaksi-sukses', (event) => {
-                let msg = event[0].message;
-                let sjId = event[0].sjId ?? null;
+        document.addEventListener('livewire:initialized', () => {
+            window.addEventListener('transaksi-sukses', (event) => {
+                let msg = event.detail[0].message;
+                let sjId = event.detail[0].sjId ?? null;
                 
                 Swal.fire({
                     title: 'Berhasil!',
@@ -257,10 +262,10 @@
                 });
             });
 
-            Livewire.on('transaksi-gagal', (event) => {
+            window.addEventListener('transaksi-gagal', (event) => {
                 Swal.fire({
                     title: 'Gagal!',
-                    text: event[0].message,
+                    text: event.detail[0].message,
                     icon: 'error',
                     background: '#161B22',
                     color: '#c9d1d9',

@@ -35,14 +35,11 @@
     <div class="bg-white w-full max-w-[21cm] h-[29.7cm] flex flex-col items-center justify-center p-12 text-center shadow-2xl print:shadow-none print:w-full print:h-screen print:max-w-none">
         
         <div class="flex flex-col items-center gap-8 lg:gap-12 mt-[-5rem]">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data={{ urlencode($product->sku) }}&margin=0" alt="QR Code" class="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] object-contain" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" alt="QR Code" class="w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] object-contain" />
             
             <div class="space-y-4">
                 <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 leading-tight uppercase tracking-tight">{{ $product->name }}</h1>
                 <p class="text-3xl sm:text-4xl text-gray-700 font-mono tracking-widest font-semibold border-b-4 border-gray-900 inline-block pb-2">{{ $product->sku }}</p>
-                <div class="pt-2">
-                    <p class="text-xl sm:text-2xl text-gray-500 font-bold bg-gray-100 border border-gray-300 px-6 py-2 rounded-full inline-block uppercase tracking-wider">{{ $product->category ?? 'General' }}</p>
-                </div>
             </div>
         </div>
 

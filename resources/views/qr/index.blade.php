@@ -40,18 +40,16 @@
     <div id="printable-area" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         @forelse($products as $product)
             <div class="print-break bg-[#0D1117] border border-[#30363D] print:border-gray-300 print:bg-white rounded-xl p-4 flex flex-col items-center text-center">
-                <div class="w-full flex justify-between items-start mb-2">
+                <div class="w-full flex justify-center items-start mb-2">
                     <span class="text-[10px] font-mono text-slate-400 print:text-gray-500">{{ $product->sku }}</span>
-                    <span class="text-[10px] font-bold text-[#58A6FF] print:text-black">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                 </div>
                 
                 <!-- QR Code via external API for instant rendering -->
                 <div class="bg-white p-2 rounded-lg mb-3 shadow-sm">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode($product->sku) }}&margin=0" alt="QR Code {{ $product->sku }}" class="w-24 h-24 object-contain" />
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" alt="QR Code {{ $product->sku }}" class="w-24 h-24 object-contain" />
                 </div>
                 
-                <h3 class="text-xs font-bold text-slate-200 print:text-black line-clamp-2 leading-tight mb-2">{{ $product->name }}</h3>
-                <p class="text-[10px] text-slate-500 print:text-gray-600 mb-3 uppercase tracking-wider">{{ $product->category ?? 'General' }}</p>
+                <h3 class="text-xs font-bold text-slate-200 print:text-black line-clamp-2 leading-tight mb-3">{{ $product->name }}</h3>
 
                 <a href="{{ route('qr.print.single', $product->id) }}" target="_blank" class="print:hidden w-full py-2 px-3 bg-[#1F6FEB]/10 hover:bg-[#1F6FEB] text-[#58A6FF] hover:text-white rounded-lg transition-colors text-xs font-bold flex items-center justify-center gap-1 mt-auto">
                     <i data-lucide="maximize-2" class="w-3 h-3"></i> Cetak 1 Lembar

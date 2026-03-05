@@ -10,6 +10,14 @@ class ScanBarcode extends Component
     public string $barcodeTerpilih = '';
     public ?array $produkDitemukan = null;
 
+    public function mount(): void
+    {
+        if (request()->has('barcode')) {
+            $this->barcodeTerpilih = request()->query('barcode');
+            $this->cariProduk();
+        }
+    }
+
     public function updatedBarcodeTerpilih(): void
     {
         $this->cariProduk();
