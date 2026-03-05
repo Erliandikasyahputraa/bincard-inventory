@@ -15,6 +15,7 @@ use App\Livewire\PengaturanPerusahaan;
 use App\Livewire\ProfileForm;
 use App\Livewire\ScanBarcode;
 use App\Livewire\UserManagementIndex;
+use App\Livewire\AuditLogIndex;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,7 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $stats = [
+            'total_jenis' => \App\Models\Product::count(),
             'total_inventory' => \App\Models\Product::sum('current_stock') ?? 0,
             'low_stock' => \App\Models\Product::whereColumn('current_stock', '<=', 'min_stock')->count(),
             'masuk_24h' => \App\Models\StockTransaction::where('type', 'IN')->where('created_at', '>=', now()->startOfDay())->count(),
@@ -114,6 +116,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role.admin')->group(function() {
         Route::get('/pengaturan/perusahaan', PengaturanPerusahaan::class)->name('pengaturan.perusahaan');
         Route::get('/pengaturan/pengguna', UserManagementIndex::class)->name('pengaturan.pengguna');
+        Route::get('/pengaturan/audit-log', AuditLogIndex::class)->name('pengaturan.audit-log');
     });
         
     Route::get('/profil', ProfileForm::class)->name('profil');

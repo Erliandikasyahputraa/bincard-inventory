@@ -45,12 +45,12 @@
                             </td>
                             <td class="py-4 px-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="openModal({{ $user->id }})" class="p-2 bg-[#21262D] hover:bg-[#30363D] text-[#58A6FF] rounded-lg transition-colors border border-[#30363D]" title="Edit / Reset Password">
-                                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#1F6FEB] hover:bg-[#388BFD] text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
+                                        <i data-lucide="pencil" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold">Edit</span>
                                     </button>
                                     @if(auth()->id() !== $user->id)
-                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" class="p-2 bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white rounded-lg transition-colors" title="Hapus Pengguna">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" class="p-2 sm:px-3 sm:py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg transition-colors border border-rose-600 shadow-lg shadow-rose-600/20 flex items-center gap-2" title="Hapus Pengguna">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold">Hapus</span>
                                     </button>
                                     @endif
                                 </div>

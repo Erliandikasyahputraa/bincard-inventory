@@ -139,6 +139,12 @@
                                 <span x-show="sidebarOpen" class="text-sm">Manajemen Akun</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('pengaturan.audit-log') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.audit-log') ? 'bg-[#1F6FEB]/20 text-[#58A6FF] border-l-4 border-[#58A6FF] font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-[#21262D] border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="history" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm">Log Sistem</span>
+                            </a>
+                        </li>
                         @endif
                     </ul>
                 </div>

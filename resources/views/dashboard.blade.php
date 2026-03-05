@@ -15,8 +15,12 @@
             <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Total Produk</p>
-            <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['total_inventory'], 0, ',', '.') }}</h3>
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1">Total Produk & Stok</p>
+            <div class="flex items-baseline gap-2">
+                <h3 class="text-lg sm:text-2xl font-bold text-white">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-xs text-slate-400 font-normal">Jenis</span></h3>
+                <span class="hidden sm:inline text-sm font-bold text-[#58A6FF]">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-[#58A6FF]/70 font-normal">Fisik</span></span>
+            </div>
+            <p class="sm:hidden text-xs font-bold text-[#58A6FF] mt-1">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-[#58A6FF]/70 font-normal">Fisik</span></p>
         </div>
     </div>
 
@@ -63,8 +67,12 @@
             <h2 class="text-md lg:text-lg font-bold text-slate-200">Grafik Transaksi (6 Bulan Terakhir)</h2>
         </div>
         
-        <div class="flex-1 w-full relative min-h-[300px] overflow-hidden" id="transaction-chart">
-            <!-- ApexCharts will render here -->
+        <div class="flex-1 w-full relative min-h-[300px] overflow-hidden">
+            <div id="chart-scroll-wrapper" class="w-full h-full overflow-x-auto no-scrollbar scroll-smooth">
+                <div id="transaction-chart" class="min-w-[500px] lg:min-w-full h-full">
+                    <!-- ApexCharts will render here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -187,7 +195,13 @@
         };
 
         const chart = new ApexCharts(document.querySelector("#transaction-chart"), options);
-        chart.render();
+        chart.render().then(() => {
+            // Auto scroll container to the right (latest month) on mobile
+            const wrapper = document.getElementById('chart-scroll-wrapper');
+            if (wrapper) {
+                wrapper.scrollLeft = wrapper.scrollWidth;
+            }
+        });
     });
 </script>
 @endpush
