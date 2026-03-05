@@ -256,6 +256,10 @@
     @stack('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
+            Livewire.hook('morph.updated', ({ el, component }) => {
+                lucide.createIcons();
+            });
+
             window.addEventListener('transaksi-sukses', (event) => {
                 // Livewire v3 wraps dispatches, but if sent as object parameter it's often directly accessible
                 // or under detail[0]. Let's safely extract it.

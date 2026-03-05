@@ -50,6 +50,7 @@ class PengaturanPerusahaan extends Component
             }
             $data['logo_path'] = $this->logo->store('company-logos', 'public');
             $this->logo_path = $data['logo_path'];
+            $this->reset('logo');
         }
 
         $setting->fill($data)->save();
