@@ -22,7 +22,7 @@ class ImportProdukExcel extends Component
         Excel::import($import, $this->file->getRealPath());
         $this->barisSukses = $import->barisSukses;
         $this->barisGagal = $import->barisGagal;
-        session()->flash('sukses', "Import selesai. Sukses: {$import->barisSukses}, Gagal: " . count($import->barisGagal));
+        $this->dispatch('transaksi-sukses', ['message' => "Import selesai. Sukses: {$import->barisSukses}, Gagal: " . count($import->barisGagal)]);
     }
 
     public function render()

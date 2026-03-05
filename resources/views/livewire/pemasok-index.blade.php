@@ -40,7 +40,7 @@
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $s->id }})" wire:confirm="Yakin menghapus pemasok ini secara permanen?"
-                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors" title="Hapus Permanen">
+                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors" title="Hapus Permanen">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </div>

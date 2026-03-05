@@ -8,7 +8,7 @@
             <a href="{{ route('produk.template') }}" class="inline-flex justify-center items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
                 <i data-lucide="download" class="w-4 h-4 mr-2 text-[#3FB950] transition-colors duration-300 ease-in-out"></i> Download Template
             </a>
-            <a href="{{ route('produk.index') }}" class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-500 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
+            <a href="{{ route('produk.index') }}" class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
                 <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Kembali
             </a>
         </div>
@@ -17,9 +17,9 @@
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-3xl transition-colors duration-300 ease-in-out">
         <div class="p-6 md:p-8 space-y-6">
             <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex gap-3 transition-colors duration-300 ease-in-out">
-                <i data-lucide="info" class="w-5 h-5 text-blue-400 shrink-0 mt-0.5 transition-colors duration-300 ease-in-out"></i>
+                <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5 transition-colors duration-300 ease-in-out"></i>
                 <div>
-                    <h4 class="text-sm border-none font-bold text-blue-400 mb-1 transition-colors duration-300 ease-in-out">Panduan Import</h4>
+                    <h4 class="text-sm border-none font-bold text-blue-600 dark:text-blue-400 mb-1 transition-colors duration-300 ease-in-out">Panduan Import</h4>
                     <p class="text-xs text-blue-200/70 leading-relaxed transition-colors duration-300 ease-in-out">
                         Gunakan tombol <strong>Download Template</strong> di atas untuk mendapatkan format Excel yang benar.
                         Kolom yang wajib dan opsional sudah tertera di sana. Jangan ubah nama header (baris pertama) pada template agar sistem dapat membaca data dengan benar.
@@ -32,7 +32,7 @@
                     <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Pilih File Excel (.xlsx, .xls, .csv)</label>
                     <input type="file" wire:model="file" accept=".xlsx,.xls,.csv" 
                         class="w-full text-sm text-slate-600 dark:text-slate-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 dark:bg-blue-500 file:text-white hover:file:bg-[#388BFD] cursor-pointer bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl outline-none transition-colors duration-300 ease-in-out">
-                    @error('file') <span class="text-rose-500 text-xs mt-2 block font-medium flex items-center gap-1 transition-colors duration-300 ease-in-out"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
+                    @error('file') <span class="text-rose-600 dark:text-rose-500 text-xs mt-2 block font-medium flex items-center gap-1 transition-colors duration-300 ease-in-out"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
                 </div>
                 
                 <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out">
@@ -51,7 +51,7 @@
         <div class="mt-6 bg-white dark:bg-slate-900 border border-rose-500/30 rounded-2xl shadow-xl overflow-hidden max-w-3xl relative transition-colors duration-300 ease-in-out">
             <div class="absolute top-0 left-0 w-1 h-full bg-rose-500 transition-colors duration-300 ease-in-out"></div>
             <div class="p-6">
-                <h2 class="font-bold text-rose-400 flex items-center gap-2 mb-3 transition-colors duration-300 ease-in-out">
+                <h2 class="font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2 mb-3 transition-colors duration-300 ease-in-out">
                     <i data-lucide="alert-triangle" class="w-5 h-5"></i>
                     Ada {{ count($barisGagal) }} Baris yang Gagal Diimport
                 </h2>
@@ -59,7 +59,7 @@
                     <ul class="space-y-2 text-sm transition-colors duration-300 ease-in-out">
                         @foreach(array_slice($barisGagal, 0, 50) as $g)
                             <li class="flex gap-3 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
-                                <span class="font-mono text-rose-400 shrink-0 transition-colors duration-300 ease-in-out">Baris {{ $g['baris'] }}:</span> 
+                                <span class="font-mono text-rose-600 dark:text-rose-400 shrink-0 transition-colors duration-300 ease-in-out">Baris {{ $g['baris'] }}:</span> 
                                 <span>{{ $g['alasan'] }}</span>
                             </li>
                         @endforeach

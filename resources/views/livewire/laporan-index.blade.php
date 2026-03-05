@@ -43,11 +43,11 @@
                 </a>
                 <a href="{{ route('laporan.export-harian', ['tanggalMulai' => $tanggalMulai]) }}"
                     class="inline-flex justify-center items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-400 transition-colors duration-300 ease-in-out"></i> Harian (Tgl Mulai)
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400 transition-colors duration-300 ease-in-out"></i> Harian (Tgl Mulai)
                 </a>
                 <a href="{{ route('laporan.pdf', ['tanggalMulai' => $tanggalMulai, 'tanggalSelesai' => $tanggalSelesai, 'tipeTransaksi' => $tipeTransaksi]) }}"
-                    class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-100 font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-text" class="w-4 h-4 mr-2 text-rose-500 transition-colors duration-300 ease-in-out"></i> Cetak PDF
+                    class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-700 dark:text-rose-100 font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+                    <i data-lucide="file-text" class="w-4 h-4 mr-2 text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out"></i> Cetak PDF
                 </a>
             </div>
         </div>
@@ -75,7 +75,7 @@
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $t->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $t->product->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
-                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30') }} transition-colors duration-300 ease-in-out">
+                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30') }} transition-colors duration-300 ease-in-out">
                                     {{ $t->type }}
                                 </span>
                             </td>

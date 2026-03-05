@@ -35,7 +35,7 @@ class OpnameIndex extends Component
                 'selisih' => 0,
             ]);
         }
-        session()->flash('sukses', 'Sesi opname dibuat.');
+        $this->dispatch('transaksi-sukses', ['message' => 'Sesi opname dibuat.']);
         $this->opnameId = $opname->id;
         $this->redirect(route('opname.index') . '?opname=' . $opname->id, navigate: true);
     }
@@ -57,7 +57,7 @@ class OpnameIndex extends Component
     {
         $opname = StockOpname::with('details.product')->findOrFail($this->opnameId);
         if ($opname->status === StockOpname::STATUS_SELESAI) {
-            session()->flash('error', 'Opname ini sudah direkonsiliasi.');
+            $this->dispatch('transaksi-gagal', ['message' => 'Opname ini sudah direkonsiliasi.']);
             return;
         }
         foreach ($opname->details as $d) {
@@ -80,7 +80,7 @@ class OpnameIndex extends Component
             }
             $opname->update(['status' => StockOpname::STATUS_SELESAI, 'closed_at' => now()]);
         });
-        session()->flash('sukses', 'Rekonsiliasi selesai.');
+        $this->dispatch('transaksi-sukses', ['message' => 'Rekonsiliasi selesai.']);
         $this->opnameId = null;
         $this->redirect(route('opname.index'), navigate: true);
     }
@@ -98,7 +98,7 @@ class OpnameIndex extends Component
         $opname->details()->delete();
         $opname->delete();
         
-        session()->flash('sukses', 'Sesi opname berhasil dihapus.');
+        $this->dispatch('transaksi-sukses', ['message' => 'Sesi opname berhasil dihapus.']);
     }
 
     public function mount(): void

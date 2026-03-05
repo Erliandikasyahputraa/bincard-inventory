@@ -18,15 +18,15 @@
             <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1 transition-colors duration-300 ease-in-out">Total Produk & Stok</p>
             <div class="flex items-baseline gap-2">
                 <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-xs text-slate-400 dark:text-slate-500 font-normal transition-colors duration-300 ease-in-out">Jenis</span></h3>
-                <span class="hidden sm:inline text-sm font-bold text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-400 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></span>
+                <span class="hidden sm:inline text-sm font-bold text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></span>
             </div>
-            <p class="sm:hidden text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 transition-colors duration-300 ease-in-out">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-400 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></p>
+            <p class="sm:hidden text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 transition-colors duration-300 ease-in-out">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></p>
         </div>
     </div>
 
     <!-- Low Stock Alert -->
     <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out">
             <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
         <div>
@@ -92,7 +92,7 @@
                         </div>
                         <h3 class="text-base lg:text-lg font-bold tracking-tight transition-colors duration-300 ease-in-out">Quick Scan QR</h3>
                     </div>
-                    <p class="text-blue-100 text-[10px] lg:text-xs mb-0 lg:mb-6 opacity-80 leading-tight transition-colors duration-300 ease-in-out">Pindai barang via kamera secara instan.</p>
+                    <p class="text-blue-700 dark:text-blue-100 text-[10px] lg:text-xs mb-0 lg:mb-6 opacity-80 leading-tight transition-colors duration-300 ease-in-out">Pindai barang via kamera secara instan.</p>
                 </div>
                 
                 <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white dark:hover:bg-slate-800/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">

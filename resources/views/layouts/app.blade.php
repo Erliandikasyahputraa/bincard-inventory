@@ -160,7 +160,7 @@
                     </div>
                     <div x-show="sidebarOpen" class="ml-3 overflow-hidden text-left flex-1 transition-colors duration-300 ease-in-out" style="display: none;" x-transition>
                         <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate transition-colors duration-300 ease-in-out">{{ auth()->user()->name }}</p>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-500 truncate tracking-tight transition-colors duration-300 ease-in-out">{{ auth()->user()->roles->first()?->name ?? 'User' }}</p>
+                        <p class="text-[10px] text-slate-500 truncate tracking-tight transition-colors duration-300 ease-in-out">{{ auth()->user()->roles->first()?->name ?? 'User' }}</p>
                     </div>
                 </div>
                 <!-- Dropdown -->

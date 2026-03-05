@@ -49,9 +49,9 @@
                             </td>
                             <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
                                 <div class="inline-flex flex-col items-center">
-                                    <span class="text-lg font-bold {{ $p->current_stock <= $p->min_stock ? 'text-rose-400' : 'text-blue-500' }} transition-colors duration-300 ease-in-out">{{ $p->current_stock }}</span>
+                                    <span class="text-lg font-bold {{ $p->current_stock <= $p->min_stock ? 'text-rose-600 dark:text-rose-400' : 'text-blue-500' }} transition-colors duration-300 ease-in-out">{{ $p->current_stock }}</span>
                                     @if($p->current_stock <= $p->min_stock)
-                                        <span class="text-[9px] text-rose-500 font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Kritis</span>
+                                        <span class="text-[9px] text-rose-600 dark:text-rose-500 font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Kritis</span>
                                     @endif
                                 </div>
                             </td>
@@ -64,7 +64,7 @@
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"
-                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors" title="Hapus Permanen">
+                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors" title="Hapus Permanen">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </div>

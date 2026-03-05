@@ -34,7 +34,7 @@ class PengaturanPerusahaan extends Component
 
         CompanySetting::query()->firstOrNew()->fill($data)->save();
 
-        session()->flash('sukses', 'Pengaturan perusahaan tersimpan.');
+        $this->dispatch('transaksi-sukses', ['message' => 'Pengaturan perusahaan tersimpan.']);
     }
 
     public function render()

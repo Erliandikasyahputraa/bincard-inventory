@@ -21,7 +21,7 @@
         </div>
         
         @if ($errors->any())
-            <div class="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-xl text-sm font-medium text-center shadow-inner transition-colors duration-300 ease-in-out">
+            <div class="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-500 rounded-xl text-sm font-medium text-center shadow-inner transition-colors duration-300 ease-in-out">
                 {{ $errors->first() }}
             </div>
         @endif

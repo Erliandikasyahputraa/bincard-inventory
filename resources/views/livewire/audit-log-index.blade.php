@@ -43,7 +43,7 @@
                                 <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border 
                                     {{ $log->action == 'created' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950] border-[#238636]/30' : '' }}
                                     {{ $log->action == 'updated' ? 'bg-blue-500/10 text-blue-500 border-[#1F6FEB]/30' : '' }}
-                                    {{ $log->action == 'deleted' ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
+                                    {{ $log->action == 'deleted' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
                                     {{ strtoupper($log->action) }}
                                 </span>
                                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-mono transition-colors duration-300 ease-in-out">
@@ -55,16 +55,16 @@
                                     @if($log->action === 'updated')
                                         <div class="mb-2">
                                             <span class="text-slate-500 italic block mb-1 transition-colors duration-300 ease-in-out">Sebelumnya:</span>
-                                            <code class="text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</code>
+                                            <code class="text-rose-600 dark:text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</code>
                                         </div>
                                         <div>
                                             <span class="text-slate-500 italic block mb-1 transition-colors duration-300 ease-in-out">Berubah Menjadi:</span>
-                                            <code class="text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</code>
+                                            <code class="text-emerald-600 dark:text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</code>
                                         </div>
                                     @elseif($log->action === 'created')
-                                        <div class="text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</div>
+                                        <div class="text-emerald-600 dark:text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</div>
                                     @elseif($log->action === 'deleted')
-                                        <div class="text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</div>
+                                        <div class="text-rose-600 dark:text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</div>
                                     @endif
                                 </div>
                             </td>

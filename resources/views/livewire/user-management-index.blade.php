@@ -85,12 +85,12 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Nama Lengkap</label>
                         <input type="text" wire:model="name" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-blue-500 dark:border-blue-400 transition-colors duration-300 ease-in-out">
-                        @error('name') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
+                        @error('name') <span class="text-rose-600 dark:text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Email Login</label>
                         <input type="email" wire:model="email" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-blue-500 dark:border-blue-400 transition-colors duration-300 ease-in-out">
-                        @error('email') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
+                        @error('email') <span class="text-rose-600 dark:text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Peran (Role Akses)</label>
@@ -99,7 +99,7 @@
                                 <option value="{{ $r }}">{{ $r }}</option>
                             @endforeach
                         </select>
-                        @error('role') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
+                        @error('role') <span class="text-rose-600 dark:text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
                     <div class="pt-2">
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">
@@ -107,7 +107,7 @@
                             @if($editingUserId) <span class="text-blue-500 font-normal lowercase normal-case transition-colors duration-300 ease-in-out">(Kosongkan jika tidak ingin merubah sandi)</span> @endif
                         </label>
                         <input type="password" wire:model="password" placeholder="Minimal 8 karakter" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 outline-none focus:border-blue-500 dark:border-blue-400 transition-colors duration-300 ease-in-out">
-                        @error('password') <span class="text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
+                        @error('password') <span class="text-rose-600 dark:text-rose-500 text-[11px] font-bold mt-1 block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="pt-6 border-t border-slate-200 dark:border-slate-800/50 flex justify-end gap-3 transition-colors duration-300 ease-in-out">

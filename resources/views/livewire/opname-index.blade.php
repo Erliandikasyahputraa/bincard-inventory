@@ -32,7 +32,7 @@
                 <a href="{{ route('opname.export', $opname->id) }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm">
                     <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-[#3FB950] transition-colors duration-300 ease-in-out"></i> Export Data
                 </a>
-                <a href="{{ route('opname.index') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold border border-rose-500/20 rounded-xl transition-colors text-sm">
+                <a href="{{ route('opname.index') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold border border-rose-500/20 rounded-xl transition-colors text-sm">
                     <i data-lucide="chevron-left" class="w-4 h-4 mr-1"></i> Kembali
                 </a>
             </div>
@@ -64,7 +64,7 @@
                                 </td>
                                 @php $fisik = (int) ($stokFisik[$d->product_id] ?? $d->stok_fisik ?? 0); $sel = $fisik - $d->stok_sistem; @endphp
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
-                                    <span class="font-bold font-mono text-sm {{ $sel != 0 ? ($sel > 0 ? 'text-[#3FB950]' : 'text-rose-500') : 'text-slate-500 opacity-50' }} transition-colors duration-300 ease-in-out">
+                                    <span class="font-bold font-mono text-sm {{ $sel != 0 ? ($sel > 0 ? 'text-[#3FB950]' : 'text-rose-600 dark:text-rose-500') : 'text-slate-500 opacity-50' }} transition-colors duration-300 ease-in-out">
                                         {{ $fisik > 0 || $d->stok_fisik !== null ? ($sel > 0 ? '+'.$sel : $sel) : '-' }}
                                     </span>
                                 </td>
@@ -105,7 +105,7 @@
                                                 <i data-lucide="edit" class="w-4 h-4"></i>
                                             </a>
                                         @endif
-                                        <button type="button" wire:click="hapusSesi({{ $o->id }})" wire:confirm="Anda yakin ingin menghapus catatan sesi opname ini? Data yang terhapus tidak dapat dikembalikan." class="inline-flex items-center text-rose-500 hover:text-rose-400 text-sm font-bold bg-rose-500/10 px-3 py-1.5 rounded-lg transition-colors" title="Hapus Riwayat">
+                                        <button type="button" wire:click="hapusSesi({{ $o->id }})" wire:confirm="Anda yakin ingin menghapus catatan sesi opname ini? Data yang terhapus tidak dapat dikembalikan." class="inline-flex items-center text-rose-600 dark:text-rose-500 hover:text-rose-600 dark:text-rose-400 text-sm font-bold bg-rose-500/10 px-3 py-1.5 rounded-lg transition-colors" title="Hapus Riwayat">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>

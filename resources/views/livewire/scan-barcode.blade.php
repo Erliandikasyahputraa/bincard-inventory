@@ -17,7 +17,7 @@
                 <button type="button" @click="startScan()" class="flex-1 py-3 px-4 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center">
                     <i data-lucide="camera" class="w-4 h-4 mr-2"></i> Mulai Kamera
                 </button>
-                <button type="button" @click="stopScan()" class="py-3 px-5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold border border-rose-500/20 rounded-xl transition-all flex items-center justify-center">
+                <button type="button" @click="stopScan()" class="py-3 px-5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold border border-rose-500/20 rounded-xl transition-all flex items-center justify-center">
                     <i data-lucide="power-off" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -55,7 +55,7 @@
                         <div class="flex gap-4 text-xs font-mono text-slate-500 dark:text-slate-400 mb-8 border-b border-slate-200 dark:border-slate-800 pb-6 transition-colors duration-300 ease-in-out">
                             <span>SKU: <span class="text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ $produkDitemukan['barcode'] }}</span></span>
                             <span>&bull;</span>
-                            <span>Stok Valid: <span class="{{ $produkDitemukan['current_stock'] > 0 ? 'text-blue-500' : 'text-rose-400' }} text-sm font-black transition-colors duration-300 ease-in-out">{{ $produkDitemukan['current_stock'] }}</span></span>
+                            <span>Stok Valid: <span class="{{ $produkDitemukan['current_stock'] > 0 ? 'text-blue-500' : 'text-rose-600 dark:text-rose-400' }} text-sm font-black transition-colors duration-300 ease-in-out">{{ $produkDitemukan['current_stock'] }}</span></span>
                         </div>
 
                         <p class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mb-4 transition-colors duration-300 ease-in-out">Pilih Jenis Transaksi</p>
@@ -88,9 +88,9 @@
             @elseif($barcodeTerpilih !== '')
                 <div class="flex-1 bg-rose-500/5 border border-rose-500/20 rounded-3xl p-8 flex flex-col items-center justify-center text-center animate-in shake duration-300 transition-colors duration-300 ease-in-out">
                     <div class="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-4 transition-colors duration-300 ease-in-out">
-                        <i data-lucide="file-x-2" class="w-8 h-8 text-rose-500 transition-colors duration-300 ease-in-out"></i>
+                        <i data-lucide="file-x-2" class="w-8 h-8 text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-rose-400 mb-1 transition-colors duration-300 ease-in-out">Produk Tidak Ditemukan</h3>
+                    <h3 class="text-lg font-bold text-rose-600 dark:text-rose-400 mb-1 transition-colors duration-300 ease-in-out">Produk Tidak Ditemukan</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300 ease-in-out">Barcode/SKU <span class="font-mono text-slate-900 dark:text-white bg-black/20 px-1 rounded transition-colors duration-300 ease-in-out">{{ $barcodeTerpilih }}</span> tidak terdaftar di sistem.</p>
                 </div>
             @endif
