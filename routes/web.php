@@ -10,10 +10,10 @@ use App\Livewire\PelangganIndex;
 use App\Livewire\PemasokForm;
 use App\Livewire\PemasokIndex;
 use App\Livewire\ProdukForm;
-use App\Livewire\ProdukIndex;
-use App\Livewire\ProfileForm;
 use App\Livewire\PengaturanPerusahaan;
+use App\Livewire\ProfileForm;
 use App\Livewire\ScanBarcode;
+use App\Livewire\UserManagementIndex;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -110,9 +110,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/qr-print', [App\Http\Controllers\QRController::class, 'index'])->name('qr.print');
     Route::get('/qr-print/{id}', [App\Http\Controllers\QRController::class, 'single'])->name('qr.print.single');
 
-    Route::get('/pengaturan/perusahaan', PengaturanPerusahaan::class)
-        ->middleware('role.admin')
-        ->name('pengaturan.perusahaan');
+    Route::middleware('role.admin')->group(function() {
+        Route::get('/pengaturan/perusahaan', PengaturanPerusahaan::class)->name('pengaturan.perusahaan');
+        Route::get('/pengaturan/pengguna', UserManagementIndex::class)->name('pengaturan.pengguna');
+    });
         
     Route::get('/profil', ProfileForm::class)->name('profil');
 });
