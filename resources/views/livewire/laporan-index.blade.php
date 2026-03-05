@@ -71,7 +71,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                     @forelse($transaksi as $t)
-                        <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $t->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $t->product->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">

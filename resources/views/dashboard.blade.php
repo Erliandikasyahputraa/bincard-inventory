@@ -10,7 +10,7 @@
 <!-- Stats Row -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
     <!-- Total Inventory -->
-    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
+    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
         <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-slate-100 dark:bg-emerald-500/10 text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out">
             <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Low Stock Alert -->
-    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
+    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
         <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out">
             <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Masuk 24h -->
-    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
+    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
         <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-600 dark:bg-emerald-500/10 text-emerald-600 dark:text-[#3FB950] transition-colors duration-300 ease-in-out">
             <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- Keluar 24h -->
-    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
+    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
         <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 dark:text-orange-400 transition-colors duration-300 ease-in-out">
             <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
@@ -95,7 +95,7 @@
                     <p class="text-blue-100 text-[10px] lg:text-xs mb-0 lg:mb-6 opacity-80 leading-tight transition-colors duration-300 ease-in-out">Pindai barang via kamera secara instan.</p>
                 </div>
                 
-                <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">
+                <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white dark:hover:bg-slate-800/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">
                     <i data-lucide="camera" class="w-6 h-6 lg:w-8 h-8 text-white lg:mx-auto mb-0 lg:mb-2 opacity-80 group-hover:scale-110 transition-transform inline-block lg:block"></i>
                     <span class="font-bold tracking-widest text-[9px] lg:text-[10px] uppercase text-white hidden lg:block transition-colors duration-300 ease-in-out">Buka Kamera</span>
                 </a>

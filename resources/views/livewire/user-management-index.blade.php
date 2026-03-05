@@ -27,7 +27,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800/50 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
                     @forelse($users as $user)
-                        <tr class="hover:bg-slate-50 dark:bg-slate-950 transition-colors group">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                             <td class="py-4 px-4">
                                 <p class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:text-white transition-colors">{{ $user->name }}
                                     @if(auth()->id() === $user->id)

@@ -52,7 +52,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800">
                         @foreach($opname->details as $d)
-                            <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                            <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $d->product->name }}</td>
                                 <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $d->product->barcode }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
@@ -91,7 +91,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800">
                         @forelse($daftarOpname as $o)
-                            <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                            <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $o->tanggal_opname->format('d M Y') }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
                                     <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950]' : 'bg-orange-500/20 text-orange-400' }} transition-colors duration-300 ease-in-out">

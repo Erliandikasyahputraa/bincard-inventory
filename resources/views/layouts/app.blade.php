@@ -48,7 +48,7 @@
                 <div>
                     <ul class="space-y-1">
                         <li>
-                            <a href="{{ route('dashboard') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('dashboard') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="layout-dashboard" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Dashboard</span>
                             </a>
@@ -60,19 +60,19 @@
                 <div>
                     <ul class="space-y-1">
                         <li>
-                            <a href="{{ route('produk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('produk.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('produk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('produk.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="package" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Produk</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('pemasok.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pemasok.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('pemasok.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pemasok.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="truck" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Supplier</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('pelanggan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('pelanggan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pelanggan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="users" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Customer</span>
                             </a>
@@ -84,25 +84,25 @@
                 <div>
                     <ul class="space-y-1">
                         <li>
-                            <a href="{{ route('barang-masuk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-masuk.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('barang-masuk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-masuk.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="arrow-down-left" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm whitespace-nowrap transition-colors duration-300 ease-in-out">Barang Masuk</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('barang-keluar.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-keluar.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('barang-keluar.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('barang-keluar.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="arrow-up-right" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm whitespace-nowrap transition-colors duration-300 ease-in-out">Barang Keluar</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('scan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('scan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('scan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('scan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="scan-line" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm whitespace-nowrap transition-colors duration-300 ease-in-out">Scan Barcode</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('opname.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('opname.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('opname.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('opname.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="check-square" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm whitespace-nowrap transition-colors duration-300 ease-in-out">Stok Opname</span>
                             </a>
@@ -114,33 +114,33 @@
                 <div>
                     <ul class="space-y-1">
                         <li>
-                            <a href="{{ route('laporan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('laporan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('laporan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('laporan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Laporan Opname</span>
                             </a>
                         </li>
                         <!-- Tambahan Menu Cetak QR -->
                         <li>
-                            <a href="/qr-print" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->is('qr-print*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="/qr-print" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->is('qr-print*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="qr-code" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Cetak QR</span>
                             </a>
                         </li>
                         @if(auth()->user()?->hasRole('Admin'))
                         <li>
-                            <a href="{{ route('pengaturan.perusahaan') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.perusahaan') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('pengaturan.perusahaan') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.perusahaan') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="building-2" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Info Perusahaan</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('pengaturan.pengguna') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.pengguna') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('pengaturan.pengguna') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.pengguna') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="users-round" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Manajemen Akun</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('pengaturan.audit-log') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.audit-log') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 border-l-4 border-transparent' }}">
+                            <a href="{{ route('pengaturan.audit-log') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('pengaturan.audit-log') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="history" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Log Sistem</span>
                             </a>
@@ -154,7 +154,7 @@
             <!-- User Profile (Hidden in smaller widths or when collapsed, but hoverable) -->
             @auth
             <div class="px-6 py-4 border-t border-slate-200 dark:border-[#21262D] relative group transition-colors duration-300">
-                <div class="flex items-center p-2 rounded-xl bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-200 dark:border-slate-800">
+                <div class="flex items-center p-2 rounded-xl bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-200 dark:border-slate-800">
                     <div class="w-9 h-9 flex-shrink-0 rounded-xl bg-white border border-slate-200 dark:border-transparent dark:bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-800 dark:text-slate-300 font-bold text-xs uppercase transition-colors duration-300 ease-in-out">
                         {{ substr(auth()->user()->name, 0, 2) }}
                     </div>
@@ -166,7 +166,7 @@
                 <!-- Dropdown -->
                 <div class="absolute bottom-full left-0 w-full p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all -translate-y-2 group-hover:translate-y-0 z-[60]">
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl dark:shadow-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 p-2 ring-1 ring-slate-900/5 dark:ring-white/10 flex flex-col gap-1 transition-colors duration-300 ease-in-out">
-                        <a href="{{ route('profil') }}" class="w-full px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                        <a href="{{ route('profil') }}" class="w-full px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl flex items-center justify-center gap-2 transition-colors">
                             <i data-lucide="user-cog" class="w-4 h-4"></i> Edit Profil
                         </a>
                         <form method="POST" action="{{ route('logout') }}" class="w-full">
@@ -188,10 +188,10 @@
                 <!-- Top Header -->
                 <header class="flex flex-wrap items-center justify-between mb-10 gap-6 mt-4 lg:mt-0">
                     <div class="flex items-center gap-4 flex-1">
-                        <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-100 dark:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm lg:hidden transition-colors">
+                        <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm lg:hidden transition-colors">
                             <i data-lucide="menu" class="w-6 h-6"></i>
                         </button>
-                        <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:block p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-100 dark:bg-slate-800 transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+                        <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:block p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
                         <div class="relative group flex-1 max-w-xl hidden sm:block">
@@ -205,7 +205,7 @@
                     </div>
                 
                     <div class="flex items-center space-x-4">
-                        <button @click="theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme)" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-100 dark:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl transition-colors shadow-sm" aria-label="Toggle Theme">
+                        <button @click="theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme)" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl transition-colors shadow-sm" aria-label="Toggle Theme">
                             <i data-lucide="sun" x-show="theme === 'dark'" class="w-5 h-5" style="display: none;"></i>
                             <i data-lucide="moon" x-show="theme === 'light'" class="w-5 h-5"></i>
                         </button>

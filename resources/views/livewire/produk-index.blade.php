@@ -37,7 +37,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                     @forelse($produk as $p)
-                        <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
                                     <span class="text-slate-800 dark:text-slate-200 font-mono text-xs transition-colors duration-300 ease-in-out">{{ $p->barcode }}</span>

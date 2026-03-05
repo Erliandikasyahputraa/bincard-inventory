@@ -30,7 +30,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                     @forelse($pelanggan as $c)
-                        <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $c->nama }}</td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm font-mono transition-colors duration-300 ease-in-out"><a href="tel:{{ $c->telepon }}" class="hover:text-blue-500 transition-colors">{{ $c->telepon ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out"><a href="mailto:{{ $c->email }}" class="hover:text-blue-500 transition-colors">{{ $c->email ?: '-' }}</a></td>

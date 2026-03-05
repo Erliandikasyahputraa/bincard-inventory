@@ -30,7 +30,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                     @forelse($pemasok as $s)
-                        <tr class="hover:bg-slate-100 dark:bg-slate-800 transition-colors group">
+                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $s->nama }}</td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm font-mono transition-colors duration-300 ease-in-out"><a href="tel:{{ $s->telepon }}" class="hover:text-blue-500 transition-colors">{{ $s->telepon ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out"><a href="mailto:{{ $s->email }}" class="hover:text-blue-500 transition-colors">{{ $s->email ?: '-' }}</a></td>

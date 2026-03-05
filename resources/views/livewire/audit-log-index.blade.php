@@ -30,7 +30,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800/50 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
                     @forelse($logs as $log)
-                        <tr class="hover:bg-slate-50 dark:bg-slate-950 transition-colors group">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                             <td class="py-4 px-4 align-top w-56">
                                 <p class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:text-white transition-colors mb-0.5">
                                     {{ $log->user ? $log->user->name : 'Sistem Automatis' }}
