@@ -151,46 +151,67 @@
             ],
             chart: {
                 parentHeightOffset: 0,
-                type: 'bar',
+                type: 'area', // Changed to area
                 height: '100%',
                 toolbar: { show: false },
                 background: 'transparent',
                 fontFamily: 'inherit'
             },
-            plotOptions: {
-                bar: {
-                    borderRadius: 4,
-                    columnWidth: '55%',
+            colors: ['#3FB950', '#F43F5E'], // Vibrant Green and Rose
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.45,
+                    opacityTo: 0.05,
+                    stops: [0, 90, 100]
                 }
             },
-            colors: ['#238636', '#f43f5e'],
             dataLabels: { enabled: false },
-            stroke: { show: true, width: 2, colors: ['transparent'] },
+            stroke: { 
+                curve: 'smooth', 
+                width: 3 
+            },
+            markers: {
+                size: 0,
+                strokeColors: '#161B22',
+                strokeWidth: 2,
+                hover: { size: 6 }
+            },
             xaxis: {
                 categories: chartData.labels,
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { style: { colors: '#8B949E', fontSize: '10px' } }
+                labels: { style: { colors: '#8B949E', fontSize: '11px', fontWeight: 500 } },
+                crosshairs: {
+                    stroke: { color: '#30363D', width: 1, dashArray: 4 }
+                }
             },
             yaxis: {
-                labels: { style: { colors: '#8B949E', fontSize: '10px' } },
+                labels: { style: { colors: '#8B949E', fontSize: '11px' } },
             },
             grid: {
                 borderColor: '#30363D',
                 strokeDashArray: 4,
                 yaxis: { lines: { show: true } },
-                xaxis: { lines: { show: false } },
+                xaxis: { lines: { show: true } },
                 padding: { top: 0, right: 0, bottom: 0, left: 10 }
             },
             theme: { mode: 'dark' },
             legend: {
                 position: 'top',
-                horizontalAlign: 'center',
-                labels: { colors: '#c9d1d9' }
+                horizontalAlign: 'right', // Moved to right for a cleaner look
+                offsetY: -20,
+                labels: { colors: '#c9d1d9' },
+                itemMargin: { horizontal: 10, vertical: 0 },
+                markers: { offsetX: -2 }
             },
             tooltip: {
                 theme: 'dark',
-                y: { formatter: function (val) { return val + " item" } }
+                shared: true, // Show both IN and OUT values at once
+                intersect: false,
+                style: { fontSize: '12px' },
+                y: { formatter: function (val) { return val + " Unit" } }
             }
         };
 
