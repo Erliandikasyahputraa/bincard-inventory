@@ -11,15 +11,15 @@
         <div class="flex flex-col lg:flex-row flex-wrap gap-4 items-end">
             <div class="w-full lg:w-auto">
                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Mulai Tanggal</label>
-                <input type="date" wire:model="tanggalMulai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <input type="date" wire:model.live="tanggalMulai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto">
                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Sampai Tanggal</label>
-                <input type="date" wire:model="tanggalSelesai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <input type="date" wire:model.live="tanggalSelesai" class="w-full lg:w-40 bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto flex-1 max-w-xs">
                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tipe Transaksi</label>
-                <select wire:model="tipeTransaksi" class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
+                <select wire:model.live="tipeTransaksi" class="w-full bg-[#0D1117] border border-[#30363D] hover:border-[#8B949E] rounded-xl text-slate-200 focus:bg-[#161B22] focus:border-[#58A6FF] focus:ring-1 focus:ring-[#58A6FF] outline-none transition-all px-3 py-2 text-sm appearance-none">
                     <option value="">Semua Transaksi</option>
                     <option value="IN">Masuk (IN)</option>
                     <option value="OUT">Keluar (OUT)</option>
