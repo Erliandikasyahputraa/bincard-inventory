@@ -31,7 +31,7 @@
                             <span class="text-xs font-bold">{{ $logo || $logo_path ? 'Ganti Logo' : 'Upload Logo (PNG/JPG)' }}</span>
                         </div>
 
-                        <input type="file" wire:model="logo" accept="image/png, image/jpeg, image/jpg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                        <input type="file" wire:model="logo" wire:key="logo-upload-{{ $uploadIteration }}" id="logo-upload-{{ $uploadIteration }}" accept="image/png, image/jpeg, image/jpg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
                     </div>
                     @error('logo') <span class="text-rose-600 dark:text-rose-500 text-[11px] font-bold block transition-colors duration-300 ease-in-out">{{ $message }}</span> @enderror
                     <div wire:loading wire:target="logo" class="text-[11px] text-blue-500 font-bold animate-pulse">Mengunggah logo...</div>

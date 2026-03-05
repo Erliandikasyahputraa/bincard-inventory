@@ -18,6 +18,8 @@ class PengaturanPerusahaan extends Component
     
     public $logo;
     public ?string $logo_path = null;
+    
+    public int $uploadIteration = 0;
 
     public function mount(): void
     {
@@ -51,6 +53,7 @@ class PengaturanPerusahaan extends Component
             $data['logo_path'] = $this->logo->store('company-logos', 'public');
             $this->logo_path = $data['logo_path'];
             $this->reset('logo');
+            $this->uploadIteration++;
         }
 
         $setting->fill($data)->save();

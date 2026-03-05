@@ -11,11 +11,11 @@
         <div class="flex flex-col lg:flex-row flex-wrap gap-4 items-end">
             <div class="w-full lg:w-auto">
                 <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Mulai Tanggal</label>
-                <input type="date" wire:model.live="tanggalMulai" class="w-full lg:w-40 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <input type="date" wire:model.live="tanggalMulai" class="w-full lg:w-40 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all px-3 py-2 text-sm [color-scheme:light] dark:[color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto">
                 <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Sampai Tanggal</label>
-                <input type="date" wire:model.live="tanggalSelesai" class="w-full lg:w-40 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all px-3 py-2 text-sm [color-scheme:dark]">
+                <input type="date" wire:model.live="tanggalSelesai" class="w-full lg:w-40 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all px-3 py-2 text-sm [color-scheme:light] dark:[color-scheme:dark]">
             </div>
             <div class="w-full lg:w-auto flex-1 max-w-xs">
                 <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 transition-colors duration-300 ease-in-out">Tipe Transaksi</label>
