@@ -13,9 +13,31 @@
     </style>
 </head>
 <body>
+    @php
+        $company = \App\Models\CompanySetting::first();
+    @endphp
+    
     <div class="header">
-        <h2>SURAT JALAN</h2>
-        <p><strong>{{ $suratJalan->nomor_surat_jalan }}</strong></p>
+        <table style="width: 100%; border: none; margin-top: 0;">
+            <tr style="border: none;">
+                <td style="border: none; width: 80px; text-align: left; padding: 0;">
+                    @if($company && $company->logo_path)
+                        <img src="{{ public_path('storage/' . $company->logo_path) }}" style="width: 70px; height: auto;">
+                    @else
+                        <div style="width: 70px; height: 70px; background: #eee; text-align: center; line-height: 70px; font-size: 10px; color: #999;">No Logo</div>
+                    @endif
+                </td>
+                <td style="border: none; text-align: left; padding: 0 10px;">
+                    <h1 style="margin: 0; font-size: 20px;">{{ $company ? $company->nama_perusahaan : 'Nama Perusahaan' }}</h1>
+                    <p style="margin: 4px 0 0 0; font-size: 10px; color: #555;">{{ $company ? $company->alamat : 'Alamat Perusahaan' }}<br>Telp: {{ $company ? $company->telepon : '-' }} | Email: {{ $company ? $company->email : '-' }}</p>
+                </td>
+                <td style="border: none; text-align: right; padding: 0;">
+                    <h2 style="margin: 0; font-size: 18px;">SURAT JALAN</h2>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; font-weight: bold;">{{ $suratJalan->nomor_surat_jalan }}</p>
+                </td>
+            </tr>
+        </table>
+        <hr style="margin-top: 15px; border: 1px solid #333;">
     </div>
     <div class="info">
         <p>Tanggal: {{ $suratJalan->tanggal->format('d/m/Y') }}</p>

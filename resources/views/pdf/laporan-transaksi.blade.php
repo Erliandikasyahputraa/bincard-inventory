@@ -13,12 +13,34 @@
     </style>
 </head>
 <body>
+    @php
+        $company = \App\Models\CompanySetting::first();
+    @endphp
+    
     <div class="header">
-        <h3>LAPORAN TRANSAKSI STOK</h3>
-        <p>Periode: {{ $tanggalMulai }} s/d {{ $tanggalSelesai }}</p>
-        @if($tipeTransaksi)
-            <p>Tipe: {{ $tipeTransaksi }}</p>
-        @endif
+        <table style="width: 100%; border: none; margin-top: 0;">
+            <tr style="border: none;">
+                <td style="border: none; width: 80px; text-align: left; padding: 0;">
+                    @if($company && $company->logo_path)
+                        <img src="{{ public_path('storage/' . $company->logo_path) }}" style="width: 70px; height: auto;">
+                    @else
+                        <div style="width: 70px; height: 70px; background: #eee; text-align: center; line-height: 70px; font-size: 10px; color: #999;">No Logo</div>
+                    @endif
+                </td>
+                <td style="border: none; text-align: left; padding: 0 10px;">
+                    <h1 style="margin: 0; font-size: 20px;">{{ $company ? $company->nama_perusahaan : 'Nama Perusahaan' }}</h1>
+                    <p style="margin: 4px 0 0 0; font-size: 10px; color: #555;">{{ $company ? $company->alamat : 'Alamat Perusahaan' }}<br>Telp: {{ $company ? $company->telepon : '-' }} | Email: {{ $company ? $company->email : '-' }}</p>
+                </td>
+                <td style="border: none; text-align: right; padding: 0;">
+                    <h3 style="margin: 0; font-size: 16px;">LAPORAN TRANSAKSI STOK</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 10px; font-weight: bold;">Periode: {{ $tanggalMulai }} s/d {{ $tanggalSelesai }}</p>
+                    @if($tipeTransaksi)
+                        <p style="margin: 2px 0 0 0; font-size: 10px; font-weight: bold;">Tipe: {{ $tipeTransaksi }}</p>
+                    @endif
+                </td>
+            </tr>
+        </table>
+        <hr style="margin-top: 15px; border: 1px solid #333;">
     </div>
     <table>
         <thead>

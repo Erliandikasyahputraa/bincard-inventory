@@ -51,7 +51,7 @@
                 
                 <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 print:text-black line-clamp-2 leading-tight mb-3 transition-colors duration-300 ease-in-out">{{ $product->name }}</h3>
 
-                <a href="{{ route('qr.print.single', $product->id) }}" target="_blank" class="print:hidden w-full py-2 px-3 bg-blue-600 dark:bg-blue-500/10 hover:bg-blue-600 dark:bg-blue-500 text-blue-500 hover:text-slate-900 dark:text-white rounded-lg transition-colors text-xs font-bold flex items-center justify-center gap-1 mt-auto">
+                <a href="{{ route('qr.print.single', $product->id) }}" target="_blank" class="print:hidden w-full py-2 px-3 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 dark:hover:text-white rounded-lg transition-colors text-xs font-bold flex items-center justify-center gap-1 mt-auto">
                     <i data-lucide="maximize-2" class="w-3 h-3"></i> Cetak 1 Lembar
                 </a>
             </div>

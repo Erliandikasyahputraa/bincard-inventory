@@ -4,13 +4,20 @@ namespace App\Livewire;
 
 use App\Models\CompanySetting;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class PengaturanPerusahaan extends Component
 {
+    use WithFileUploads;
+
     public string $nama_perusahaan = '';
     public string $alamat = '';
     public string $telepon = '';
     public string $email = '';
+    
+    public $logo;
+    public ?string $logo_path = null;
 
     public function mount(): void
     {
@@ -20,6 +27,7 @@ class PengaturanPerusahaan extends Component
             $this->alamat = (string) $setting->alamat;
             $this->telepon = (string) $setting->telepon;
             $this->email = (string) $setting->email;
+            $this->logo_path = $setting->logo_path;
         }
     }
 
@@ -30,9 +38,21 @@ class PengaturanPerusahaan extends Component
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
+            'logo' => 'nullable|image|max:2048', // max 2MB
         ]);
 
-        CompanySetting::query()->firstOrNew()->fill($data)->save();
+        $setting = CompanySetting::query()->firstOrNew();
+        
+        if ($this->logo) {
+            // Hapus logo lama jika ada
+            if ($setting->logo_path && Storage::disk('public')->exists($setting->logo_path)) {
+                Storage::disk('public')->delete($setting->logo_path);
+            }
+            $data['logo_path'] = $this->logo->store('company-logos', 'public');
+            $this->logo_path = $data['logo_path'];
+        }
+
+        $setting->fill($data)->save();
 
         $this->dispatch('transaksi-sukses', ['message' => 'Pengaturan perusahaan tersimpan.']);
     }

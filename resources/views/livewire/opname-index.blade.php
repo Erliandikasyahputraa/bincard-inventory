@@ -16,7 +16,7 @@
             <div>
                 <div class="flex items-center gap-3 mb-1">
                     <p class="font-bold text-slate-900 dark:text-white text-lg transition-colors duration-300 ease-in-out">Sesi Opname</p>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $opname->status == 'selesai' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950]' : 'bg-orange-500/20 text-orange-400' }} transition-colors duration-300 ease-in-out">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $opname->status == 'selesai' ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
                         {{ $opname->status }}
                     </span>
                 </div>
@@ -46,7 +46,7 @@
                             <th class="px-6 py-4 font-semibold whitespace-nowrap">Nama Produk</th>
                             <th class="px-6 py-4 font-semibold">SKU / Barcode</th>
                             <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">Sistem Saat Ini</th>
-                            <th class="px-6 py-4 font-semibold text-center bg-emerald-600 dark:bg-emerald-500/5 transition-colors duration-300 ease-in-out">Masukan Aktual (Fisik)</th>
+                            <th class="px-6 py-4 font-semibold text-center bg-emerald-600 text-white dark:bg-emerald-500/5 dark:text-slate-400 transition-colors duration-300 ease-in-out">Masukan Aktual (Fisik)</th>
                             <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">Estimasi Selisih</th>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-center bg-emerald-600 dark:bg-emerald-500/5 transition-colors duration-300 ease-in-out">
                                     <input type="number" wire:model.live="stokFisik.{{ $d->product_id }}"
-                                        class="w-24 text-center bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:border-blue-400 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-blue-500 placeholder-slate-600 outline-none transition-colors border-2 focus:border-2" min="0" placeholder="0">
+                                        class="w-24 text-center bg-white dark:bg-slate-950 border-transparent dark:border-slate-800 focus:border-white focus:ring-2 focus:ring-white dark:focus:ring-blue-500 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white placeholder-slate-400 outline-none transition-colors border-2" min="0" placeholder="0">
                                 </td>
                                 @php $fisik = (int) ($stokFisik[$d->product_id] ?? $d->stok_fisik ?? 0); $sel = $fisik - $d->stok_sistem; @endphp
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
@@ -94,7 +94,7 @@
                             <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $o->tanggal_opname->format('d M Y') }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
-                                    <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950]' : 'bg-orange-500/20 text-orange-400' }} transition-colors duration-300 ease-in-out">
+                                    <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
                                         {{ $o->status }}
                                     </span>
                                 </td>
