@@ -251,6 +251,13 @@
         });
         document.addEventListener('livewire:navigated', function() {
             lucide.createIcons();
+            // Solusi Bug: Wire:navigate mencuci <html class="dark"> dari server.
+            // Kita terapkan ulang dark class jika user memang di dark mode.
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         });
     </script>
     @stack('scripts')

@@ -30,7 +30,7 @@
             <div class="relative group">
                 <i data-lucide="keyboard" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5 transition-colors duration-300 ease-in-out"></i>
                 <input type="text" wire:model.live.debounce.300ms="barcodeTerpilih" placeholder="Atau ketik Barcode / SKU secara manual..."
-                    class="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-2xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 font-mono text-sm">
+                    class="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-2xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 font-mono text-sm">
             </div>
 
             <!-- Pre-loading or Idle State (hidden if found/error) -->
