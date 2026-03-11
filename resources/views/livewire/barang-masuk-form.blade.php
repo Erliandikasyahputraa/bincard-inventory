@@ -9,20 +9,41 @@
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-4xl transition-colors duration-300 ease-in-out">
         <form wire:submit="simpan" class="p-6 md:p-8 space-y-6">
             
-            <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-2 transition-colors duration-300 ease-in-out">
+            <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-2 transition-colors duration-300 ease-in-out relative">
                 <label class="block text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Pencarian Cepat (Barcode)</label>
                 <div class="flex gap-2">
                     <div class="relative flex-1">
                         <i data-lucide="scan-line" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 transition-colors duration-300 ease-in-out"></i>
-                        <input type="text" wire:model="barcodeTerpilih" 
-                            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-600 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all pl-10 pr-4 py-2.5 text-sm" 
-                            placeholder="Arahkan kursor & gunakan alat scanner barcode...">
+                        <input type="text" wire:model="barcodeTerpilih" wire:keydown.enter.prevent="pilihProdukDariBarcode"
+                            id="barcode"
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl focus:bg-white dark:focus:bg-slate-950 focus:ring-1 focus:ring-blue-500 font-mono text-lg tracking-wider transition-all duration-300 shadow-inner"
+                            placeholder="Ketik kode atau scan QR..."
+                            autofocus>
                     </div>
                     <button type="button" wire:click="pilihProdukDariBarcode" 
                         class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
                         Cari
                     </button>
                 </div>
+
+                <!-- Dropdown Hasil Pencarian Fuzzy -->
+                @if(count($hasilPencarian) > 0)
+                <div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto">
+                    <ul class="py-2">
+                        @foreach($hasilPencarian as $h)
+                        <li>
+                            <button type="button" wire:click="pilihProduk({{ $h['id'] }})" class="w-full text-left px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50 last:border-0">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ $h['name'] }}</p>
+                                    <p class="text-[11px] text-slate-500 font-mono">{{ $h['barcode'] }}</p>
+                                </div>
+                                <span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-2 py-1 rounded-lg font-bold">Stok: {{ $h['current_stock'] }}</span>
+                            </button>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

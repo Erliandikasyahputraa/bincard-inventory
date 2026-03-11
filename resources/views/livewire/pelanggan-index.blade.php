@@ -35,7 +35,7 @@
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm font-mono transition-colors duration-300 ease-in-out"><a href="tel:{{ $c->telepon }}" class="hover:text-blue-500 transition-colors">{{ $c->telepon ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out"><a href="mailto:{{ $c->email }}" class="hover:text-blue-500 transition-colors">{{ $c->email ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
-                                <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                                <div class="flex justify-end gap-2">
                                     <a href="{{ route('pelanggan.edit', $c->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-blue-600 dark:bg-blue-500/10 rounded-lg transition-colors" title="Edit Data">
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>

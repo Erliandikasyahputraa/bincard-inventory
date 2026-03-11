@@ -59,7 +59,7 @@
                                 <span class="inline-block px-2 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $p->location ?: '-' }}</span>
                             </td>
                             <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
-                                <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                                <div class="flex justify-end gap-2">
                                     <a href="{{ route('produk.edit', $p->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-blue-600 dark:bg-blue-500/10 rounded-lg transition-colors" title="Edit Data">
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>

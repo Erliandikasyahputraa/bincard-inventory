@@ -46,25 +46,46 @@
                                     {{ $log->action == 'deleted' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
                                     {{ strtoupper($log->action) }}
                                 </span>
+                                @php
+                                    $modelName = class_basename($log->model_type);
+                                    $record = $log->model_type::find($log->model_id);
+                                    $displayName = $record ? ($record->name ?? $record->nama ?? "ID #" . $log->model_id) : "ID #" . $log->model_id . " (Dihapus)";
+                                @endphp
                                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-mono transition-colors duration-300 ease-in-out">
-                                    {{ class_basename($log->model_type) }} #{{ $log->model_id }}
+                                    {{ $modelName }}: <br><strong class="text-slate-700 dark:text-slate-300">{{ $displayName }}</strong>
                                 </p>
                             </td>
                             <td class="py-4 px-4 align-top">
                                 <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 max-h-32 overflow-y-auto no-scrollbar text-xs font-mono transition-colors duration-300 ease-in-out">
                                     @if($log->action === 'updated')
-                                        <div class="mb-2">
-                                            <span class="text-slate-500 italic block mb-1 transition-colors duration-300 ease-in-out">Sebelumnya:</span>
-                                            <code class="text-rose-600 dark:text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</code>
+                                        <div class="mb-3">
+                                            <span class="text-slate-500 italic block mb-1.5 transition-colors duration-300 ease-in-out">Sebelumnya:</span>
+                                            <ul class="space-y-1">
+                                                @foreach((array)$log->old_values as $k => $v)
+                                                    <li class="pl-2 border-l-2 border-rose-500/30 text-rose-600 dark:text-rose-400 break-all"><span class="font-bold uppercase text-rose-800 dark:text-rose-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                         <div>
-                                            <span class="text-slate-500 italic block mb-1 transition-colors duration-300 ease-in-out">Berubah Menjadi:</span>
-                                            <code class="text-emerald-600 dark:text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</code>
+                                            <span class="text-slate-500 italic block mb-1.5 transition-colors duration-300 ease-in-out">Berubah Menjadi:</span>
+                                            <ul class="space-y-1">
+                                                @foreach((array)$log->new_values as $k => $v)
+                                                    <li class="pl-2 border-l-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 break-all"><span class="font-bold uppercase text-emerald-800 dark:text-emerald-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                     @elseif($log->action === 'created')
-                                        <div class="text-emerald-600 dark:text-emerald-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->new_values, JSON_PRETTY_PRINT) }}</div>
+                                        <ul class="space-y-1">
+                                            @foreach((array)$log->new_values as $k => $v)
+                                                <li class="pl-2 border-l-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 break-all"><span class="font-bold uppercase text-emerald-800 dark:text-emerald-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                            @endforeach
+                                        </ul>
                                     @elseif($log->action === 'deleted')
-                                        <div class="text-rose-600 dark:text-rose-400 break-all transition-colors duration-300 ease-in-out">{{ json_encode($log->old_values, JSON_PRETTY_PRINT) }}</div>
+                                        <ul class="space-y-1">
+                                            @foreach((array)$log->old_values as $k => $v)
+                                                <li class="pl-2 border-l-2 border-rose-500/30 text-rose-600 dark:text-rose-400 break-all"><span class="font-bold uppercase text-rose-800 dark:text-rose-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                            @endforeach
+                                        </ul>
                                     @endif
                                 </div>
                             </td>

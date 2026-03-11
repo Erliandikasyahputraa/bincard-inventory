@@ -38,10 +38,18 @@ class StockService
         }
 
         return DB::transaction(function () use ($productId, $type, $quantity, $userId, $referenceId, $note, $tanggal) {
+            // Lock product to avoid race conditions when recording stock_before / stock_after
+            $product = Product::lockForUpdate()->findOrFail($productId);
+            
+            $stockBefore = $product->current_stock;
+            $stockAfter = $stockBefore + $quantity;
+
             $transaksi = new StockTransaction([
                 'product_id' => $productId,
                 'type' => $type,
                 'quantity' => $quantity,
+                'stock_before' => $stockBefore,
+                'stock_after' => $stockAfter,
                 'reference_id' => $referenceId,
                 'user_id' => $userId,
                 'note' => $note,
@@ -54,8 +62,8 @@ class StockService
             }
             $transaksi->save();
 
-            $product = Product::lockForUpdate()->findOrFail($productId);
-            $product->increment('current_stock', $quantity);
+            $product->current_stock = $stockAfter;
+            $product->save();
 
             return $transaksi;
         });

@@ -9,13 +9,14 @@ class TemplateProdukExport implements FromArray, WithHeadings
 {
     public function headings(): array
     {
-        return ['barcode', 'sku', 'name', 'min_stock', 'max_stock', 'location', 'stok_awal', 'supplier_id'];
+        return ['KOMAT', 'MAPPING', 'Material Description', 'Stock SAP', 'UoM', 'Min Stock', 'Max Stock', 'Supplier ID'];
     }
 
     public function array(): array
     {
         return [
-            ['BRC001', 'SKU001', 'Contoh Produk 1', 5, 100, 'Rak A1', 10, 1],
+            ['211040404', 'E-1A-1-2C', 'SERVICE KIT 707-99-27500', 1, 'PC', 0, '', ''],
+            ['202040277', 'E-1A-1-5A', 'MOUNTING RADIATOR 2635A052 PERKINS', 10, 'PC', 2, 50, ''],
         ];
     }
 }

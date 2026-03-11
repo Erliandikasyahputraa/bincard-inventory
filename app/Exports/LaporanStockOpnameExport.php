@@ -31,13 +31,12 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
     {
         return [
             'NO',
-            'KOMAT',
-            'MAPPING',
-            'Material Description',
-            'Stock SAP',
-            'Stock Fisik',
-            'UoM',
-            'SO',
+            'Kode Barang / QR',
+            'Nama Produk',
+            'Letak / Rak',
+            'Jumlah Awal',
+            'Adjust',
+            'Jumlah Akhir',
             'Keterangan'
         ];
     }
@@ -49,22 +48,21 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
         $selisih = $row->selisih;
         $keterangan = '';
         if ($selisih < 0) {
-            $keterangan = 'Kurang ' . abs($selisih);
+            $keterangan = 'Minus ' . abs($selisih);
         } elseif ($selisih > 0) {
-            $keterangan = 'Lebih ' . $selisih;
+            $keterangan = 'Plus ' . $selisih;
         } else {
-            $keterangan = 'OK';
+            $keterangan = 'Sesuai';
         }
 
         return [
             $this->rowNumber,
-            $row->product->sku ?? $row->product->barcode ?? '',
-            $row->product->location ?? '-',
+            $row->product->barcode ?? $row->product->sku ?? '',
             $row->product->name ?? '',
+            $row->product->location ?? '-',
             $row->stok_sistem,
+            $selisih > 0 ? '+' . $selisih : $selisih,
             $row->stok_fisik ?? 0,
-            'PC',
-            $selisih,
             $keterangan,
         ];
     }
@@ -78,7 +76,7 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
         // 1. Set All Borders
         $sheet->getStyle($range)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        // 2. Format Header (Yellow, Bold, AutoFilter)
+        // 2. Format Header (Yellow, Bold)
         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -94,29 +92,39 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
             ]
         ]);
         
-        // Let's set auto filter
         $sheet->setAutoFilter('A1:' . $lastColumn . '1');
 
-        // 3. Conditional Formatting for "SO" column (H) if it's less than 0
-        // And optional styling for column alignments
+        // Alignments
         $sheet->getStyle('A2:A' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle('E2:H' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
+        // Conditional Formatting for "Adjust" column (F)
         for ($row = 2; $row <= $lastRow; $row++) {
-            $soValue = $sheet->getCell('H' . $row)->getValue();
-            if (is_numeric($soValue) && $soValue < 0) {
-                $sheet->getStyle('H' . $row)->applyFromArray([
+            $adjustValue = $sheet->getCell('F' . $row)->getValue();
+            
+            // Clean up the value for numeric comparison (remove + if present)
+            $numericValue = (int) str_replace('+', '', $adjustValue);
+            
+            if ($numericValue < 0) {
+                // Formatting for Negative (Red)
+                $sheet->getStyle('F' . $row)->applyFromArray([
                     'fill' => [
                         'fillType' => Fill::FILL_SOLID,
-                        'startColor' => [
-                            'rgb' => 'FFB6C1', // Light Pink/Red for negatives
-                        ],
+                        'startColor' => ['rgb' => 'FFB6C1'], // Light Pink
                     ],
-                    'font' => [
-                        'color' => ['rgb' => 'FF0000']
-                    ]
+                    'font' => ['color' => ['rgb' => 'FF0000'], 'bold' => true]
+                ]);
+            } elseif ($numericValue > 0) {
+                // Formatting for Positive (Green)
+                $sheet->getStyle('F' . $row)->applyFromArray([
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID,
+                        'startColor' => ['rgb' => 'D4EDDA'], // Light Green
+                    ],
+                    'font' => ['color' => ['rgb' => '155724'], 'bold' => true]
                 ]);
             }
+            // If 0, do nothing (default black)
         }
 
         return [];

@@ -42,4 +42,9 @@ class StockTransaction extends Model
     {
         return $this->type === self::TIPE_IN || ($this->type === self::TIPE_ADJUST && $this->quantity > 0);
     }
+
+    public function suratJalan(): BelongsTo
+    {
+        return $this->belongsTo(SuratJalan::class, 'reference_id', 'id');
+    }
 }

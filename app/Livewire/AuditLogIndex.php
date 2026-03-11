@@ -29,6 +29,6 @@ class AuditLogIndex extends Component
             ->paginate(15);
             
         return view('livewire.audit-log-index', compact('logs'))
-            ->layout('layouts.app', ['title' => 'Log Aktivitas Master Data - Bincard']);
+            ->layout('layouts.app', ['title' => 'Log Aktivitas Master Data - BINGO']);
     }
 }

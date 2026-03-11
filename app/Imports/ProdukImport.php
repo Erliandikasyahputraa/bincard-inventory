@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Illuminate\Database\QueryException;
 
 class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
 {
@@ -17,30 +18,40 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
     {
         foreach ($rows as $index => $row) {
             $baris = $index + 2;
-            $barcode = trim((string) ($row['barcode'] ?? ''));
-            $name = trim((string) ($row['name'] ?? $row['nama'] ?? ''));
+            
+            // Map new client headers to internal data structure
+            $barcode = trim((string) ($row['komat'] ?? $row['barcode'] ?? ''));
+            $name = trim((string) ($row['material_description'] ?? $row['name'] ?? $row['nama'] ?? ''));
+            
             if ($barcode === '' || $name === '') {
-                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'Barcode dan Nama wajib'];
+                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'KOMAT (Barcode) dan Material Description (Nama) wajib diisi'];
                 continue;
             }
             if (Product::where('barcode', $barcode)->exists()) {
-                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'Barcode sudah ada'];
+                $this->barisGagal[] = ['baris' => $baris, 'alasan' => "Produk dengan KOMAT/Barcode '$barcode' sudah terdaftar"];
                 continue;
             }
             try {
+                $supplierId = isset($row['supplier_id']) && $row['supplier_id'] !== '' ? (int) $row['supplier_id'] : null;
                 Product::create([
                     'barcode' => $barcode,
-                    'sku' => $row['sku'] ?? null,
+                    'sku' => $barcode, // Set SKU equal to KOMAT for this specific client use case
                     'name' => $name,
                     'min_stock' => (int) ($row['min_stock'] ?? 0),
                     'max_stock' => isset($row['max_stock']) && $row['max_stock'] !== '' ? (int) $row['max_stock'] : null,
-                    'location' => $row['location'] ?? null,
-                    'current_stock' => (int) ($row['stok_awal'] ?? $row['current_stock'] ?? 0),
-                    'supplier_id' => isset($row['supplier_id']) && $row['supplier_id'] !== '' ? (int) $row['supplier_id'] : null,
+                    'location' => $row['mapping'] ?? $row['location'] ?? null,
+                    'current_stock' => (int) ($row['stock_sap'] ?? $row['stok_awal'] ?? $row['current_stock'] ?? 0),
+                    'supplier_id' => $supplierId,
                 ]);
                 $this->barisSukses++;
+            } catch (QueryException $e) {
+                if ($e->errorInfo[1] == 1452) {
+                    $this->barisGagal[] = ['baris' => $baris, 'alasan' => "ID Supplier '" . ($row['supplier_id'] ?? '') . "' tidak dikenali sistem. Kosongkan kolom 'Supplier ID' di Excel atau daftar Supplier dulu."];
+                } else {
+                    $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'Gagal simpan ke database.'];
+                }
             } catch (\Throwable $e) {
-                $this->barisGagal[] = ['baris' => $baris, 'alasan' => $e->getMessage()];
+                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'Error: ' . $e->getMessage()];
             }
         }
     }

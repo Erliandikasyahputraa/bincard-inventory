@@ -9,6 +9,7 @@ class ScanBarcode extends Component
 {
     public string $barcodeTerpilih = '';
     public ?array $produkDitemukan = null;
+    public array $hasilPencarian = [];
 
     public function mount(): void
     {
@@ -26,10 +27,28 @@ class ScanBarcode extends Component
     public function cariProduk(): void
     {
         $this->produkDitemukan = null;
+        $this->hasilPencarian = [];
         if ($this->barcodeTerpilih === '') {
             return;
         }
-        $p = Product::where('barcode', trim($this->barcodeTerpilih))->first();
+        $term = trim($this->barcodeTerpilih);
+        $p = Product::where('barcode', $term)->first();
+        if ($p) {
+            $this->pilihProduk($p->id);
+            return;
+        }
+        
+        $matches = Product::where('name', 'like', '%' . $term . '%')->get();
+        if ($matches->count() === 1) {
+            $this->pilihProduk($matches->first()->id);
+        } elseif ($matches->count() > 1) {
+            $this->hasilPencarian = $matches->toArray();
+        }
+    }
+
+    public function pilihProduk(int $id): void
+    {
+        $p = Product::find($id);
         if ($p) {
             $this->produkDitemukan = [
                 'id' => $p->id,
@@ -37,14 +56,23 @@ class ScanBarcode extends Component
                 'barcode' => $p->barcode,
                 'current_stock' => $p->current_stock,
             ];
+            $this->barcodeTerpilih = $p->barcode;
+            $this->hasilPencarian = [];
         }
     }
 
-    /** Dipanggil dari Alpine.js saat scan berhasil (listener barcodeScanned). */
     public function setBarcodeDariScan(string $barcode): void
     {
         $this->barcodeTerpilih = $barcode;
         $this->cariProduk();
+    }
+
+    public function resetScan(): void
+    {
+        $this->barcodeTerpilih = '';
+        $this->produkDitemukan = null;
+        $this->hasilPencarian = [];
+        $this->dispatch('scan-reset');
     }
 
     public function render()

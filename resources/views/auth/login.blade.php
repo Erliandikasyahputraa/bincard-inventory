@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Bincard & Inventory</title>
+    <title>Login - BINGO</title>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -16,7 +16,7 @@
             <div class="w-16 h-16 bg-emerald-600 dark:bg-emerald-500 rounded-2xl mx-auto flex items-center justify-center text-white shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 mb-5 relative top-0 hover:-top-1 transition-all">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
             </div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">BINCARD PRO</h1>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">BINGO</h1>
             <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 transition-colors duration-300 ease-in-out">Sistem Manajemen Inventaris Digital</p>
         </div>
         

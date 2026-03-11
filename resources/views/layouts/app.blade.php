@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', config('app.name', 'Bincard Pro'))</title>
+    <title>@yield('title', config('app.name', 'BINGO'))</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -35,7 +35,7 @@
                 <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 flex-shrink-0 transition-colors duration-300 ease-in-out">
                     <i data-lucide="scan" stroke-width="2.5" class="w-5 h-5"></i>
                 </div>
-                <span x-show="sidebarOpen" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight whitespace-nowrap flex-1 transition-colors duration-300 ease-in-out">BINCARD</span>
+                <span x-show="sidebarOpen" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight whitespace-nowrap flex-1 transition-colors duration-300 ease-in-out">BINGO</span>
                 <button x-show="sidebarOpen" @click="sidebarOpen = false" class="lg:hidden p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-200 dark:border-slate-800">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
@@ -62,7 +62,7 @@
                         <li>
                             <a href="{{ route('produk.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('produk.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="package" class="w-5 h-5"></i></span>
-                                <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Produk</span>
+                                <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Data Produk</span>
                             </a>
                         </li>
                         <li>
@@ -160,7 +160,7 @@
                     </div>
                     <div x-show="sidebarOpen" class="ml-3 overflow-hidden text-left flex-1 transition-colors duration-300 ease-in-out" style="display: none;" x-transition>
                         <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate transition-colors duration-300 ease-in-out">{{ auth()->user()->name }}</p>
-                        <p class="text-[10px] text-slate-500 truncate tracking-tight transition-colors duration-300 ease-in-out">{{ auth()->user()->roles->first()?->name ?? 'User' }}</p>
+                        <p class="text-[10px] text-slate-500 truncate tracking-tight transition-colors duration-300 ease-in-out">Online</p>
                     </div>
                 </div>
                 <!-- Dropdown -->
@@ -194,14 +194,6 @@
                         <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:block p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
-                        <div class="relative group flex-1 max-w-xl hidden sm:block">
-                            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors w-5 h-5"></i>
-                            <input 
-                                type="text" 
-                                placeholder="Cari nama, barcode, SKU..." 
-                                class="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:bg-slate-50 dark:focus:bg-slate-50 dark:bg-slate-950 focus:border-blue-500 dark:border-blue-400 dark:focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300"
-                            />
-                        </div>
                     </div>
                 
                     <div class="flex items-center space-x-4">
@@ -209,8 +201,8 @@
                             <i data-lucide="sun" x-show="theme === 'dark'" class="w-5 h-5" style="display: none;"></i>
                             <i data-lucide="moon" x-show="theme === 'light'" class="w-5 h-5"></i>
                         </button>
-                        <div class="flex flex-col items-end mr-2 hidden sm:block text-right transition-colors duration-300 ease-in-out">
-                            <span class="text-xs text-slate-600 dark:text-slate-200 transition-colors duration-300 ease-in-out">Selamat Malam, <i data-lucide="user" class="inline w-3 h-3 text-slate-400 mx-1 transition-colors duration-300 ease-in-out"></i>{{ auth()->user()->email ?? 'admin@example.com' }}</span>
+                        <div class="flex flex-col items-end mr-2 text-right transition-colors duration-300 ease-in-out">
+                            <span class="text-xs text-slate-600 dark:text-slate-200 transition-colors duration-300 ease-in-out font-medium tracking-wide">Hi, <span class="font-bold border-b border-blue-500/30 text-slate-800 dark:text-white">{{ auth()->user()->name ?? 'Admin' }}</span>!</span>
                         </div>
                     </div>
                 </header>

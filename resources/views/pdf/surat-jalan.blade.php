@@ -66,5 +66,25 @@
             @endforeach
         </tbody>
     </table>
+    
+    <table style="width: 100%; border: none; margin-top: 50px;">
+        <tr style="border: none;">
+            <td style="border: none; width: 33%; text-align: center;">
+                <p>Penerima Barang</p>
+                <br><br><br><br>
+                <p style="text-decoration: underline;">{{ $suratJalan->customer ? $suratJalan->customer->nama : '( ................................... )' }}</p>
+            </td>
+            <td style="border: none; width: 33%; text-align: center;">
+                <p>Pengemudi</p>
+                <br><br><br><br>
+                <p>( ................................... )</p>
+            </td>
+            <td style="border: none; width: 33%; text-align: center;">
+                <p>Yang Mengeluarkan</p>
+                <br><br><br><br>
+                <p style="text-decoration: underline;">{{ $suratJalan->createdBy ? $suratJalan->createdBy->name : '( ................................... )' }}</p>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

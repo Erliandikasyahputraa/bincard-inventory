@@ -43,7 +43,7 @@
                 </a>
                 <a href="{{ route('laporan.export-harian', ['tanggalMulai' => $tanggalMulai]) }}"
                     class="inline-flex justify-center items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400 transition-colors duration-300 ease-in-out"></i> Harian (Tgl Mulai)
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400 transition-colors duration-300 ease-in-out"></i> Rekap Surat Jalan Harian
                 </a>
                 <a href="{{ route('laporan.pdf', ['tanggalMulai' => $tanggalMulai, 'tanggalSelesai' => $tanggalSelesai, 'tipeTransaksi' => $tipeTransaksi]) }}"
                     class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-700 dark:text-rose-100 font-medium rounded-xl transition-colors text-sm whitespace-nowrap">

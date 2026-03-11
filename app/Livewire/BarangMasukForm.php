@@ -10,6 +10,7 @@ class BarangMasukForm extends Component
 {
     public ?int $product_id = null;
     public string $barcodeTerpilih = '';
+    public array $hasilPencarian = [];
     public int $jumlah = 1;
     public string $tanggal = '';
     public string $referensi = '';
@@ -25,12 +26,34 @@ class BarangMasukForm extends Component
 
     public function pilihProdukDariBarcode(): void
     {
+        $this->hasilPencarian = [];
         if ($this->barcodeTerpilih === '') {
             return;
         }
+
         $p = Product::where('barcode', $this->barcodeTerpilih)->first();
         if ($p) {
+            $this->pilihProduk($p->id);
+            return;
+        }
+
+        $matches = Product::where('name', 'like', '%' . $this->barcodeTerpilih . '%')->get();
+        if ($matches->count() === 1) {
+            $this->pilihProduk($matches->first()->id);
+        } elseif ($matches->count() > 1) {
+            $this->hasilPencarian = $matches->toArray();
+        } else {
+            $this->dispatch('transaksi-gagal', ['message' => 'Barang tidak ditemukan.']);
+        }
+    }
+
+    public function pilihProduk(int $id): void
+    {
+        $p = Product::find($id);
+        if ($p) {
             $this->product_id = $p->id;
+            $this->barcodeTerpilih = $p->barcode;
+            $this->hasilPencarian = [];
         }
     }
 
@@ -51,8 +74,8 @@ class BarangMasukForm extends Component
             $this->tanggal
         );
 
-        $this->dispatch('transaksi-sukses', message: 'Barang masuk berhasil dicatat.');
-        $this->reset(['product_id', 'barcodeTerpilih', 'jumlah', 'referensi', 'catatan']);
+        $this->dispatch('transaksi-sukses', ['message' => 'Barang masuk berhasil dicatat.']);
+        $this->reset(['product_id', 'barcodeTerpilih', 'hasilPencarian', 'jumlah', 'referensi', 'catatan']);
         $this->tanggal = now()->format('Y-m-d\TH:i');
     }
 

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard - Bincard Pro')
+@section('title', 'Dashboard - BINGO')
 @section('content')
 
 <div class="mb-4 lg:mb-8">
@@ -63,17 +63,7 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
     <!-- Grafik Transaksi -->
     <div class="xl:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <h2 class="text-md lg:text-lg font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 ease-in-out">Grafik Transaksi (6 Bulan Terakhir)</h2>
-        </div>
-        
-        <div class="flex-1 w-full relative min-h-[300px] overflow-hidden">
-            <div id="chart-scroll-wrapper" class="w-full h-full overflow-x-auto no-scrollbar scroll-smooth">
-                <div id="transaction-chart" class="min-w-[500px] lg:min-w-full h-full">
-                    <!-- ApexCharts will render here -->
-                </div>
-            </div>
-        </div>
+        <livewire:dashboard-chart />
     </div>
 
 
@@ -141,105 +131,7 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const chartData = @json($chartData ?? ['labels' => [], 'masuk' => [], 'keluar' => []]);
-        
-        const options = {
-            series: [
-                { name: 'Barang Masuk', data: chartData.masuk },
-                { name: 'Barang Keluar', data: chartData.keluar }
-            ],
-            chart: {
-                parentHeightOffset: 0,
-                type: 'area', // Changed to area
-                height: '100%',
-                toolbar: { show: false },
-                background: 'transparent',
-                fontFamily: 'inherit'
-            },
-            colors: ['#3FB950', '#F43F5E'], // Vibrant Green and Rose
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.45,
-                    opacityTo: 0.05,
-                    stops: [0, 90, 100]
-                }
-            },
-            dataLabels: { enabled: false },
-            stroke: { 
-                curve: 'smooth', 
-                width: 3 
-            },
-            markers: {
-                size: 0,
-                strokeColors: '#161B22',
-                strokeWidth: 2,
-                hover: { size: 6 }
-            },
-            xaxis: {
-                categories: chartData.labels,
-                axisBorder: { show: false },
-                axisTicks: { show: false },
-                labels: { style: { colors: '#8B949E', fontSize: '11px', fontWeight: 500 } },
-                crosshairs: {
-                    stroke: { color: '#30363D', width: 1, dashArray: 4 }
-                }
-            },
-            yaxis: {
-                labels: { style: { colors: '#8B949E', fontSize: '11px' } },
-            },
-            grid: {
-                borderColor: document.documentElement.classList.contains('dark') ? '#30363D' : '#e2e8f0',
-                strokeDashArray: 4,
-                yaxis: { lines: { show: true } },
-                xaxis: { lines: { show: true } },
-                padding: { top: 0, right: 0, bottom: 0, left: 10 }
-            },
-            theme: { mode: document.documentElement.classList.contains('dark') ? 'dark' : 'light' },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'right', // Moved to right for a cleaner look
-                offsetY: -20,
-                labels: { colors: document.documentElement.classList.contains('dark') ? '#c9d1d9' : '#1e293b' },
-                itemMargin: { horizontal: 10, vertical: 0 },
-                markers: { offsetX: -2 }
-            },
-            tooltip: {
-                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-                shared: true, // Show both IN and OUT values at once
-                intersect: false,
-                style: { fontSize: '12px' },
-                y: { formatter: function (val) { return val + " Unit" } }
-            }
-        };
-
-        const chart = new ApexCharts(document.querySelector("#transaction-chart"), options);
-        chart.render().then(() => {
-            // Auto scroll container to the right (latest month) on mobile
-            const wrapper = document.getElementById('chart-scroll-wrapper');
-            if (wrapper) {
-                wrapper.scrollLeft = wrapper.scrollWidth;
-            }
-        });
-
-        // Watch for theme changes on html tag to update chart colors dynamically
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.attributeName === "class") {
-                    const isDark = document.documentElement.classList.contains('dark');
-                    chart.updateOptions({
-                        theme: { mode: isDark ? 'dark' : 'light' },
-                        tooltip: { theme: isDark ? 'dark' : 'light' },
-                        grid: { borderColor: isDark ? '#30363D' : '#e2e8f0' },
-                        legend: { labels: { colors: isDark ? '#c9d1d9' : '#1e293b' } }
-                    });
-                }
-            });
-        });
-        observer.observe(document.documentElement, { attributes: true });
-    });
+    // Livewire will handle the chart script injection.
 </script>
 @endpush
 @endsection

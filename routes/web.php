@@ -58,27 +58,9 @@ Route::middleware('auth')->group(function () {
             'masuk_24h' => \App\Models\StockTransaction::where('type', 'IN')->where('created_at', '>=', now()->startOfDay())->count(),
             'keluar_24h' => \App\Models\StockTransaction::where('type', 'OUT')->where('created_at', '>=', now()->startOfDay())->count(),
         ];
-        
-        // Chart Data (Last 6 Months)
-        $months = collect(range(5, 0))->map(fn($i) => now()->subMonths($i)->format('Y-m'));
-        $masukData = \App\Models\StockTransaction::where('type', 'IN')
-            ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as total')
-            ->groupBy('month')->pluck('total', 'month');
-        $keluarData = \App\Models\StockTransaction::where('type', 'OUT')
-            ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as total')
-            ->groupBy('month')->pluck('total', 'month');
-            
-        $chartData = [
-            'labels' => $months->map(fn($m) => \Carbon\Carbon::createFromFormat('Y-m', $m)->translatedFormat('M Y'))->toArray(),
-            'masuk' => $months->map(fn($m) => $masukData->get($m, 0))->toArray(),
-            'keluar' => $months->map(fn($m) => $keluarData->get($m, 0))->toArray(),
-        ];
-
         $stok_kritis = \App\Models\Product::whereColumn('current_stock', '<=', 'min_stock')->take(5)->get();
         $aktivitas = \App\Models\StockTransaction::with(['product', 'user'])->latest()->take(5)->get();
-        return view('dashboard', compact('stats', 'chartData', 'stok_kritis', 'aktivitas'));
+        return view('dashboard', compact('stats', 'stok_kritis', 'aktivitas'));
     })->name('dashboard');
 
     Route::get('/produk', ProdukIndex::class)->name('produk.index');

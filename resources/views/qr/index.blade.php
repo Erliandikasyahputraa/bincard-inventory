@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Cetak QR Code - Bincard Pro')
+@section('title', 'Cetak QR Code - BINGO')
 @section('content')
 
 <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -36,10 +36,18 @@
     }
 </style>
 
-<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 transition-colors duration-300 ease-in-out">
+<div x-data="{ search: '' }" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 transition-colors duration-300 ease-in-out">
+    
+    <div class="mb-6 relative max-w-md print:hidden">
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+        <input type="text" x-model="search" placeholder="Cari nama produk atau SKU secara instan..." 
+            class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500">
+    </div>
+
     <div id="printable-area" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         @forelse($products as $product)
-            <div class="print-break bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 print:border-gray-300 print:bg-white rounded-xl p-4 flex flex-col items-center text-center transition-colors duration-300 ease-in-out">
+            <div class="print-break bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 print:border-gray-300 print:bg-white rounded-xl p-4 flex flex-col items-center text-center transition-colors duration-300 ease-in-out"
+                x-show="search === '' || '{{ strtolower(addslashes($product->name)) }}'.includes(search.toLowerCase()) || '{{ strtolower(addslashes($product->sku)) }}'.includes(search.toLowerCase())">
                 <div class="w-full flex justify-center items-start mb-2">
                     <span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 print:text-gray-500 transition-colors duration-300 ease-in-out">{{ $product->sku }}</span>
                 </div>
