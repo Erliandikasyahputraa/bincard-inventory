@@ -1,17 +1,18 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Import Produk (Excel)</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Tambahkan data produk sekaligus melalui file spreadsheet.</p>
+    </div>
+</x-slot:header>
+
 <div class="w-full">
-    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Import Produk (Excel)</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Tambahkan data produk sekaligus melalui file spreadsheet.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3">
-            <a href="{{ route('produk.template') }}" class="inline-flex justify-center items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                <i data-lucide="download" class="w-4 h-4 mr-2 text-[#3FB950] transition-colors duration-300 ease-in-out"></i> Download Template
-            </a>
-            <a href="{{ route('produk.index') }}" class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
-                <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Kembali
-            </a>
-        </div>
+    <div class="mb-6 flex justify-end gap-3">
+        <a href="{{ route('produk.template') }}" class="inline-flex justify-center items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+            <i data-lucide="download" class="w-4 h-4 mr-2 text-[#3FB950] transition-colors duration-300 ease-in-out"></i> Download Template
+        </a>
+        <a href="{{ route('produk.index') }}" class="inline-flex justify-center items-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Kembali
+        </a>
     </div>
 
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-3xl transition-colors duration-300 ease-in-out">

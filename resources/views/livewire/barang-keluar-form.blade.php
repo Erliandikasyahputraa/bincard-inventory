@@ -1,10 +1,13 @@
-<div class="w-full">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
-            <i data-lucide="arrow-up-right" class="w-6 h-6 text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out"></i> Barang Keluar
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="arrow-up-right" class="w-5 h-5 text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out"></i> Barang Keluar
         </h1>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Catat pengeluaran stok untuk pelanggan atau divisi lain.</p>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Catat pengeluaran stok untuk pelanggan atau divisi lain.</p>
     </div>
+</x-slot:header>
+
+<div class="w-full">
 
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-4xl transition-colors duration-300 ease-in-out">
         <form wire:submit="simpan" class="p-6 md:p-8 space-y-6">

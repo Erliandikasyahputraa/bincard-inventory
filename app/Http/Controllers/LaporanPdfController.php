@@ -31,5 +31,26 @@ class LaporanPdfController extends Controller
 
         return $pdf->download('Laporan_Transaksi_' . $tanggalMulai . '_' . $tanggalSelesai . '.pdf');
     }
+
+    public function harian(Request $request)
+    {
+        $tanggal = filled($request->input('tanggalMulai')) ? $request->input('tanggalMulai') : now()->format('Y-m-d');
+        
+        $start = \Carbon\Carbon::parse($tanggal)->startOfDay();
+        $end = \Carbon\Carbon::parse($tanggal)->endOfDay();
+
+        $transaksi = StockTransaction::with(['product', 'user', 'suratJalan.customer'])
+            ->where('type', StockTransaction::TIPE_OUT)
+            ->whereBetween('created_at', [$start, $end])
+            ->orderBy('created_at')
+            ->get();
+
+        $pdf = Pdf::loadView('pdf.laporan-harian', [
+            'transaksi' => $transaksi,
+            'tanggal' => $tanggal,
+        ]);
+
+        return $pdf->download('Laporan_Stok_Harian_' . $tanggal . '.pdf');
+    }
 }
 

@@ -1,9 +1,12 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Stock Opname</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Audit kesesuaian sistem dengan fisik gudang.</p>
+    </div>
+</x-slot:header>
+
 <div class="w-full">
-    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Stock Opname</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Audit kesesuaian sistem dengan fisik gudang.</p>
-        </div>
+    <div class="mb-6 flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4">
         @if(!$opname)
             <div class="flex items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
                 <input type="date" wire:model.live="tanggalBaru" class="pl-3 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none w-full sm:w-40 text-slate-900 dark:text-white" style="color-scheme: dark;">

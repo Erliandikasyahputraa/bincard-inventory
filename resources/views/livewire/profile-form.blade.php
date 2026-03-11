@@ -1,18 +1,19 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="user-cog" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
+            Pengaturan Profil
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Ubah identitas akun dan perbarui kata sandi Anda disini.</p>
+    </div>
+</x-slot:header>
+
 <div class="max-w-4xl mx-auto pb-12">
     <!-- Header -->
-    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3 transition-colors duration-300 ease-in-out">
-                <i data-lucide="user-cog" class="w-8 h-8 text-blue-500 transition-colors duration-300 ease-in-out"></i>
-                Pengaturan Profil
-            </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Ubah identitas akun dan perbarui kata sandi Anda disini.</p>
-        </div>
-        <div>
-            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:text-white rounded-xl transition-colors border border-slate-200 dark:border-slate-800">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
-            </a>
-        </div>
+    <div class="mb-6 flex justify-end">
+        <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:text-white rounded-xl transition-colors border border-slate-200 dark:border-slate-800">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
+        </a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

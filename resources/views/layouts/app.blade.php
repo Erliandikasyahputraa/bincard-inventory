@@ -194,6 +194,12 @@
                         <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:block p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
+                        
+                        @isset($header)
+                            <div class="hidden sm:block ml-2 border-l border-slate-200 dark:border-slate-700 pl-4 transition-colors duration-300 ease-in-out">
+                                {{ $header }}
+                            </div>
+                        @endisset
                     </div>
                 
                     <div class="flex items-center space-x-4">

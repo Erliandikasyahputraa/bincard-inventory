@@ -1,10 +1,12 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Data Pelanggan</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Kelola data pembeli atau pelanggan tujuan.</p>
+    </div>
+</x-slot:header>
+
 <div class="w-full">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Data Pelanggan</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Kelola data pembeli atau pelanggan tujuan.</p>
-        </div>
-        
+    <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mb-4 lg:mb-6">
         <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
             <div class="relative group flex-1 md:w-64">
                 <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>

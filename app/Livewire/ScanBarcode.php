@@ -61,6 +61,18 @@ class ScanBarcode extends Component
         }
     }
 
+    public function pilihPertama(): void
+    {
+        if (count($this->hasilPencarian) > 0) {
+            $this->pilihProduk($this->hasilPencarian[0]['id']);
+        } else {
+            $this->cariProduk();
+            if (count($this->hasilPencarian) > 0) {
+                $this->pilihProduk($this->hasilPencarian[0]['id']);
+            }
+        }
+    }
+
     public function setBarcodeDariScan(string $barcode): void
     {
         $this->barcodeTerpilih = $barcode;

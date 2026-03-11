@@ -132,6 +132,15 @@ class OpnameIndex extends Component
     {
         $this->tanggalBaru = now()->toDateString();
         $this->opnameId = request()->query('opname') ? (int) request()->query('opname') : null;
+        
+        // Sesi 17: Auto-Create integration dari halaman Scanner Barcode
+        if (request()->query('auto_create') == 1 && !$this->opnameId) {
+            $this->buatOpname();
+            if (request()->query('cari_barcode')) {
+                $this->cariBarang = request()->query('cari_barcode');
+            }
+        }
+        
         if ($this->opnameId) {
             $opname = StockOpname::with('details')->find($this->opnameId);
             if ($opname) {

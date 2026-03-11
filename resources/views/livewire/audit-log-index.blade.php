@@ -1,13 +1,16 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="history" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
+            Audit Log (Riwayat Data)
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Pantau seluruh rekam jejak perubahan Master Data.</p>
+    </div>
+</x-slot:header>
+
 <div class="max-w-7xl mx-auto pb-12">
     <!-- Header -->
-    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3 transition-colors duration-300 ease-in-out">
-                <i data-lucide="history" class="w-8 h-8 text-blue-500 transition-colors duration-300 ease-in-out"></i>
-                Audit Log (Riwayat Data)
-            </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Pantau seluruh rekam jejak perubahan Master Data (Produk, Supplier, Pelanggan).</p>
-        </div>
+    <div class="mb-4 flex flex-col md:flex-row md:items-center justify-end gap-4">
         
         <div class="flex items-center gap-3 w-full md:w-auto">
             <div class="relative flex-1 md:w-64">
@@ -48,42 +51,95 @@
                                 </span>
                                 @php
                                     $modelName = class_basename($log->model_type);
-                                    $record = $log->model_type::find($log->model_id);
-                                    $displayName = $record ? ($record->name ?? $record->nama ?? "ID #" . $log->model_id) : "ID #" . $log->model_id . " (Dihapus)";
+                                    $displayName = "#" . $log->model_id;
+                                    
+                                    // Extract logical name from historical payload directly (safest)
+                                    $newVal = (array) $log->new_values;
+                                    $oldVal = (array) $log->old_values;
+                                    
+                                    if (isset($newVal['name']) && !empty($newVal['name'])) {
+                                        $displayName = $newVal['name'];
+                                    } elseif (isset($oldVal['name']) && !empty($oldVal['name'])) {
+                                        $displayName = $oldVal['name'];
+                                    } else {
+                                        // Fallback to database lookup
+                                        $record = $log->model_type::find($log->model_id);
+                                        if ($record) {
+                                            $displayName = $record->name ?? $record->nama ?? $displayName;
+                                        } else {
+                                            $displayName .= " (Dihapus)";
+                                        }
+                                    }
                                 @endphp
                                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-mono transition-colors duration-300 ease-in-out">
                                     {{ $modelName }}: <br><strong class="text-slate-700 dark:text-slate-300">{{ $displayName }}</strong>
                                 </p>
                             </td>
                             <td class="py-4 px-4 align-top">
-                                <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 max-h-32 overflow-y-auto no-scrollbar text-xs font-mono transition-colors duration-300 ease-in-out">
+                                <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 max-h-40 overflow-y-auto no-scrollbar text-[11px] font-mono transition-colors duration-300 ease-in-out">
+                                    @php
+                                        $keyLabels = [
+                                            'name' => 'Nama Produk', 'nama' => 'Nama', 'barcode' => 'Barcode', 'sku' => 'SKU',
+                                            'current_stock' => 'Stok Saat Ini', 'min_stock' => 'Stok Minimum', 'max_stock' => 'Stok Maksimum',
+                                            'location' => 'Lokasi Rak', 'price' => 'Harga', 'description' => 'Deskripsi', 'telepon' => 'Telepon',
+                                            'email' => 'Email', 'alamat' => 'Alamat', 'is_active' => 'Status Aktif'
+                                        ];
+                                        $ignoredKeys = ['id', 'created_at', 'updated_at', 'deleted_at', 'user_id', 'product_id'];
+                                    @endphp
+                                    
                                     @if($log->action === 'updated')
-                                        <div class="mb-3">
-                                            <span class="text-slate-500 italic block mb-1.5 transition-colors duration-300 ease-in-out">Sebelumnya:</span>
+                                        @php
+                                            $changes = [];
+                                            $oldArr = (array)$log->old_values;
+                                            $newArr = (array)$log->new_values;
+                                            foreach($newArr as $k => $newV) {
+                                                if(in_array($k, $ignoredKeys)) continue;
+                                                $oldV = $oldArr[$k] ?? null;
+                                                if($oldV !== $newV && !($oldV === null && $newV === '')) {
+                                                    $label = $keyLabels[$k] ?? ucwords(str_replace('_', ' ', $k));
+                                                    $changes[] = [
+                                                        'label' => $label,
+                                                        'old' => is_array($oldV) ? json_encode($oldV) : $oldV,
+                                                        'new' => is_array($newV) ? json_encode($newV) : $newV,
+                                                    ];
+                                                }
+                                            }
+                                        @endphp
+                                        @if(count($changes) > 0)
                                             <ul class="space-y-1">
-                                                @foreach((array)$log->old_values as $k => $v)
-                                                    <li class="pl-2 border-l-2 border-rose-500/30 text-rose-600 dark:text-rose-400 break-all"><span class="font-bold uppercase text-rose-800 dark:text-rose-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                                @foreach($changes as $change)
+                                                    <li class="pl-2 border-l-2 border-blue-500/30 text-slate-700 dark:text-slate-300 break-all text-[11px] font-sans flex items-center flex-wrap gap-1 mb-1.5">
+                                                        <span class="font-bold text-slate-800 dark:text-slate-100 uppercase text-[10px] tracking-wider">{{ $change['label'] }}:</span>
+                                                        <span class="text-rose-500 line-through bg-rose-500/10 px-1 rounded">{{ $change['old'] ?: '-' }}</span>
+                                                        <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400"></i>
+                                                        <span class="text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-1 rounded">{{ $change['new'] ?: '-' }}</span>
+                                                    </li>
                                                 @endforeach
                                             </ul>
-                                        </div>
-                                        <div>
-                                            <span class="text-slate-500 italic block mb-1.5 transition-colors duration-300 ease-in-out">Berubah Menjadi:</span>
-                                            <ul class="space-y-1">
-                                                @foreach((array)$log->new_values as $k => $v)
-                                                    <li class="pl-2 border-l-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 break-all"><span class="font-bold uppercase text-emerald-800 dark:text-emerald-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                        @else
+                                            <span class="text-slate-500 italic">Mendistribusikan metadata pembaruan (Tidak ada field spesifik yang berubah).</span>
+                                        @endif
+                                        
                                     @elseif($log->action === 'created')
-                                        <ul class="space-y-1">
+                                        <ul class="space-y-1.5">
                                             @foreach((array)$log->new_values as $k => $v)
-                                                <li class="pl-2 border-l-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 break-all"><span class="font-bold uppercase text-emerald-800 dark:text-emerald-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                                @if(in_array($k, $ignoredKeys) || (empty($v) && $v !== 0 && $v !== '0')) @continue @endif
+                                                @php $label = $keyLabels[$k] ?? ucwords(str_replace('_', ' ', $k)); @endphp
+                                                <li class="pl-2 border-l-2 border-emerald-500/30 text-slate-700 dark:text-slate-300 break-all font-sans text-[11px]">
+                                                    <span class="font-bold uppercase text-slate-800 dark:text-slate-100 text-[10px] tracking-wider">{{ $label }}:</span>
+                                                    <span class="text-emerald-600 dark:text-emerald-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     @elseif($log->action === 'deleted')
-                                        <ul class="space-y-1">
+                                        <ul class="space-y-1.5">
                                             @foreach((array)$log->old_values as $k => $v)
-                                                <li class="pl-2 border-l-2 border-rose-500/30 text-rose-600 dark:text-rose-400 break-all"><span class="font-bold uppercase text-rose-800 dark:text-rose-300 text-[10px] mr-1">{{ $k }}:</span> {{ is_array($v) ? json_encode($v) : $v }}</li>
+                                                @if(in_array($k, $ignoredKeys) || (empty($v) && $v !== 0 && $v !== '0')) @continue @endif
+                                                @php $label = $keyLabels[$k] ?? ucwords(str_replace('_', ' ', $k)); @endphp
+                                                <li class="pl-2 border-l-2 border-rose-500/30 text-slate-700 dark:text-slate-300 break-all font-sans text-[11px]">
+                                                    <span class="font-bold uppercase text-slate-800 dark:text-slate-100 text-[10px] tracking-wider">{{ $label }}:</span>
+                                                    <span class="text-rose-600 dark:text-rose-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     @endif

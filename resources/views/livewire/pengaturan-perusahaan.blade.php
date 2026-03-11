@@ -1,13 +1,16 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="building-2" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
+            Pengaturan Perusahaan
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Atur identitas utama perusahaan yang akan tampil di header laporan & Surat Jalan.</p>
+    </div>
+</x-slot:header>
+
 <div class="max-w-4xl mx-auto pb-12">
     <!-- Header -->
-    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3 transition-colors duration-300 ease-in-out">
-                <i data-lucide="building-2" class="w-8 h-8 text-blue-500 transition-colors duration-300 ease-in-out"></i>
-                Pengaturan Perusahaan
-            </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Atur identitas utama perusahaan yang akan tampil di header laporan & Surat Jalan.</p>
-        </div>
+    <div class="mb-4 lg:mb-6 flex flex-col md:flex-row md:items-center justify-end gap-4">
     </div>
 
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">

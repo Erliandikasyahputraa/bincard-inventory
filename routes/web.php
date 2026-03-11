@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/export-transaksi', [\App\Http\Controllers\LaporanExportController::class, 'transaksi'])->name('laporan.export-transaksi');
     Route::get('/laporan/export-harian', [\App\Http\Controllers\LaporanExportController::class, 'harian'])->name('laporan.export-harian');
     Route::get('/laporan/pdf', [\App\Http\Controllers\LaporanPdfController::class, 'transaksi'])->name('laporan.pdf');
+    Route::get('/laporan/pdf-harian', [\App\Http\Controllers\LaporanPdfController::class, 'harian'])->name('laporan.pdf-harian');
 
     // QR Print
     Route::get('/qr-print', [App\Http\Controllers\QRController::class, 'index'])->name('qr.print');

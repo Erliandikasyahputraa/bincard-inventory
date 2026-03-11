@@ -2,25 +2,27 @@
 @section('title', 'Dashboard - BINGO')
 @section('content')
 
-<div class="mb-4 lg:mb-8">
-    <h1 class="text-xl lg:text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Overview</h1>
-    <p class="text-slate-500 dark:text-slate-400 text-xs lg:text-sm mt-1 transition-colors duration-300 ease-in-out">Status gudang dan statistik hari ini.</p>
-</div>
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Overview</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Status gudang dan statistik hari ini.</p>
+    </div>
+</x-slot:header>
 
 <!-- Stats Row -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
     <!-- Total Inventory -->
-    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
-        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-slate-100 dark:bg-emerald-500/10 text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
+        <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-slate-100 dark:bg-emerald-500/10 text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out shrink-0">
             <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
         </div>
-        <div>
-            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1 transition-colors duration-300 ease-in-out">Total Produk & Stok</p>
-            <div class="flex items-baseline gap-2">
-                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-xs text-slate-400 dark:text-slate-500 font-normal transition-colors duration-300 ease-in-out">Jenis</span></h3>
-                <span class="hidden sm:inline text-sm font-bold text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out">&bull; {{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></span>
+        <div class="w-full min-w-0">
+            <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-300 ease-in-out">Total Produk & Fisik</p>
+            <div class="flex flex-col xl:flex-row xl:items-baseline xl:gap-2">
+                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 font-normal transition-colors duration-300 ease-in-out">Jenis</span></h3>
+                <span class="hidden xl:inline text-slate-300 dark:text-slate-600 transition-colors duration-300 ease-in-out">&bull;</span>
+                <h3 class="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-0.5 xl:mt-0 transition-colors duration-300 ease-in-out truncate">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] sm:text-xs text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></h3>
             </div>
-            <p class="sm:hidden text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 transition-colors duration-300 ease-in-out">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></p>
         </div>
     </div>
 
@@ -70,27 +72,7 @@
     <!-- Right Column Layout -->
     <div class="flex flex-col gap-6">
         
-        <!-- Quick Scan Widget -->
-        <div class="bg-blue-600 dark:bg-blue-500 rounded-2xl p-5 lg:p-6 flex flex-col text-white relative overflow-hidden group border border-blue-500 dark:border-blue-400 transition-colors duration-300 ease-in-out">
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl transition-colors duration-300 ease-in-out"></div>
-            
-            <div class="relative z-10 flex flex-row lg:flex-col justify-between items-center lg:items-start gap-4 lg:gap-0">
-                <div class="flex-1">
-                    <div class="flex items-center gap-2 lg:gap-3 mb-1 lg:mb-2">
-                        <div class="p-1.5 lg:p-2 bg-white/20 rounded-lg backdrop-blur-sm hidden sm:block transition-colors duration-300 ease-in-out">
-                            <i data-lucide="qr-code" class="w-4 h-4 lg:w-5 lg:h-5"></i>
-                        </div>
-                        <h3 class="text-base lg:text-lg font-bold tracking-tight transition-colors duration-300 ease-in-out">Quick Scan QR</h3>
-                    </div>
-                    <p class="text-blue-700 dark:text-blue-100 text-[10px] lg:text-xs mb-0 lg:mb-6 opacity-80 leading-tight transition-colors duration-300 ease-in-out">Pindai barang via kamera secara instan.</p>
-                </div>
-                
-                <a href="{{ route('scan.index') }}" class="block p-3 lg:p-4 lg:w-full border border-white/20 rounded-xl bg-white/10 hover:bg-white dark:hover:bg-slate-800/20 transition-colors text-center group cursor-pointer mb-0 lg:mb-4 backdrop-blur-sm shrink-0">
-                    <i data-lucide="camera" class="w-6 h-6 lg:w-8 h-8 text-white lg:mx-auto mb-0 lg:mb-2 opacity-80 group-hover:scale-110 transition-transform inline-block lg:block"></i>
-                    <span class="font-bold tracking-widest text-[9px] lg:text-[10px] uppercase text-white hidden lg:block transition-colors duration-300 ease-in-out">Buka Kamera</span>
-                </a>
-            </div>
-        </div>
+
 
         <!-- Aktivitas Terbaru -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 p-5 flex-1 shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out">

@@ -1,12 +1,15 @@
+<x-slot:header>
+    <div class="flex flex-col">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
+            <i data-lucide="users-round" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
+            Manajemen Pengguna
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Kelola akses, jabatan, dan kata sandi akun karyawan Anda.</p>
+    </div>
+</x-slot:header>
+
 <div class="max-w-6xl mx-auto pb-12">
-    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3 transition-colors duration-300 ease-in-out">
-                <i data-lucide="users-round" class="w-8 h-8 text-blue-500 transition-colors duration-300 ease-in-out"></i>
-                Manajemen Pengguna
-            </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300 ease-in-out">Kelola akses, jabatan, dan kata sandi akun karyawan Anda.</p>
-        </div>
+    <div class="mb-6 flex flex-col md:flex-row justify-end items-end gap-4">
         <div>
             <button wire:click="openModal" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Pengguna

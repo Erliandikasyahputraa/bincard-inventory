@@ -43,65 +43,78 @@
                 const textColor = isDark ? '#c9d1d9' : '#64748b';
                 const gridColor = isDark ? '#30363D' : '#e2e8f0';
 
-                const option = {
-                    tooltip: {
-                        trigger: 'axis',
-                        backgroundColor: isDark ? '#161B22' : '#ffffff',
-                        borderColor: gridColor,
-                        textStyle: { color: textColor },
-                        axisPointer: { type: 'shadow' },
-                        formatter: function (params) {
-                            let masuk = 0;
-                            let keluar = 0;
-                            let res = `<b style="font-size: 13px;">${params[0].axisValue}</b><br/>`;
-                            params.forEach(function (item) {
-                                res += `<div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                                            <span>${item.marker} ${item.seriesName}</span>
-                                            <b style="margin-left:12px;">${item.value} Unit</b>
-                                        </div>`;
-                                if (item.seriesName === 'Barang Masuk') masuk = item.value;
-                                if (item.seriesName === 'Barang Keluar') keluar = item.value;
-                            });
-                            let net = masuk - keluar;
-                            let netColor = net > 0 ? '#3FB950' : (net < 0 ? '#F43F5E' : '#8B949E');
-                            let statIcon = net > 0 ? '▲' : (net < 0 ? '▼' : '−');
-                            res += `<div style="margin-top:8px; padding-top:8px; border-top:1px dashed ${gridColor}; display:flex; justify-content:space-between; align-items:center;">
-                                        <span style="font-size: 11px; color: ${textColor}">Pertumbuhan Net :</span>
-                                        <b style="color:${netColor}">${statIcon} ${Math.abs(net)}</b>
-                                    </div>`;
-                            return res;
-                        }
-                    },
-                    legend: {
-                        data: ['Barang Masuk', 'Barang Keluar'],
-                        textStyle: { color: textColor }
-                    },
-                    grid: {
-                        left: '2%',
-                        right: '2%',
-                        bottom: '12%',
-                        containLabel: true
-                    },
-                    dataZoom: [
-                        {
-                            type: 'inside',
-                            startValue: data.labels.length > 12 ? data.labels.length - 12 : 0,
-                            endValue: data.labels.length - 1
-                        },
-                        {
-                            type: 'slider',
-                            startValue: data.labels.length > 12 ? data.labels.length - 12 : 0,
-                            endValue: data.labels.length - 1,
-                            bottom: 0,
-                            height: 15,
-                            borderColor: 'transparent',
-                            backgroundColor: isDark ? '#21262D' : '#f1f5f9',
-                            fillerColor: isDark ? 'rgba(56, 139, 253, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                            handleStyle: { color: isDark ? '#8B949E' : '#94a3b8' },
+                    // Smart starting value definition prioritizing "Present Date" focus over historical mass
+                    let frameSize = 12; // default
+                    const filterDropdown = document.querySelector('select[wire\\:model\\.live="filterType"]');
+                    if (filterDropdown) {
+                        const t = filterDropdown.value;
+                        if (t === 'daily') frameSize = 7;
+                        else if (t === 'weekly') frameSize = 4;
+                        else if (t === 'monthly') frameSize = 6;
+                    }
+
+                    const zoomStartValue = data.labels.length > frameSize ? data.labels.length - frameSize : 0;
+                    const zoomEndValue = data.labels.length - 1;
+
+                    const option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: isDark ? '#161B22' : '#ffffff',
+                            borderColor: gridColor,
                             textStyle: { color: textColor },
-                            showDetail: false
-                        }
-                    ],
+                            axisPointer: { type: 'shadow' },
+                            formatter: function (params) {
+                                let masuk = 0;
+                                let keluar = 0;
+                                let res = `<b style="font-size: 13px;">${params[0].axisValue}</b><br/>`;
+                                params.forEach(function (item) {
+                                    res += `<div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                                                <span>${item.marker} ${item.seriesName}</span>
+                                                <b style="margin-left:12px;">${item.value} Unit</b>
+                                            </div>`;
+                                    if (item.seriesName === 'Barang Masuk') masuk = item.value;
+                                    if (item.seriesName === 'Barang Keluar') keluar = item.value;
+                                });
+                                let net = masuk - keluar;
+                                let netColor = net > 0 ? '#3FB950' : (net < 0 ? '#F43F5E' : '#8B949E');
+                                let statIcon = net > 0 ? '▲' : (net < 0 ? '▼' : '−');
+                                res += `<div style="margin-top:8px; padding-top:8px; border-top:1px dashed ${gridColor}; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size: 11px; color: ${textColor}">Pertumbuhan Net :</span>
+                                            <b style="color:${netColor}">${statIcon} ${Math.abs(net)}</b>
+                                        </div>`;
+                                return res;
+                            }
+                        },
+                        legend: {
+                            data: ['Barang Masuk', 'Barang Keluar'],
+                            textStyle: { color: textColor }
+                        },
+                        grid: {
+                            left: '2%',
+                            right: '5%',
+                            bottom: '12%',
+                            containLabel: true
+                        },
+                        dataZoom: [
+                            {
+                                type: 'inside',
+                                startValue: zoomStartValue,
+                                endValue: zoomEndValue
+                            },
+                            {
+                                type: 'slider',
+                                startValue: zoomStartValue,
+                                endValue: zoomEndValue,
+                                bottom: 0,
+                                height: 15,
+                                borderColor: 'transparent',
+                                backgroundColor: isDark ? '#21262D' : '#f1f5f9',
+                                fillerColor: isDark ? 'rgba(56, 139, 253, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                                handleStyle: { color: isDark ? '#8B949E' : '#94a3b8' },
+                                textStyle: { color: textColor },
+                                showDetail: false
+                            }
+                        ],
                     xAxis: {
                         type: 'category',
                         data: data.labels,
