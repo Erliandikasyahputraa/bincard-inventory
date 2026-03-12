@@ -47,9 +47,9 @@ class LaporanTransaksiExport implements FromQuery, WithHeadings, WithMapping, Wi
             $row->product->name ?? '',
             $row->product->barcode ?? '',
             $row->type,
-            $row->stock_before ?? 0,
+            is_numeric($row->stock_before) ? (int)$row->stock_before : 0,
             $row->type === StockTransaction::TIPE_IN ? '+' . abs((int)$row->quantity) : '-' . abs((int)$row->quantity),
-            $row->stock_after ?? 0,
+            is_numeric($row->stock_after) ? (int)$row->stock_after : 0,
             $row->user->name ?? '', // Yang Mengeluarkan
             $penerima,              // Penerima Barang
             $row->note ?? '',

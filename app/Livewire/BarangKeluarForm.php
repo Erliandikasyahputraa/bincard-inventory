@@ -69,7 +69,7 @@ class BarangKeluarForm extends Component
         ]);
         $service = app(StockService::class);
         try {
-            $nomor = 'SJ-' . now()->format('Ymd') . '-' . str_pad((string) (SuratJalan::whereDate('tanggal', today())->count() + 1), 4, '0', STR_PAD_LEFT);
+            $nomor = 'SJ-' . now()->format('Ymd') . '-' . str_pad((string) (SuratJalan::whereDate('created_at', today())->count() + 1), 4, '0', STR_PAD_LEFT);
             $sjId = null;
             DB::transaction(function () use ($service, $nomor, &$sjId) {
             $sj = SuratJalan::create([

@@ -23,11 +23,11 @@
             
             <div class="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
                 <div class="w-full sm:w-36">
-                    <input type="date" wire:model.live="startDate" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white font-bold focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]" title="Mulai Tanggal">
+                    <input type="date" wire:model.live="startDate" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 transition-all px-3 py-2 text-sm outline-none [color-scheme:light] dark:[color-scheme:dark]" title="Mulai Tanggal">
                 </div>
                 <div class="hidden sm:block text-slate-400 font-bold">-</div>
                 <div class="w-full sm:w-36">
-                    <input type="date" wire:model.live="endDate" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white font-bold focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]" title="Sampai Tanggal">
+                    <input type="date" wire:model.live="endDate" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 transition-all px-3 py-2 text-sm outline-none [color-scheme:light] dark:[color-scheme:dark]" title="Sampai Tanggal">
                 </div>
             </div>
         </div>
@@ -269,6 +269,9 @@
                     // Suggested Max so bars look fuller, but leave room for large spikes automatically
                     max: function (value) {
                          // Always create roof of +20% above the single highest spike
+                         return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
+                    }
+                },
                 series: [
                     {
                         name: 'Barang Masuk',
