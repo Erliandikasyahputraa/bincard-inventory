@@ -3,9 +3,16 @@
 {{-- Skeleton shimmer CSS — inside single root div (Livewire 3 needs ONE root element as first node) --}}
 <style>
 @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .skeleton{background:linear-gradient(90deg,rgba(148,163,184,.08) 25%,rgba(148,163,184,.15) 50%,rgba(148,163,184,.08) 75%);background-size:800px 100%;animation:shimmer 2s infinite linear;border-radius:8px}
 .dark .skeleton{background:linear-gradient(90deg,rgba(71,85,105,.15) 25%,rgba(71,85,105,.3) 50%,rgba(71,85,105,.15) 75%);background-size:800px 100%}
-.loading-transition { transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.loading-transition { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.animate-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animate-pulse-slow { animation: pulse-soft 3s infinite; }
 </style>
 
 <x-slot:header>
@@ -34,12 +41,12 @@
                 Bulan Ini
             </button>
         </div>
-        <div wire:key="date-inputs" class="flex items-center gap-1.5">
-            <input type="date" wire:key="input-start" wire:model.blur="startDate"
-                class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-400 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all [color-scheme:light] dark:[color-scheme:dark] w-32 sm:w-36">
-            <span class="text-slate-400 font-bold">→</span>
-            <input type="date" wire:key="input-end" wire:model.blur="endDate"
-                class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-400 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all [color-scheme:light] dark:[color-scheme:dark] w-32 sm:w-36">
+        <div wire:key="date-inputs" class="flex items-center gap-1.5 bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <input type="date" wire:key="input-start" wire:model.live.debounce.500ms="startDate"
+                class="bg-transparent border-none text-xs font-bold text-slate-700 dark:text-slate-300 focus:ring-0 outline-none p-1.5 [color-scheme:light] dark:[color-scheme:dark] w-32">
+            <span class="text-slate-400 font-bold px-1 text-[10px]">TO</span>
+            <input type="date" wire:key="input-end" wire:model.live.debounce.500ms="endDate"
+                class="bg-transparent border-none text-xs font-bold text-slate-700 dark:text-slate-300 focus:ring-0 outline-none p-1.5 [color-scheme:light] dark:[color-scheme:dark] w-32">
         </div>
     </div>
 </div>
@@ -49,7 +56,7 @@
 
     {{-- Katalog --}}
     <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
+         class="animate-in group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400">
             <i data-lucide="package-2" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -62,7 +69,7 @@
 
     {{-- Stok Kritis --}}
     <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
+         class="animate-in animation-delay-100 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400">
             <i data-lucide="alert-triangle" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -74,7 +81,7 @@
 
     {{-- Masuk --}}
     <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
+         class="animate-in animation-delay-200 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -94,7 +101,7 @@
 
     {{-- Keluar --}}
     <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
+         class="animate-in animation-delay-300 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400">
             <i data-lucide="arrow-up-right" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -115,7 +122,7 @@
 </div>
 
 {{-- ─── Chart + Activity Feed ─────────────────────────── --}}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
 
     {{-- Chart Panel --}}
     <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:440px"
@@ -139,12 +146,12 @@
                 <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Arus Barang</h3>
                 <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Distribusi masuk & keluar pada rentang terpilih</p>
             </div>
-            <div class="flex items-center gap-1.5 mt-0.5">
+            <div class="flex items-center gap-2 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 rounded-full border border-emerald-100 dark:border-emerald-500/20 animate-pulse-slow">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
                 </span>
-                <span class="text-[10px] text-slate-400 font-medium">Live</span>
+                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">Live</span>
             </div>
         </div>
 
@@ -298,10 +305,10 @@ document.addEventListener('livewire:initialized', () => {
             },
 
             grid: {
-                left: '20',
-                right: '40', // Increased to prevent last label clipping
-                top: '40',
-                bottom: '80',
+                left: '25',
+                right: '60', // Max focus: prevent all possible clipping on long ranges
+                top: '45',
+                bottom: '75',
                 containLabel: true
             },
 
@@ -313,9 +320,10 @@ document.addEventListener('livewire:initialized', () => {
                 axisTick: { show: false },
                 axisLabel: {
                     color: textColor,
-                    fontSize: 10,
+                    fontSize: 9,
                     interval: 'auto',
                     hideOverlap: true,
+                    rotate: 0,
                     // Don't render label for the empty trailing slot
                     formatter: v => v || ''
                 }
