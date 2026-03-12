@@ -1,16 +1,16 @@
+<div class="px-2 sm:px-0 space-y-6">
+
+{{-- Skeleton shimmer CSS — inside single root div (Livewire 3 needs ONE root element as first node) --}}
+<style>
+@keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+.skeleton{background:linear-gradient(90deg,rgba(148,163,184,.08) 25%,rgba(148,163,184,.15) 50%,rgba(148,163,184,.08) 75%);background-size:800px 100%;animation:shimmer 2s infinite linear;border-radius:8px}
+.dark .skeleton{background:linear-gradient(90deg,rgba(71,85,105,.15) 25%,rgba(71,85,105,.3) 50%,rgba(71,85,105,.15) 75%);background-size:800px 100%}
+.loading-transition { transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+</style>
 
 <x-slot:header>
     <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Dashboard</h2>
 </x-slot:header>
-
-{{-- Skeleton pulse CSS --}}
-<style>
-@keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
-.skeleton { background: linear-gradient(90deg, rgba(148,163,184,0.12) 25%, rgba(148,163,184,0.22) 50%, rgba(148,163,184,0.12) 75%); background-size: 800px 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
-.dark .skeleton { background: linear-gradient(90deg, rgba(71,85,105,0.25) 25%, rgba(71,85,105,0.45) 50%, rgba(71,85,105,0.25) 75%); background-size: 800px 100%; }
-</style>
-
-<div class="px-2 sm:px-0 space-y-6">
 
 {{-- ─── Header + Filter ────────────────────────────────── --}}
 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -48,8 +48,8 @@
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
 
     {{-- Katalog --}}
-    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400">
             <i data-lucide="package-2" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -61,8 +61,8 @@
     </div>
 
     {{-- Stok Kritis --}}
-    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400">
             <i data-lucide="alert-triangle" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -73,8 +73,8 @@
     </div>
 
     {{-- Masuk --}}
-    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -93,8 +93,8 @@
     </div>
 
     {{-- Keluar --}}
-    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
-         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 loading-transition">
         <div class="shrink-0 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400">
             <i data-lucide="arrow-up-right" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -118,7 +118,8 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
 
     {{-- Chart Panel --}}
-    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative" style="height:440px">
+    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:440px"
+         wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
         {{-- Skeleton overlay while loading —— pointer-events-none prevents blocking filter buttons --}}
         <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
@@ -160,7 +161,8 @@
     </div>
 
     {{-- Activity Feed --}}
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative" style="height:440px">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:440px"
+         wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
         {{-- Skeleton overlay --}}
         <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
@@ -296,10 +298,10 @@ document.addEventListener('livewire:initialized', () => {
             },
 
             grid: {
-                left: '2%',
-                right: '2%',
-                top: '8%',
-                bottom: '18%',
+                left: '20',
+                right: '40', // Increased to prevent last label clipping
+                top: '40',
+                bottom: '80',
                 containLabel: true
             },
 
