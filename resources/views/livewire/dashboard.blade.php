@@ -139,7 +139,7 @@
             </div>
 
             <!-- ECharts Container -->
-            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full overflow-hidden relative z-0 mt-4 min-h-[250px] sm:min-h-[300px]"></div>
+            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4 min-h-[250px] sm:min-h-[300px]"></div>
         </div>
 
         <!-- Aktivitas Terbaru (Takes 1/3 width on large screens) -->
@@ -233,8 +233,8 @@
                     itemGap: 15
                 },
                 grid: {
-                    left: '0%',
-                    right: '5%',  // Extra room so last bar never clips the wall
+                    left: '1%',
+                    right: '3%',
                     top: '5%',
                     bottom: '32%',
                     containLabel: true
