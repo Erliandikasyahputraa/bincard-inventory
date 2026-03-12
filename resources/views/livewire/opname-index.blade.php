@@ -130,14 +130,14 @@
                                 <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
                                     <div class="flex justify-end items-center gap-2">
                                         @if($o->status === 'draft')
-                                            <a href="{{ route('opname.index') }}?opname={{ $o->id }}" class="inline-flex items-center text-blue-500 hover:text-[#79C0FF] text-sm font-bold bg-blue-600 dark:bg-blue-500/10 px-3 py-1.5 rounded-lg transition-colors" title="Lanjut Audit">
+                                            <a href="{{ route('opname.index') }}?opname={{ $o->id }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Lanjut Audit">
                                                 <i data-lucide="edit" class="w-4 h-4"></i>
                                             </a>
-                                            <button type="button" wire:click="hapusSesi({{ $o->id }})" wire:confirm="Anda yakin ingin menghapus catatan sesi opname ini? Data yang terhapus tidak dapat dikembalikan." class="inline-flex items-center text-rose-600 dark:text-rose-500 hover:text-rose-600 dark:text-rose-400 text-sm font-bold bg-rose-500/10 px-3 py-1.5 rounded-lg transition-colors" title="Hapus Riwayat">
+                                            <button type="button" wire:click="hapusSesi({{ $o->id }})" wire:confirm="Anda yakin ingin menghapus catatan sesi opname ini? Data yang terhapus tidak dapat dikembalikan." class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Hapus Riwayat">
                                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                                             </button>
                                         @else
-                                            <button type="button" wire:click="batalRekonsiliasi({{ $o->id }})" wire:confirm="PERINGATAN! Membatalkan rekonsiliasi akan DENGAN SEGERA menarik kembali/mereverse semua penyesuaian stok yang terjadi di sesi ini secara otomatis dari sistem. Apakah anda yakin?" class="inline-flex items-center text-orange-600 dark:text-orange-400 font-bold bg-orange-500/10 px-3 py-1.5 rounded-lg transition-colors text-xs" title="Batal Rekonsiliasi">
+                                            <button type="button" wire:click="batalRekonsiliasi({{ $o->id }})" wire:confirm="PERINGATAN! Membatalkan rekonsiliasi akan DENGAN SEGERA menarik kembali/mereverse semua penyesuaian stok yang terjadi di sesi ini secara otomatis dari sistem. Apakah anda yakin?" class="inline-flex items-center px-3 py-1.5 text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-xs font-semibold" title="Batal Rekonsiliasi">
                                                 <i data-lucide="rotate-ccw" class="w-4 h-4 mr-1"></i> Batal Rekonsiliasi
                                             </button>
                                         @endif

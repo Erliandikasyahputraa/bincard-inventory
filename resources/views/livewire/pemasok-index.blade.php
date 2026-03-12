@@ -39,11 +39,11 @@
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out"><a href="mailto:{{ $s->email }}" class="hover:text-blue-500 transition-colors">{{ $s->email ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex justify-end gap-2">
-                                    <a href="{{ route('pemasok.edit', $s->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-blue-600 dark:bg-blue-500/10 rounded-lg transition-colors" title="Edit Data">
+                                    <a href="{{ route('pemasok.edit', $s->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit Data">
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $s->id }})" wire:confirm="Yakin menghapus pemasok ini secara permanen?"
-                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors" title="Hapus Permanen">
+                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Hapus Permanen">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </div>

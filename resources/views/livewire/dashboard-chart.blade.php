@@ -5,13 +5,11 @@
         <!-- Time Filter: Date Range -->
         <div class="flex items-center gap-2 w-full xl:w-auto overflow-x-auto no-scrollbar pb-1">
             <div class="relative w-full sm:w-36 flex-shrink-0">
-                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                <input type="date" wire:model.live="startDate" class="pl-8 pr-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+                <input type="date" wire:model.live="startDate" class="px-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
             </div>
             <span class="text-slate-400 text-xs font-medium">s/d</span>
             <div class="relative w-full sm:w-36 flex-shrink-0">
-                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                <input type="date" wire:model.live="endDate" class="pl-8 pr-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+                <input type="date" wire:model.live="endDate" class="px-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
             </div>
         </div>
     </div>
@@ -93,26 +91,6 @@
                             bottom: '12%',
                             containLabel: true
                         },
-                        dataZoom: [
-                            {
-                                type: 'inside',
-                                startValue: zoomStartValue,
-                                endValue: zoomEndValue
-                            },
-                            {
-                                type: 'slider',
-                                startValue: zoomStartValue,
-                                endValue: zoomEndValue,
-                                bottom: 0,
-                                height: 15,
-                                borderColor: 'transparent',
-                                backgroundColor: isDark ? '#21262D' : '#f1f5f9',
-                                fillerColor: isDark ? 'rgba(56, 139, 253, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                                handleStyle: { color: isDark ? '#8B949E' : '#94a3b8' },
-                                textStyle: { color: textColor },
-                                showDetail: false
-                            }
-                        ],
                     xAxis: {
                         type: 'category',
                         data: data.labels,
