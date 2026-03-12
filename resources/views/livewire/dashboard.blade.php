@@ -21,15 +21,21 @@
                 <button wire:click="applyFilter('this_month')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Bulan Ini</button>
             </div>
             
-            <div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl shadow-sm w-full sm:w-auto mt-2 sm:mt-0">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 sm:gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 sm:p-1.5 rounded-xl shadow-sm w-full lg:w-auto mt-2 sm:mt-0">
                 <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="startDate" class="w-full pl-9 pr-2 py-2 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-bold" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500"></i>
+                    <input type="date" wire:model.live="startDate" class="w-full pl-8 pr-2 py-1.5 sm:py-2 bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 rounded-lg text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-semibold transition-colors cursor-pointer" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none"></i>
                 </div>
-                <span class="text-slate-300 dark:text-slate-600 font-bold px-1">-</span>
+                <div class="hidden sm:flex items-center justify-center text-slate-300 dark:text-slate-600 px-1">
+                    <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+                <!-- On mobile, show a small visual separator -->
+                <div class="flex sm:hidden justify-center my-0.5">
+                    <div class="w-4 h-px bg-slate-200 dark:bg-slate-700"></div>
+                </div>
                 <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="endDate" class="w-full pl-9 pr-2 py-2 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-bold" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-rose-500"></i>
+                    <input type="date" wire:model.live="endDate" class="w-full pl-8 pr-2 py-1.5 sm:py-2 bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 rounded-lg text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-semibold transition-colors cursor-pointer" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-rose-500 pointer-events-none"></i>
                 </div>
             </div>
         </div>
@@ -37,69 +43,76 @@
     <!-- Stats Row (Responsive to Date Filter where applicable) -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8" wire:loading.class="opacity-50 pointer-events-none transition-opacity duration-300">
         <!-- Total Inventory -->
-        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
-            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                <i data-lucide="package" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg sm:rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
             <div class="w-full min-w-0 flex flex-col justify-center">
-                <div class="flex items-center gap-2 mb-1">
-                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Katalog</p>
-                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium ml-auto">Global</span>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Katalog</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">Global</span>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }}</h3>
-                    <span class="text-[10px] text-slate-400">Jenis</span>
+                <div class="flex flex-col xl:flex-row xl:items-baseline xl:gap-2">
+                    <div class="flex items-baseline gap-1">
+                        <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }}</h3>
+                        <span class="text-[9px] sm:text-[10px] text-slate-400">Jenis</span>
+                    </div>
+                    <span class="hidden xl:inline text-slate-300 dark:text-slate-600">&bull;</span>
+                    <div class="flex items-baseline gap-1 mt-0.5 xl:mt-0">
+                        <h3 class="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400 truncate">{{ number_format($stats['total_inventory'], 0, ',', '.') }}</h3>
+                        <span class="text-[9px] sm:text-[10px] text-blue-400/70">Fisik</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Low Stock Alert -->
-        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
-            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400">
-                <i data-lucide="alert-circle" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg sm:rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
             <div class="w-full min-w-0 flex flex-col justify-center">
-                <div class="flex items-center gap-2 mb-1">
-                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Kritis</p>
-                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium ml-auto">Global</span>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Kritis</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">Global</span>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
-                    <span class="text-[10px] text-slate-400">Barang</span>
+                <div class="flex items-baseline gap-1 mt-auto sm:mt-0">
+                    <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
+                    <span class="text-[9px] sm:text-[10px] text-slate-400">Brg</span>
                 </div>
             </div>
         </div>
 
         <!-- Masuk Range -->
-        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
-            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500">
-                <i data-lucide="arrow-down-left" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500">
+                <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
             <div class="w-full min-w-0 flex flex-col justify-center">
-                <div class="flex items-center gap-2 mb-1">
-                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Masuk</p>
-                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium ml-auto">Rentang</span>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Masuk</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">Rentang</span>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</h3>
-                    <span class="text-[10px] text-slate-400">Unit</span>
+                <div class="flex items-baseline gap-1 mt-auto sm:mt-0">
+                    <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</h3>
+                    <span class="text-[9px] sm:text-[10px] text-slate-400">Unit</span>
                 </div>
             </div>
         </div>
 
         <!-- Keluar Range -->
-        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
-            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400">
-                <i data-lucide="arrow-up-right" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400">
+                <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
             <div class="w-full min-w-0 flex flex-col justify-center">
-                <div class="flex items-center gap-2 mb-1">
-                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Keluar</p>
-                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium ml-auto">Rentang</span>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Keluar</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">Rentang</span>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</h3>
-                    <span class="text-[10px] text-slate-400">Unit</span>
+                <div class="flex items-baseline gap-1 mt-auto sm:mt-0">
+                    <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</h3>
+                    <span class="text-[9px] sm:text-[10px] text-slate-400">Unit</span>
                 </div>
             </div>
         </div>
@@ -228,10 +241,10 @@
                     itemGap: 15
                 },
                 grid: {
-                    left: '0%',
-                    right: '2%',
+                    left: '2%',
+                    right: '3%',
                     top: '10%',
-                    bottom: '12%',
+                    bottom: '18%',
                     containLabel: true
                 },
                 xAxis: {
@@ -243,8 +256,9 @@
                         color: textColor,
                         fontSize: 10,
                         interval: 'auto', // Auto-skip labels to prevent overlap
-                        rotate: 45,       // Angled labels for better X-axis fitting
-                        margin: 12
+                        rotate: 35,       // Angled labels for better X-axis fitting
+                        margin: 12,
+                        hideOverlap: true
                     }
                 },
                 yAxis: {
