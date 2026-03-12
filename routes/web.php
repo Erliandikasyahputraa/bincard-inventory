@@ -50,18 +50,7 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 })->name('logout')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        $stats = [
-            'total_jenis' => \App\Models\Product::count(),
-            'total_inventory' => \App\Models\Product::sum('current_stock') ?? 0,
-            'low_stock' => \App\Models\Product::whereColumn('current_stock', '<=', 'min_stock')->count(),
-            'masuk_24h' => \App\Models\StockTransaction::where('type', 'IN')->where('created_at', '>=', now()->startOfDay())->count(),
-            'keluar_24h' => \App\Models\StockTransaction::where('type', 'OUT')->where('created_at', '>=', now()->startOfDay())->count(),
-        ];
-        $stok_kritis = \App\Models\Product::whereColumn('current_stock', '<=', 'min_stock')->take(5)->get();
-        $aktivitas = \App\Models\StockTransaction::with(['product', 'user'])->latest()->take(5)->get();
-        return view('dashboard', compact('stats', 'stok_kritis', 'aktivitas'));
-    })->name('dashboard');
+    Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
 
     Route::get('/produk', ProdukIndex::class)->name('produk.index');
     Route::get('/produk/tambah', ProdukForm::class)->name('produk.tambah');
