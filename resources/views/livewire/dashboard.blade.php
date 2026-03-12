@@ -14,28 +14,20 @@
         </div>
 
         <!-- Global Date Filter for Dashboard -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full lg:w-auto">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
             <div class="flex items-center justify-between sm:justify-start bg-slate-100 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800/80">
                 <button wire:click="applyFilter('today')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Hari Ini</button>
                 <button wire:click="applyFilter('last_7_days')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">7 Hari</button>
                 <button wire:click="applyFilter('this_month')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Bulan Ini</button>
             </div>
             
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 sm:gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 sm:p-1.5 rounded-xl shadow-sm w-full lg:w-auto mt-2 sm:mt-0">
-                <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="startDate" class="w-full pl-8 pr-2 py-1.5 sm:py-2 bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 rounded-lg text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-semibold transition-colors cursor-pointer" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none"></i>
+            <div class="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
+                <div class="w-full sm:w-36">
+                    <input type="date" wire:model.live="startDate" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white font-bold focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]" title="Mulai Tanggal">
                 </div>
-                <div class="hidden sm:flex items-center justify-center text-slate-300 dark:text-slate-600 px-1">
-                    <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                </div>
-                <!-- On mobile, show a small visual separator -->
-                <div class="flex sm:hidden justify-center my-0.5">
-                    <div class="w-4 h-px bg-slate-200 dark:bg-slate-700"></div>
-                </div>
-                <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="endDate" class="w-full pl-8 pr-2 py-1.5 sm:py-2 bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 rounded-lg text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-semibold transition-colors cursor-pointer" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-rose-500 pointer-events-none"></i>
+                <div class="hidden sm:block text-slate-400 font-bold">-</div>
+                <div class="w-full sm:w-36">
+                    <input type="date" wire:model.live="endDate" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white font-bold focus:ring-1 focus:ring-blue-500 outline-none transition-all shadow-sm [color-scheme:light] dark:[color-scheme:dark]" title="Sampai Tanggal">
                 </div>
             </div>
         </div>
@@ -119,9 +111,9 @@
     </div>
 
     <!-- Chart & Timeline -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-        <!-- Grafik Transaksi -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        <!-- Grafik Transaksi (Takes 2/3 width on large screens) -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
             
             <!-- Filter Loading Overlay -->
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
@@ -150,8 +142,8 @@
             <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4"></div>
         </div>
 
-        <!-- Aktivitas Terbaru -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
+        <!-- Aktivitas Terbaru (Takes 1/3 width on large screens) -->
+        <div class="lg:col-span-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
             </div>
 
@@ -244,7 +236,7 @@
                     left: '2%',
                     right: '3%',
                     top: '10%',
-                    bottom: '18%',
+                    bottom: '25%', // Increased significantly format to prevent label clipping
                     containLabel: true
                 },
                 xAxis: {
@@ -256,7 +248,7 @@
                         color: textColor,
                         fontSize: 10,
                         interval: 'auto', // Auto-skip labels to prevent overlap
-                        rotate: 35,       // Angled labels for better X-axis fitting
+                        rotate: 40,       // Angled labels for better X-axis fitting
                         margin: 12,
                         hideOverlap: true
                     }
