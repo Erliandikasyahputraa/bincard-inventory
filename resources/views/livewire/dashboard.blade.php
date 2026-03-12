@@ -113,7 +113,7 @@
     <!-- Chart & Timeline -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         <!-- Grafik Transaksi (Takes 2/3 width on large screens) -->
-        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[400px] lg:h-[450px] min-w-0 min-h-0 shadow-sm dark:shadow-none relative">
             
             <!-- Filter Loading Overlay -->
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
@@ -139,7 +139,7 @@
             </div>
 
             <!-- ECharts Container -->
-            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4"></div>
+            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4 min-h-[250px] sm:min-h-[300px]"></div>
         </div>
 
         <!-- Aktivitas Terbaru (Takes 1/3 width on large screens) -->
