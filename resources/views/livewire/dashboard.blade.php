@@ -1,161 +1,173 @@
 
 <x-slot:header>
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">
+        Dashboard
+    </h2>
+</x-slot:header>
+
+<div class="px-2 sm:px-0">
+    <!-- Header Title & Filters -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <div class="flex flex-col">
-            <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Overview</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Status dan statistik pergerakan barang gudang.</p>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300">Overview Gudang</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 transition-colors duration-300">Status, metrik, dan statistik pergerakan barang saat ini.</p>
         </div>
 
         <!-- Global Date Filter for Dashboard -->
-        <div class="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-4 w-full sm:w-auto mt-2 sm:mt-0">
-            <div class="flex bg-slate-100 dark:bg-slate-900/50 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
-                <button wire:click="applyFilter('today')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Hari Ini</button>
-                <button wire:click="applyFilter('last_7_days')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">7 Hari</button>
-                <button wire:click="applyFilter('this_month')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Bulan Ini</button>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full lg:w-auto">
+            <div class="flex items-center justify-between sm:justify-start bg-slate-100 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800/80">
+                <button wire:click="applyFilter('today')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Hari Ini</button>
+                <button wire:click="applyFilter('last_7_days')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">7 Hari</button>
+                <button wire:click="applyFilter('this_month')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 shadow-sm {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200/50 dark:border-slate-700/50' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Bulan Ini</button>
             </div>
             
-            <div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 rounded-lg shadow-sm w-full sm:w-auto">
+            <div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl shadow-sm w-full sm:w-auto mt-2 sm:mt-0">
                 <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="startDate" class="w-full pl-8 pr-2 py-1.5 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-medium" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="date" wire:model.live="startDate" class="w-full pl-9 pr-2 py-2 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-bold" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500"></i>
                 </div>
-                <span class="text-slate-300 dark:text-slate-600 font-bold">-</span>
+                <span class="text-slate-300 dark:text-slate-600 font-bold px-1">-</span>
                 <div class="relative w-full sm:w-36">
-                    <input type="date" wire:model.live="endDate" class="w-full pl-8 pr-2 py-1.5 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-medium" style="color-scheme: dark;">
-                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="date" wire:model.live="endDate" class="w-full pl-9 pr-2 py-2 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-bold" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-rose-500"></i>
                 </div>
             </div>
         </div>
     </div>
-</x-slot:header>
-
-<div>
     <!-- Stats Row (Responsive to Date Filter where applicable) -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8" wire:loading.class="opacity-50 pointer-events-none transition-opacity duration-300">
         <!-- Total Inventory -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-slate-100 dark:bg-emerald-500/10 text-blue-600 dark:text-blue-400 transition-colors duration-300 ease-in-out shrink-0">
-                <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <i data-lucide="package" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
-            <div class="w-full min-w-0">
-                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
-                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-300 ease-in-out">Total Produk & Fisik</p>
-                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium">Global</span>
+            <div class="w-full min-w-0 flex flex-col justify-center">
+                <div class="flex items-center gap-2 mb-1">
+                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Katalog</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium ml-auto">Global</span>
                 </div>
-                <div class="flex flex-col xl:flex-row xl:items-baseline xl:gap-2">
-                    <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 font-normal transition-colors duration-300 ease-in-out">Jenis</span></h3>
-                    <span class="hidden xl:inline text-slate-300 dark:text-slate-600 transition-colors duration-300 ease-in-out">&bull;</span>
-                    <h3 class="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-0.5 xl:mt-0 transition-colors duration-300 ease-in-out truncate">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] sm:text-xs text-blue-600 dark:text-blue-400/70 font-normal transition-colors duration-300 ease-in-out">Fisik</span></h3>
+                <div class="flex items-baseline gap-2">
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }}</h3>
+                    <span class="text-[10px] text-slate-400">Jenis</span>
                 </div>
             </div>
         </div>
 
         <!-- Low Stock Alert -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out shrink-0">
-                <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                <i data-lucide="alert-circle" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
-            <div class="w-full min-w-0">
-                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
-                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Kritis</p>
-                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium">Global</span>
+            <div class="w-full min-w-0 flex flex-col justify-center">
+                <div class="flex items-center gap-2 mb-1">
+                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Kritis</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium ml-auto">Global</span>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
+                <div class="flex items-baseline gap-2">
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
+                    <span class="text-[10px] text-slate-400">Barang</span>
+                </div>
             </div>
         </div>
 
         <!-- Masuk Range -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-600 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 transition-colors duration-300 ease-in-out shrink-0">
-                <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500">
+                <i data-lucide="arrow-down-left" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
-            <div class="w-full min-w-0">
-                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
-                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Masuk</p>
-                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium">Rentang</span>
+            <div class="w-full min-w-0 flex flex-col justify-center">
+                <div class="flex items-center gap-2 mb-1">
+                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Masuk</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium ml-auto">Rentang</span>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</h3>
+                <div class="flex items-baseline gap-2">
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</h3>
+                    <span class="text-[10px] text-slate-400">Unit</span>
+                </div>
             </div>
         </div>
 
         <!-- Keluar Range -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out shrink-0">
-                <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 hover:shadow-md transition-all shadow-sm dark:shadow-none min-w-0">
+            <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400">
+                <i data-lucide="arrow-up-right" stroke-width="2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
             </div>
-            <div class="w-full min-w-0">
-                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
-                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Keluar</p>
-                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium">Rentang</span>
+            <div class="w-full min-w-0 flex flex-col justify-center">
+                <div class="flex items-center gap-2 mb-1">
+                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Keluar</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium ml-auto">Rentang</span>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</h3>
+                <div class="flex items-baseline gap-2">
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</h3>
+                    <span class="text-[10px] text-slate-400">Unit</span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Chart & Timeline -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         <!-- Grafik Transaksi -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[300px] lg:h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out relative">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
             
             <!-- Filter Loading Overlay -->
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
             </div>
 
-            <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <div class="flex items-center justify-between mb-2">
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Arus Barang</h3>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Perbandingan barang masuk dan keluar.</p>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Arus Barang</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Distribusi jumlah transaksi per rentang waktu.</p>
                 </div>
             </div>
 
             <!-- Empty State Illustration -->
-            <div id="chartEmptyState" class="hidden absolute inset-0 pt-16 flex flex-col items-center justify-center gap-3">
+            <div id="chartEmptyState" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-3">
                 <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-full">
                     <i data-lucide="bar-chart-2" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
                 </div>
                 <div class="text-center">
                     <p class="text-sm font-bold text-slate-500 dark:text-slate-400">Tidak Ada Transaksi</p>
-                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-[200px]">Pilih rentang tanggal lain atau catat barang masuk/keluar.</p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-[200px] mx-auto">Pilih rentang tanggal lain atau catat barang masuk/keluar.</p>
                 </div>
             </div>
 
             <!-- ECharts Container -->
-            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full h-full min-h-[220px] relative z-0"></div>
+            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4"></div>
         </div>
 
         <!-- Aktivitas Terbaru -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex-1 shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out relative">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col h-[400px] lg:h-[450px] shadow-sm dark:shadow-none relative">
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
             </div>
 
-            <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 transition-colors duration-300 ease-in-out">
-                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 ease-in-out">Transaksi Terbaru</h3>
-                <a href="{{ route('laporan.index') }}" class="text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-lg transition-colors duration-300 ease-in-out">Semua Histori</a>
+            <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Transaksi Terbaru</h3>
+                <a href="{{ route('laporan.index') }}" class="text-xs font-semibold px-3 py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-lg transition-colors">Semua Histori</a>
             </div>
             
-            <div class="space-y-4">
+            <div class="space-y-4 overflow-y-auto pr-2 no-scrollbar flex-1 relative min-h-0">
                 @forelse($aktivitas as $act)
                     <div class="flex gap-3 items-start group">
                         <div class="mt-0.5">
-                            <span class="inline-block px-1.5 py-0.5 text-[9px] font-bold rounded {{ $act->type == 'IN' ? 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-500/20' : ($act->type == 'OUT' ? 'bg-rose-100 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 border border-rose-200 dark:border-rose-500/20' : 'bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20') }} transition-colors duration-300 ease-in-out">
+                            <span class="inline-block px-1.5 py-0.5 text-[9px] font-bold rounded {{ $act->type == 'IN' ? 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-500/20' : ($act->type == 'OUT' ? 'bg-rose-100 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 border border-rose-200 dark:border-rose-500/20' : 'bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20') }} transition-colors">
                                 {{ $act->type == 'IN' ? 'Masuk' : ($act->type == 'OUT' ? 'Keluar' : 'Adjust') }}
                             </span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-baseline mb-0.5">
-                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate transition-colors duration-300 ease-in-out">{{ $act->product->name }}</p>
-                                <p class="text-[10px] text-slate-400 dark:text-slate-500 whitespace-nowrap ml-2 transition-colors duration-300 ease-in-out">{{ $act->created_at->format('d/m') }}</p>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ $act->product->name }}</p>
+                                <p class="text-[10px] text-slate-400 dark:text-slate-500 whitespace-nowrap ml-2">{{ $act->created_at->format('d M') }}</p>
                             </div>
-                            <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate transition-colors duration-300 ease-in-out">
-                                <span class="text-slate-800 dark:text-white transition-colors duration-300 ease-in-out">{{ $act->quantity }} Unit</span> &bull; {{ $act->user?->name ?? 'Sistem' }}
+                            <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                <span class="text-slate-800 dark:text-white font-semibold">{{ $act->quantity }} Unit</span> &bull; {{ $act->user?->name ?? 'Sistem' }}
                             </p>
                         </div>
                     </div>
                 @empty
-                    <div class="text-center py-8 transition-colors duration-300 ease-in-out bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
-                        <p class="text-xs text-slate-400 dark:text-slate-500 transition-colors duration-300 ease-in-out">Tidak ada aktivitas pada rentang tanggal ini.</p>
+                    <div class="text-center py-8 absolute inset-0 flex flex-col justify-center items-center">
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mb-2">Tidak ada aktivitas pada rentang tanggal ini.</p>
                     </div>
                 @endforelse
             </div>
