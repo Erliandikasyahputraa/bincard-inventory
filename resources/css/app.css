@@ -11,3 +11,7 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+.flatpickr-calendar {
+    z-index: 9999 !important;
+}

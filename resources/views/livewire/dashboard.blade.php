@@ -234,7 +234,7 @@
                 },
                 grid: {
                     left: '2%',
-                    right: '3%',
+                    right: '6%',
                     top: '10%',
                     bottom: '30%', // Massive padding to absolutely guarantee no label clipping on any screen
                     containLabel: true
@@ -272,6 +272,22 @@
                          return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
                     }
                 },
+                dataZoom: [
+                    {
+                        type: 'inside', // Allow mouse-wheel / touch dragging
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'slider', // Visual horizontal scrollbar below the chart
+                        start: 0,
+                        end: 100,
+                        bottom: 0,
+                        height: 20,
+                        borderColor: 'transparent',
+                        textStyle: { color: textColor, fontSize: 9 }
+                    }
+                ],
                 series: [
                     {
                         name: 'Barang Masuk',

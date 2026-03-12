@@ -13,6 +13,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Flatpickr (For Universal d-m-Y Date Format) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css" id="flatpickr-dark-theme" disabled>
     <style>
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -266,11 +269,37 @@
         });
     </script>
     @stack('scripts')
+    <!-- Flatpickr Script Initialization -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
     <script>
         document.addEventListener('livewire:initialized', () => {
+            // Function to bind or re-bind Flatpickr to ALL inputs with type="date"
+            const initFlatpickr = () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                const darkCss = document.getElementById('flatpickr-dark-theme');
+                if (isDark) { darkCss.removeAttribute('disabled'); } else { darkCss.setAttribute('disabled', 'true'); }
+                
+                flatpickr("input[type='date']", {
+                    dateFormat: "Y-m-d",    // Value sent to Livewire
+                    altInput: true,         // Visual Input mask
+                    altFormat: "d-m-Y",     // What the user sees
+                    locale: "id",
+                    disableMobile: "true"   // Let Flatpickr takeover on mobile too
+                });
+            };
+
+            initFlatpickr();
+
+            // Re-apply on DOM morphs (for Modals/Dynamic loading)
             Livewire.hook('morph.updated', ({ el, component }) => {
                 lucide.createIcons();
+                initFlatpickr(); 
             });
+
+            // Theme observer specifically for Flatpickr styling switch
+            const observer = new MutationObserver(() => initFlatpickr());
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
             window.addEventListener('transaksi-sukses', (event) => {
                 // Livewire v3 wraps dispatches, but if sent as object parameter it's often directly accessible
