@@ -57,7 +57,7 @@
 
     {{-- Katalog --}}
     <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading class="absolute inset-0 rounded-2xl bg-white/70 dark:bg-slate-900/70 z-10 flex items-center justify-center">
+        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl bg-white/70 dark:bg-slate-900/70 z-10 flex items-center justify-center">
             <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
         </div>
         <div class="shrink-0 w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform">
@@ -77,7 +77,7 @@
 
     {{-- Stok Kritis --}}
     <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading class="absolute inset-0 rounded-2xl z-10">
+        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
             <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
         </div>
         <div class="shrink-0 w-11 h-11 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform">
@@ -94,7 +94,7 @@
 
     {{-- Masuk --}}
     <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading class="absolute inset-0 rounded-2xl z-10">
+        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
             <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
         </div>
         <div class="shrink-0 w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
@@ -113,15 +113,12 @@
                 <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</span>
                 <span class="text-[10px] text-slate-400">Unit</span>
             </div>
-            @if($stats['trend_masuk'] !== null)
-                <p class="text-[9px] text-slate-400 mt-0.5">vs {{ number_format($stats['prev_masuk'], 0, ',', '.') }} periode lalu</p>
-            @endif
         </div>
     </div>
 
     {{-- Keluar --}}
     <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading class="absolute inset-0 rounded-2xl z-10">
+        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
             <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
         </div>
         <div class="shrink-0 w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
@@ -140,9 +137,6 @@
                 <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</span>
                 <span class="text-[10px] text-slate-400">Unit</span>
             </div>
-            @if($stats['trend_keluar'] !== null)
-                <p class="text-[9px] text-slate-400 mt-0.5">vs {{ number_format($stats['prev_keluar'], 0, ',', '.') }} periode lalu</p>
-            @endif
         </div>
     </div>
 
