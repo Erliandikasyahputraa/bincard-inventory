@@ -102,8 +102,9 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
         $kodeBarang = $product?->barcode ?: ($product?->sku ?: '-');
         $kodeRak    = $product?->location ?: '-';
 
-        $qty          = (int) $row->quantity;
-        $qtyFormatted = $qty >= 0 ? '+' . $qty : (string) $qty;
+        $qty = (int) $row->quantity;
+        // Always output as string with sign so Excel treats as text (prevents + stripping)
+        $qtyStr = $qty >= 0 ? '+' . $qty : (string) $qty;
 
         return [
             $this->rowNumber,
@@ -111,10 +112,10 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             $kodeBarang,
             $kodeRak,
             $product?->name ?? '-',
-            $row->type,
-            $row->computed_stock_before ?? 0,
-            $qtyFormatted,
-            $row->computed_stock_after ?? 0,
+            $row->type,                                // Column F — used by styles() to determine color
+            (int)($row->computed_stock_before ?? 0),   // Column G — force int, never blank
+            $qtyStr,                                   // Column H — always signed string
+            (int)($row->computed_stock_after  ?? 0),   // Column I — force int, never blank
             $row->user?->name ?? '-',
             $penerima ?: '-',
             $row->note ?? '-',
@@ -145,19 +146,50 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
         $sheet->getStyle('C2:F' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle('G2:I' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        // Color code SO/Mutasi column (H)
+        // Color the Tipe column (F) AND the SO/Mutasi column (H) based on transaction type
         for ($r = 2; $r <= $lastRow; $r++) {
-            $val = $sheet->getCell('H' . $r)->getValue();
-            if (is_string($val) && str_starts_with($val, '-')) {
-                $sheet->getStyle('H' . $r)->applyFromArray([
-                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
-                    'font' => ['color' => ['rgb' => 'FF0000'], 'bold' => true],
+            $tipe = (string) $sheet->getCell('F' . $r)->getValue();
+
+            // --- Tipe column (F) background badges ---
+            if ($tipe === 'IN') {
+                $sheet->getStyle('F' . $r)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
+                    'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
                 ]);
-            } elseif (is_string($val) && str_starts_with($val, '+')) {
+                // SO/Mutasi (H) — green for positive
                 $sheet->getStyle('H' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
                     'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
                 ]);
+            } elseif ($tipe === 'OUT') {
+                $sheet->getStyle('F' . $r)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
+                    'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
+                ]);
+                // SO/Mutasi (H) — red for negative
+                $sheet->getStyle('H' . $r)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
+                    'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
+                ]);
+            } elseif ($tipe === 'ADJUST') {
+                $sheet->getStyle('F' . $r)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFF3CD']],
+                    'font' => ['color' => ['rgb' => '856404'], 'bold' => true],
+                ]);
+                // SO/Mutasi (H) — check sign for adjust (can be + or -)
+                $hVal = (string) $sheet->getCell('H' . $r)->getValue();
+                $isNeg = str_starts_with($hVal, '-') || (int)$hVal < 0;
+                if ($isNeg) {
+                    $sheet->getStyle('H' . $r)->applyFromArray([
+                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
+                        'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
+                    ]);
+                } else {
+                    $sheet->getStyle('H' . $r)->applyFromArray([
+                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
+                        'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
+                    ]);
+                }
             }
         }
 
