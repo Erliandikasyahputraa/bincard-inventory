@@ -13,12 +13,6 @@
                 <button wire:click="applyFilter('last_7_days')" class="px-3 py-1 text-xs font-medium rounded-md transition-colors {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300' }}">7 Hari</button>
                 <button wire:click="applyFilter('this_month')" class="px-3 py-1 text-xs font-medium rounded-md transition-colors {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300' }}">Bulan Ini</button>
             </div>
-            
-            <div class="flex items-center gap-2">
-                <input type="date" wire:model.live="startDate" class="px-2.5 py-1.5 w-32 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
-                <span class="text-slate-400 text-xs font-medium">-</span>
-                <input type="date" wire:model.live="endDate" class="px-2.5 py-1.5 w-32 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
-            </div>
         </div>
     </div>
 </x-slot:header>
@@ -32,7 +26,10 @@
                 <i data-lucide="package" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
             <div class="w-full min-w-0">
-                <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-300 ease-in-out">Total Produk & Fisik</p>
+                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-300 ease-in-out">Total Produk & Fisik</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium">Global</span>
+                </div>
                 <div class="flex flex-col xl:flex-row xl:items-baseline xl:gap-2">
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out truncate">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 font-normal transition-colors duration-300 ease-in-out">Jenis</span></h3>
                     <span class="hidden xl:inline text-slate-300 dark:text-slate-600 transition-colors duration-300 ease-in-out">&bull;</span>
@@ -42,43 +39,52 @@
         </div>
 
         <!-- Low Stock Alert -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
+            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out shrink-0">
                 <i data-lucide="alert-circle" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
-            <div>
-                <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1 transition-colors duration-300 ease-in-out">Stok Kritis</p>
+            <div class="w-full min-w-0">
+                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Kritis</p>
+                    <span class="text-[8px] bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded font-medium">Global</span>
+                </div>
                 <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
             </div>
         </div>
 
         <!-- Masuk Range -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-600 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
+            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-600 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 transition-colors duration-300 ease-in-out shrink-0">
                 <i data-lucide="arrow-down-left" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
-            <div>
-                <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1 transition-colors duration-300 ease-in-out">Stok Masuk (Range)</p>
+            <div class="w-full min-w-0">
+                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Masuk</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium">Rentang</span>
+                </div>
                 <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</h3>
             </div>
         </div>
 
         <!-- Keluar Range -->
-        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none">
-            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm dark:shadow-none min-w-0">
+            <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 transition-colors duration-300 ease-in-out shrink-0">
                 <i data-lucide="arrow-up-right" stroke-width="2" class="w-4 h-4 sm:w-6 sm:h-6"></i>
             </div>
-            <div>
-                <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5 sm:mb-1 line-clamp-1 transition-colors duration-300 ease-in-out">Stok Keluar (Range)</p>
+            <div class="w-full min-w-0">
+                <div class="flex items-center justify-between mb-0.5 sm:mb-1">
+                    <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider line-clamp-1 transition-colors duration-300 ease-in-out">Stok Keluar</p>
+                    <span class="text-[8px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400 px-1.5 py-0.5 rounded font-medium">Rentang</span>
+                </div>
                 <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300 ease-in-out">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</h3>
             </div>
         </div>
     </div>
 
     <!-- Chart & Timeline -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" wire:ignore>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Grafik Transaksi -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out relative">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col h-[300px] lg:h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out relative">
             
             <!-- Filter Loading Overlay -->
             <div wire:loading.flex wire:target="startDate, endDate, applyFilter" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
@@ -104,7 +110,7 @@
             </div>
 
             <!-- ECharts Container -->
-            <div id="dashboardEcharts" class="flex-1 w-full h-full min-h-[250px] relative z-0"></div>
+            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full h-full min-h-[220px] relative z-0"></div>
         </div>
 
         <!-- Aktivitas Terbaru -->
@@ -227,10 +233,14 @@
                         } 
                     },
                     axisLabel: { color: textColor, fontSize: 10 },
-                    // Logarithmic/Dynamic Scaling handling
+                    // Dynamic Scaling handling
                     scale: true, 
                     min: 0,
-                    boundaryGap: [0, '20%'] // Allow charts room to breathe at the top
+                    // Suggested Max so bars look fuller, but leave room for large spikes automatically
+                    max: function (value) {
+                         // Always create roof of +20% above the single highest spike
+                         return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
+                    }
                 },
                 series: [
                     {
@@ -272,7 +282,10 @@
 
         // Listen for updates from Livewire when date filter changes
         Livewire.on('updateDashboardChart', (event) => {
-            renderChart(event.data);
+            // Livewire 3 returns event as an object standardly when named named-args dispatch is used
+            let payload = event[0] ? event[0].data : event.data;
+            if(!payload && event) payload = event;
+            renderChart(payload);
         });
 
         // Handle Theme Changes seamlessly
