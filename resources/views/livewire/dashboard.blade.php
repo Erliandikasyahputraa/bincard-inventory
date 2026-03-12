@@ -56,10 +56,8 @@
     @endphp
 
     {{-- Katalog --}}
-    <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl bg-white/70 dark:bg-slate-900/70 z-10 flex items-center justify-center">
-            <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
-        </div>
+    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
         <div class="shrink-0 w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform">
             <i data-lucide="package-2" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -76,10 +74,8 @@
     </div>
 
     {{-- Stok Kritis --}}
-    <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
-            <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
-        </div>
+    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
         <div class="shrink-0 w-11 h-11 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform">
             <i data-lucide="alert-triangle" class="w-5 h-5" stroke-width="2"></i>
         </div>
@@ -93,10 +89,8 @@
     </div>
 
     {{-- Masuk --}}
-    <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
-            <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
-        </div>
+    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
         <div class="shrink-0 w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -117,10 +111,8 @@
     </div>
 
     {{-- Keluar --}}
-    <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div wire:loading wire:target="startDate,endDate,applyFilter" class="absolute inset-0 rounded-2xl z-10">
-            <div class="skeleton w-full h-full absolute inset-0 rounded-2xl"></div>
-        </div>
+    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+         class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
         <div class="shrink-0 w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
             <i data-lucide="arrow-up-right" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
@@ -148,9 +140,9 @@
     {{-- Chart Panel --}}
     <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative" style="height:440px">
 
-        {{-- Skeleton overlay while loading --}}
-        <div wire:loading.flex wire:target="startDate, endDate, applyFilter"
-            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5">
+        {{-- Skeleton overlay while loading —— pointer-events-none prevents blocking filter buttons --}}
+        <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
+            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5 pointer-events-none">
             <div class="skeleton h-5 w-40 rounded-lg"></div>
             <div class="skeleton h-3 w-56 rounded-md"></div>
             <div class="flex-1 flex items-end gap-2 pt-4">
@@ -191,8 +183,8 @@
     <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative" style="height:440px">
 
         {{-- Skeleton overlay --}}
-        <div wire:loading.flex wire:target="startDate, endDate, applyFilter"
-            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-4 p-5">
+        <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
+            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-4 p-5 pointer-events-none">
             <div class="skeleton h-5 w-36 rounded-lg"></div>
             @for($i = 0; $i < 7; $i++)
                 <div class="flex gap-3 items-start">
