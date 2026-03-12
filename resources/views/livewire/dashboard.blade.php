@@ -7,11 +7,23 @@
         </div>
 
         <!-- Global Date Filter for Dashboard -->
-        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <div class="flex bg-slate-100 dark:bg-slate-900/50 p-1 rounded-lg border border-slate-200 dark:border-slate-800">
-                <button wire:click="applyFilter('today')" class="px-3 py-1 text-xs font-medium rounded-md transition-colors {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300' }}">Hari Ini</button>
-                <button wire:click="applyFilter('last_7_days')" class="px-3 py-1 text-xs font-medium rounded-md transition-colors {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300' }}">7 Hari</button>
-                <button wire:click="applyFilter('this_month')" class="px-3 py-1 text-xs font-medium rounded-md transition-colors {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300' }}">Bulan Ini</button>
+        <div class="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-4 w-full sm:w-auto mt-2 sm:mt-0">
+            <div class="flex bg-slate-100 dark:bg-slate-900/50 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
+                <button wire:click="applyFilter('today')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Hari Ini</button>
+                <button wire:click="applyFilter('last_7_days')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">7 Hari</button>
+                <button wire:click="applyFilter('this_month')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors shadow-sm {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }}">Bulan Ini</button>
+            </div>
+            
+            <div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 rounded-lg shadow-sm w-full sm:w-auto">
+                <div class="relative w-full sm:w-36">
+                    <input type="date" wire:model.live="startDate" class="w-full pl-8 pr-2 py-1.5 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-medium" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                </div>
+                <span class="text-slate-300 dark:text-slate-600 font-bold">-</span>
+                <div class="relative w-full sm:w-36">
+                    <input type="date" wire:model.live="endDate" class="w-full pl-8 pr-2 py-1.5 bg-transparent border-none text-xs focus:ring-0 outline-none text-slate-900 dark:text-white font-medium" style="color-scheme: dark;">
+                    <i data-lucide="calendar" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                </div>
             </div>
         </div>
     </div>
