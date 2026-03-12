@@ -234,9 +234,9 @@
                 },
                 grid: {
                     left: '0%',
-                    right: '2%',
+                    right: '5%',  // Extra room so last bar never clips the wall
                     top: '5%',
-                    bottom: '32%', // Room for slider (20px) + x-labels + legend
+                    bottom: '32%',
                     containLabel: true
                 },
                 xAxis: {
@@ -273,39 +273,33 @@
                          return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
                     }
                 },
-                // Dual dataZoom: inside (scroll/touch) + slider (visible drag handle)
-                // Shows latest 10 periods on load; user can drag slider or scroll to navigate
-                dataZoom: [
-                    {
-                        type: 'inside',
-                        startValue: Math.max(0, data.labels.length - 10),
-                        endValue: data.labels.length - 1,
-                        zoomLock: true,
-                        moveOnMouseWheel: true,
-                        moveOnMouseMove: true
-                    },
-                    {
-                        type: 'slider',
-                        startValue: Math.max(0, data.labels.length - 10),
-                        endValue: data.labels.length - 1,
-                        height: 20,
-                        bottom: '13%',  // Sits above the legend line; below the chart bars
-                        borderColor: isDark ? '#334155' : '#e2e8f0',
-                        backgroundColor: isDark ? '#1e293b' : '#f1f5f9',
-                        fillerColor: isDark ? 'rgba(59,130,246,0.15)' : 'rgba(59,130,246,0.1)',
-                        handleStyle: {
-                            color: '#3b82f6',
-                            borderColor: '#3b82f6'
-                        },
-                        textStyle: { color: textColor, fontSize: 9 },
-                        showDetail: false,   // No floating tooltip on drag
-                        showDataShadow: true,
-                        dataBackground: {
-                            lineStyle: { color: '#3b82f6', opacity: 0.3 },
-                            areaStyle: { color: '#3b82f6', opacity: 0.08 }
-                        }
-                    }
-                ],
+                // Dual dataZoom: inside (mouse-wheel/touch) + slider (visible drag bar)
+                // Use percentage-based start/end so slider handle never goes out of bounds
+                dataZoom: (function() {
+                    const total = data.labels.length;
+                    const show = Math.min(10, total);                         // Max 10 columns visible
+                    const startPct = total > 0 ? Math.round(((total - show) / total) * 100) : 0;
+                    const shared = { start: startPct, end: 100, zoomLock: true };
+                    return [
+                        Object.assign({ type: 'inside', moveOnMouseWheel: true, moveOnMouseMove: true }, shared),
+                        Object.assign({
+                            type: 'slider',
+                            height: 20,
+                            bottom: '13%',
+                            borderColor: isDark ? '#334155' : '#e2e8f0',
+                            backgroundColor: isDark ? '#1e293b' : '#f1f5f9',
+                            fillerColor: isDark ? 'rgba(59,130,246,0.2)' : 'rgba(59,130,246,0.12)',
+                            handleStyle: { color: '#3b82f6', borderColor: '#3b82f6' },
+                            textStyle: { color: textColor, fontSize: 9 },
+                            showDetail: false,
+                            showDataShadow: true,
+                            dataBackground: {
+                                lineStyle: { color: '#3b82f6', opacity: 0.3 },
+                                areaStyle: { color: '#3b82f6', opacity: 0.08 }
+                            }
+                        }, shared)
+                    ];
+                })(),
                 series: [
                     {
                         name: 'Barang Masuk',
