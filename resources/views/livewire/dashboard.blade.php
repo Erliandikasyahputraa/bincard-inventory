@@ -139,7 +139,7 @@
             </div>
 
             <!-- ECharts Container -->
-            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full relative z-0 mt-4 min-h-[250px] sm:min-h-[300px]"></div>
+            <div id="dashboardEcharts" wire:ignore class="flex-1 w-full overflow-hidden relative z-0 mt-4 min-h-[250px] sm:min-h-[300px]"></div>
         </div>
 
         <!-- Aktivitas Terbaru (Takes 1/3 width on large screens) -->
@@ -233,10 +233,10 @@
                     itemGap: 15
                 },
                 grid: {
-                    left: '2%',
-                    right: '6%',
-                    top: '10%',
-                    bottom: '30%', // Massive padding to absolutely guarantee no label clipping on any screen
+                    left: '0%',
+                    right: '2%',
+                    top: '5%',
+                    bottom: '25%', // Leave enough room for legend + labels at bottom
                     containLabel: true
                 },
                 xAxis: {
@@ -247,10 +247,11 @@
                     axisLabel: { 
                         color: textColor,
                         fontSize: 10,
-                        interval: 'auto', // Auto-skip labels to prevent overlap
-                        rotate: 45,       // Angled labels for better X-axis fitting
-                        margin: 12,
-                        hideOverlap: true
+                        interval: 'auto',    // Auto-skip labels to prevent overlap
+                        rotate: 0,           // No rotation keeps bars within boundary
+                        hideOverlap: true,   // Automatically hide labels that would overlap
+                        overflow: 'truncate',
+                        width: 60
                     }
                 },
                 yAxis: {
