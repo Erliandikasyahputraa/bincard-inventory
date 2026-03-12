@@ -273,6 +273,16 @@
                          return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
                     }
                 },
+                // Horizontal scroll on chart (inside = mouse-wheel/touch, no visible slider)
+                // Show max 10 labels at once; pin to END of data so newest bars are always visible
+                dataZoom: [{
+                    type: 'inside',
+                    startValue: Math.max(0, data.labels.length - 10),
+                    endValue: data.labels.length - 1,
+                    zoomLock: true,   // Prevent accidental zoom; only allow pan
+                    moveOnMouseWheel: true,
+                    moveOnMouseMove: true
+                }],
                 series: [
                     {
                         name: 'Barang Masuk',
@@ -282,7 +292,8 @@
                             color: isDark ? '#10b981' : '#34d399', // Emerald
                             borderRadius: [4, 4, 0, 0] // Rounded tops
                         },
-                        barMaxWidth: 30
+                        barMaxWidth: 28,
+                        barGap: '10%'
                     },
                     {
                         name: 'Barang Keluar',
@@ -292,7 +303,8 @@
                             color: isDark ? '#f43f5e' : '#fb7185', // Rose
                             borderRadius: [4, 4, 0, 0] // Rounded tops
                         },
-                        barMaxWidth: 30
+                        barMaxWidth: 28,
+                        barGap: '10%'
                     }
                 ]
             };
