@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ theme: localStorage.getItem('theme') || 'dark' }" :class="{ 'dark': theme === 'dark' }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ theme: (function(){ try { return localStorage.getItem('theme') || 'dark'; } catch(e) { return 'dark'; } })() }" :class="{ 'dark': theme === 'dark' }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -210,7 +210,7 @@
                     </div>
                 
                     <div class="flex items-center space-x-4">
-                        <button @click="theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme)" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl transition-colors shadow-sm" aria-label="Toggle Theme">
+                        <button @click="theme = (theme === 'dark' ? 'light' : 'dark'); try { localStorage.setItem('theme', theme); } catch(e) {}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-200 dark:border-slate-800 rounded-xl transition-colors shadow-sm" aria-label="Toggle Theme">
                             <i data-lucide="sun" x-show="theme === 'dark'" class="w-5 h-5" style="display: none;"></i>
                             <i data-lucide="moon" x-show="theme === 'light'" class="w-5 h-5"></i>
                         </button>
