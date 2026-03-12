@@ -236,7 +236,7 @@
                     left: '2%',
                     right: '3%',
                     top: '10%',
-                    bottom: '25%', // Increased significantly format to prevent label clipping
+                    bottom: '30%', // Massive padding to absolutely guarantee no label clipping on any screen
                     containLabel: true
                 },
                 xAxis: {
@@ -248,7 +248,7 @@
                         color: textColor,
                         fontSize: 10,
                         interval: 'auto', // Auto-skip labels to prevent overlap
-                        rotate: 40,       // Angled labels for better X-axis fitting
+                        rotate: 45,       // Angled labels for better X-axis fitting
                         margin: 12,
                         hideOverlap: true
                     }

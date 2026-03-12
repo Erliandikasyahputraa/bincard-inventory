@@ -13,11 +13,11 @@ class Dashboard extends Component
     public $endDate;
     
     // Quick Filter identifier
-    public $activeFilter = 'this_month';
+    public $activeFilter = 'today';
 
     public function mount()
     {
-        $this->applyFilter('this_month');
+        $this->applyFilter('today');
     }
 
     public function applyFilter($filter)
