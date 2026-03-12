@@ -20,26 +20,25 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-        {{-- Quick-period pill — explicit buttons (no @foreach loop to avoid wire:click attr parse issues) --}}
-        <div class="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 gap-0.5">
-            <button wire:click="applyFilter('today')"
+        <div wire:key="filter-pill" class="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 gap-0.5">
+            <button wire:key="btn-today" type="button" wire:click="applyFilter('today')"
                 class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 Hari Ini
             </button>
-            <button wire:click="applyFilter('last_7_days')"
+            <button wire:key="btn-7days" type="button" wire:click="applyFilter('last_7_days')"
                 class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 7 Hari
             </button>
-            <button wire:click="applyFilter('this_month')"
+            <button wire:key="btn-month" type="button" wire:click="applyFilter('this_month')"
                 class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 Bulan Ini
             </button>
         </div>
-        <div class="flex items-center gap-1.5">
-            <input type="date" wire:model.live="startDate"
+        <div wire:key="date-inputs" class="flex items-center gap-1.5">
+            <input type="date" wire:key="input-start" wire:model.blur="startDate"
                 class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-400 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all [color-scheme:light] dark:[color-scheme:dark] w-32 sm:w-36">
             <span class="text-slate-400 font-bold">→</span>
-            <input type="date" wire:model.live="endDate"
+            <input type="date" wire:key="input-end" wire:model.blur="endDate"
                 class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-400 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all [color-scheme:light] dark:[color-scheme:dark] w-32 sm:w-36">
         </div>
     </div>
