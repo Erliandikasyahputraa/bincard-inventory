@@ -20,17 +20,20 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-        {{-- Quick-period pill --}}
+        {{-- Quick-period pill — explicit buttons (no @foreach loop to avoid wire:click attr parse issues) --}}
         <div class="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 gap-0.5">
-            @foreach(['today' => 'Hari Ini', 'last_7_days' => '7 Hari', 'this_month' => 'Bulan Ini'] as $key => $label)
-                <button wire:click="applyFilter('{{ $key }}')"
-                    class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200
-                           {{ $activeFilter === $key
-                                ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700'
-                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                    {{ $label }}
-                </button>
-            @endforeach
+            <button wire:click="applyFilter('today')"
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                Hari Ini
+            </button>
+            <button wire:click="applyFilter('last_7_days')"
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                7 Hari
+            </button>
+            <button wire:click="applyFilter('this_month')"
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                Bulan Ini
+            </button>
         </div>
         <div class="flex items-center gap-1.5">
             <input type="date" wire:model.live="startDate"
@@ -45,90 +48,68 @@
 {{-- ─── Stats Cards ────────────────────────────────────── --}}
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
 
-    {{-- Helper macro to show trend badge --}}
-    @php
-        $trendBadge = function(?float $pct): string {
-            if ($pct === null) return '';
-            $color = $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10';
-            $arrow = $pct >= 0 ? '↑' : '↓';
-            return "<span class=\"text-[9px] font-bold px-1.5 py-0.5 rounded-md {$color}\">{$arrow} " . abs($pct) . "%</span>";
-        };
-    @endphp
-
     {{-- Katalog --}}
-    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
          class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div class="shrink-0 w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400">
             <i data-lucide="package-2" class="w-5 h-5" stroke-width="2"></i>
         </div>
         <div class="min-w-0 flex-1">
             <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Katalog</p>
-            <div class="flex items-baseline gap-1.5 flex-wrap">
-                <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['total_jenis'], 0, ',', '.') }}</span>
-                <span class="text-[10px] text-slate-400">Jenis</span>
-                <span class="text-slate-300 dark:text-slate-600">·</span>
-                <span class="text-base font-bold text-blue-500 dark:text-blue-400">{{ number_format($stats['total_inventory'], 0, ',', '.') }}</span>
-                <span class="text-[10px] text-blue-400/70">Fisik</span>
-            </div>
+            <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Jenis</span></p>
+            <p class="text-sm font-bold text-blue-500 dark:text-blue-400 mt-0.5">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] font-normal text-blue-400/70">Fisik</span></p>
         </div>
     </div>
 
     {{-- Stok Kritis --}}
-    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
          class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div class="shrink-0 w-11 h-11 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400">
             <i data-lucide="alert-triangle" class="w-5 h-5" stroke-width="2"></i>
         </div>
         <div class="min-w-0">
             <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Stok Kritis</p>
-            <div class="flex items-baseline gap-1.5">
-                <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['low_stock'], 0, ',', '.') }}</span>
-                <span class="text-[10px] text-slate-400">Barang</span>
-            </div>
+            <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['low_stock'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Barang</span></p>
         </div>
     </div>
 
     {{-- Masuk --}}
-    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
          class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div class="shrink-0 w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
         <div class="min-w-0 flex-1">
             <div class="flex items-center gap-1.5 mb-1">
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Masuk</p>
                 @if($stats['trend_masuk'] !== null)
-                    {!! $trendBadge($stats['trend_masuk']) !!}
+                    @php $pct = $stats['trend_masuk']; @endphp
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
             </div>
-            <div class="flex items-baseline gap-1.5">
-                <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['masuk_range'], 0, ',', '.') }}</span>
-                <span class="text-[10px] text-slate-400">Unit</span>
-            </div>
+            <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['masuk_range'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Unit</span></p>
         </div>
     </div>
 
     {{-- Keluar --}}
-    <div wire:loading.class="opacity-50 scale-95" wire:target="startDate,endDate,applyFilter"
+    <div wire:loading.class="opacity-50" wire:target="startDate,endDate,applyFilter"
          class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <div class="shrink-0 w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400">
             <i data-lucide="arrow-up-right" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
         <div class="min-w-0 flex-1">
             <div class="flex items-center gap-1.5 mb-1">
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Keluar</p>
                 @if($stats['trend_keluar'] !== null)
-                    {!! $trendBadge($stats['trend_keluar']) !!}
+                    @php $pct = $stats['trend_keluar']; @endphp
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
             </div>
-            <div class="flex items-baseline gap-1.5">
-                <span class="text-xl font-extrabold text-slate-900 dark:text-white">{{ number_format($stats['keluar_range'], 0, ',', '.') }}</span>
-                <span class="text-[10px] text-slate-400">Unit</span>
-            </div>
+            <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['keluar_range'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Unit</span></p>
         </div>
     </div>
 
