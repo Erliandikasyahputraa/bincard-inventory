@@ -130,16 +130,34 @@ class StockService
     }
 
     /** 
-     * Get Aggregated Dashboard Global Stats 
+     * Get Aggregated Dashboard Global Stats (with previous period for trend %)
      */
     public function getDashboardStats(\Carbon\Carbon $start, \Carbon\Carbon $end): array
     {
+        // Calculate the equivalent previous period (same length, immediately before current)
+        $spanDays  = $start->diffInDays($end) + 1;
+        $prevEnd   = $start->copy()->subDay()->endOfDay();
+        $prevStart = $prevEnd->copy()->subDays($spanDays - 1)->startOfDay();
+
+        $masukNow  = (int) StockTransaction::where('type', StockTransaction::TIPE_IN)->whereBetween('created_at', [$start, $end])->sum('quantity');
+        $keluarNow = (int) StockTransaction::where('type', StockTransaction::TIPE_OUT)->whereBetween('created_at', [$start, $end])->sum('quantity');
+        $masukPrev = (int) StockTransaction::where('type', StockTransaction::TIPE_IN)->whereBetween('created_at', [$prevStart, $prevEnd])->sum('quantity');
+        $keluarPrev= (int) StockTransaction::where('type', StockTransaction::TIPE_OUT)->whereBetween('created_at', [$prevStart, $prevEnd])->sum('quantity');
+
+        // Calculate % change — null when previous period has no data (avoid divide-by-zero)
+        $trendMasuk  = $masukPrev  > 0 ? round((($masukNow  - $masukPrev)  / $masukPrev)  * 100, 1) : null;
+        $trendKeluar = $keluarPrev > 0 ? round((($keluarNow - $keluarPrev) / $keluarPrev) * 100, 1) : null;
+
         return [
-            'total_jenis' => Product::count(), // Total unique product barcodes
-            'total_inventory' => Product::sum('current_stock') ?? 0, // Sum of physical items
-            'low_stock' => Product::whereColumn('current_stock', '<=', 'min_stock')->count(), // Requires reorder
-            'masuk_range' => StockTransaction::where('type', StockTransaction::TIPE_IN)->whereBetween('created_at', [$start, $end])->sum('quantity') ?? 0,
-            'keluar_range' => StockTransaction::where('type', StockTransaction::TIPE_OUT)->whereBetween('created_at', [$start, $end])->sum('quantity') ?? 0,
+            'total_jenis'     => Product::count(),
+            'total_inventory' => (int) (Product::sum('current_stock') ?? 0),
+            'low_stock'       => Product::whereColumn('current_stock', '<=', 'min_stock')->count(),
+            'masuk_range'     => $masukNow,
+            'keluar_range'    => $keluarNow,
+            'prev_masuk'      => $masukPrev,
+            'prev_keluar'     => $keluarPrev,
+            'trend_masuk'     => $trendMasuk,   // null = no prev data; positive = up; negative = down
+            'trend_keluar'    => $trendKeluar,
         ];
     }
 
@@ -233,9 +251,15 @@ class StockService
             }
         }
 
+        // Append one empty trailing slot so the last real bar is never at the absolute
+        // right boundary of the ECharts grid — permanently fixes bar clipping.
+        $labels[]   = '';
+        $masukArr[] = 0;
+        $keluarArr[]= 0;
+
         return [
             'labels' => $labels,
-            'masuk' => $masukArr,
+            'masuk'  => $masukArr,
             'keluar' => $keluarArr,
         ];
     }
