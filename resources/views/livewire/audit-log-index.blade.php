@@ -14,8 +14,9 @@
         
         <div class="flex items-center gap-3 w-full md:w-auto">
             <div class="relative flex-1 md:w-64">
-                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 transition-colors duration-300 ease-in-out"></i>
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari Log..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:border-blue-500 dark:border-blue-400 outline-none transition-colors">
+                <i data-lucide="search" wire:loading.remove wire:target="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 transition-colors duration-300 ease-in-out"></i>
+                <i data-lucide="loader-2" wire:loading wire:target="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
+                <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="search" placeholder="Cari Log..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:border-blue-500 dark:border-blue-400 outline-none transition-colors">
             </div>
         </div>
     </div>

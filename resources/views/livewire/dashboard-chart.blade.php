@@ -91,7 +91,7 @@
                         },
                         grid: {
                             left: '2%',
-                            right: '5%',
+                            right: '8%',
                             bottom: '12%',
                             containLabel: true
                         },

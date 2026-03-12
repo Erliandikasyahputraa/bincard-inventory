@@ -81,20 +81,21 @@
         </div>
     @endif
 
-    <div class="grid grid-cols-1 gap-6 lg:gap-8 {{ $produkDitemukan ? 'hidden' : 'grid' }}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 {{ $produkDitemukan ? 'hidden' : 'grid' }}">
         
-        <!-- Manual Input Area (Top) -->
-        <div class="relative group z-30 w-full lg:w-3/4 xl:w-2/3 mx-auto">
-            <div class="flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out items-center justify-center text-center pb-8">
+        <!-- Manual Input Area (Top / Left) -->
+        <div class="relative group z-30 w-full mx-auto">
+            <div class="flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 lg:p-6 lg:px-8 shadow-xl transition-colors duration-300 ease-in-out items-center justify-center text-center pb-8 border-t-4 border-t-blue-500">
                 <div class="w-12 h-12 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center mb-4 transition-colors p-3 mt-2">
                     <i data-lucide="keyboard" class="w-full h-full text-blue-500 transition-colors duration-300 ease-in-out"></i>
                 </div>
                 <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2 transition-colors duration-300 ease-in-out">Ketik Manual / Barcode Scanner Fisik</h3>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 transition-colors duration-300 ease-in-out px-4">Ketik kata kunci nama produk, atau klik Text Box lalu scan menggunakan Alat Barcode Scanner Fisik. Data akan otomatis tertembak.</p>
 
-                <div class="relative group w-full lg:w-3/4 mt-auto">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 transition-colors duration-300 ease-in-out pointer-events-none"></i>
-                    <input type="text" wire:model.live.debounce.300ms="barcodeTerpilih" wire:keydown.enter.prevent="pilihPertama" placeholder="Scan Barcode / SKU..."
+                <div class="relative group w-full mt-auto">
+                    <i data-lucide="search" wire:loading.remove wire:target="barcodeTerpilih" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 transition-colors duration-300 ease-in-out pointer-events-none"></i>
+                    <i data-lucide="loader-2" wire:loading wire:target="barcodeTerpilih" class="absolute left-4 top-1/2 -translate-y-1/2 text-blue-500 w-5 h-5 animate-spin"></i>
+                    <input type="text" enterkeyhint="search" x-data x-on:keydown.enter.prevent="$el.blur()" wire:model.live.debounce.300ms="barcodeTerpilih" placeholder="Scan Barcode / SKU..."
                         class="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-[#0D1117] focus:border-blue-500 dark:border-blue-500 focus:ring-2 focus:ring-blue-500/30 outline-none rounded-2xl font-mono text-base shadow-inner dark:shadow-none font-bold tracking-wider transition-all duration-300">
 
                     <!-- Dropdown Hasil Pencarian Fuzzy -->
@@ -121,8 +122,8 @@
             </div>
         </div>
         
-        <!-- Scanner Camera Area (Bottom) -->
-        <div wire:ignore class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 lg:p-6 shadow-xl relative overflow-hidden flex flex-col items-center transition-colors duration-300 ease-in-out w-full lg:w-3/4 xl:w-2/3 mx-auto">
+        <!-- Scanner Camera Area (Bottom / Right) -->
+        <div wire:ignore class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 lg:p-6 lg:px-8 shadow-xl relative overflow-hidden flex flex-col items-center transition-colors duration-300 ease-in-out w-full mx-auto border-t-4 border-t-emerald-500">
             <div class="mb-5 text-center mt-2">
                 <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200 flex items-center justify-center gap-2 transition-colors duration-300 ease-in-out">
                     <i data-lucide="scan-line" class="w-5 h-5 text-emerald-500"></i>

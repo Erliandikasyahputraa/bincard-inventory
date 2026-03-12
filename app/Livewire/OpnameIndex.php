@@ -183,13 +183,15 @@ class OpnameIndex extends Component
         $queryHistory = StockOpname::with('createdBy')->orderByDesc('tanggal_opname')->orderByDesc('id');
         
         if ($this->historyDate !== '') {
-            $query->whereDate('tanggal_opname', $this->historyDate);
+            $queryHistory->whereDate('tanggal_opname', $this->historyDate);
         }
         
         if ($this->historySearch !== '') {
-            $query->whereHas('createdBy', function($q) {
-                $q->where('name', 'like', '%' . $this->historySearch . '%');
-            })->orWhere('id', 'like', '%' . $this->historySearch . '%');
+            $queryHistory->where(function($q) {
+                $q->whereHas('createdBy', function($subQ) {
+                    $subQ->where('name', 'like', '%' . $this->historySearch . '%');
+                })->orWhere('id', 'like', '%' . $this->historySearch . '%');
+            });
         }
 
         $daftarOpname = $queryHistory->paginate(10);

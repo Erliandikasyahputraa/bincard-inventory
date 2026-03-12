@@ -62,9 +62,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Grafik Transaksi -->
-    <div class="xl:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 lg:p-5 flex flex-col min-h-[350px] lg:min-h-[400px] shadow-sm dark:shadow-none transition-colors duration-300 ease-in-out">
         <livewire:dashboard-chart />
     </div>
 

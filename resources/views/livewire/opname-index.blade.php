@@ -9,7 +9,10 @@
     <div class="mb-6 flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4">
         @if(!$opname)
             <div class="flex items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
-                <input type="date" wire:model.live="tanggalBaru" class="pl-3 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none w-full sm:w-40 text-slate-900 dark:text-white" style="color-scheme: dark;">
+                <div class="relative w-full sm:w-40">
+                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
+                    <input type="date" wire:model.live="tanggalBaru" class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+                </div>
                 <button type="button" wire:click="buatOpname" class="inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap">
                     <i data-lucide="folder-plus" class="w-4 h-4 mr-2"></i> Buat Sesi Opname Baru
                 </button>
@@ -45,8 +48,9 @@
         </div>
 
         <div class="mb-4 relative max-w-md">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-            <input type="text" wire:model.live.debounce.300ms="cariBarang" placeholder="Cari barcode / nama produk dalam sesi ini..." 
+            <i data-lucide="search" wire:loading.remove wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+            <i data-lucide="loader-2" wire:loading wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
+            <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="cariBarang" placeholder="Cari barcode / nama produk dalam sesi ini..." 
                 class="pl-9 pr-4 py-2.5 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
         </div>
 
@@ -93,8 +97,9 @@
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-                        <input type="text" wire:model.live.debounce.300ms="historySearch" placeholder="Cari Sesi ID atau Nama Validator..." 
+                        <i data-lucide="search" wire:loading.remove wire:target="historySearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                        <i data-lucide="loader-2" wire:loading wire:target="historySearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
+                        <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="historySearch" placeholder="Cari Sesi ID atau Nama Validator..." 
                             class="pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none w-full sm:w-64 text-slate-900 dark:text-white dark:placeholder-slate-500">
                     </div>
                     <div class="relative">
