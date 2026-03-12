@@ -8,7 +8,14 @@ use Carbon\Carbon;
 
 class DashboardChart extends Component
 {
-    public $filterType = 'daily';
+    public $startDate;
+    public $endDate;
+
+    public function mount()
+    {
+        $this->startDate = Carbon::now()->subDays(29)->format('Y-m-d');
+        $this->endDate = Carbon::now()->format('Y-m-d');
+    }
 
     public function render()
     {
@@ -19,22 +26,33 @@ class DashboardChart extends Component
         $keluarArr = [];
         $netArr = [];
 
-        if ($this->filterType === 'daily') {
-            $startDate = Carbon::now()->subDays(29)->startOfDay();
-            $endDate = Carbon::now()->endOfDay();
-            
+        // Parsing dates securely
+        $start = Carbon::parse($this->startDate)->startOfDay();
+        $end = Carbon::parse($this->endDate)->endOfDay();
+
+        // Fallback if user selects start > end
+        if ($start->greaterThan($end)) {
+            $temp = $start;
+            $start = $end->startOfDay();
+            $end = $temp->endOfDay();
+        }
+
+        $diffDays = $start->diffInDays($end) + 1; // inclusive
+
+        // Auto-Scale Logic
+        if ($diffDays <= 90) { // DAILY (Max 3 months)
             $masukData = StockTransaction::where('type', 'IN')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('DATE(created_at) as date, SUM(quantity) as total')
                 ->groupBy('date')->pluck('total', 'date');
                 
             $keluarData = StockTransaction::where('type', 'OUT')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('DATE(created_at) as date, SUM(quantity) as total')
                 ->groupBy('date')->pluck('total', 'date');
 
-            for ($i = 0; $i < 30; $i++) {
-                $date = Carbon::now()->subDays(29 - $i);
+            for ($i = 0; $i < $diffDays; $i++) {
+                $date = $start->copy()->addDays($i);
                 $dateStr = $date->format('Y-m-d');
                 $labels[] = $date->translatedFormat('d M');
                 $in = $masukData->get($dateStr, 0);
@@ -43,77 +61,75 @@ class DashboardChart extends Component
                 $keluarArr[] = $out;
                 $netArr[] = $in - $out;
             }
-        } elseif ($this->filterType === 'weekly') {
-            $startDate = Carbon::now()->subWeeks(11)->startOfWeek();
-            $endDate = Carbon::now()->endOfWeek();
-            
+        } elseif ($diffDays <= 365) { // WEEKLY (Max 1 year)
             $masukData = StockTransaction::where('type', 'IN')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('YEARWEEK(created_at, 1) as week, SUM(quantity) as total')
                 ->groupBy('week')->pluck('total', 'week');
                 
             $keluarData = StockTransaction::where('type', 'OUT')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('YEARWEEK(created_at, 1) as week, SUM(quantity) as total')
                 ->groupBy('week')->pluck('total', 'week');
 
-            for ($i = 0; $i < 12; $i++) {
-                $date = Carbon::now()->subWeeks(11 - $i);
-                $weekStr = $date->format('oW'); 
-                $labels[] = 'Mg ' . $date->format('W, M Y');
+            // Find all weeks between start and end
+            $currentPeriod = $start->copy()->startOfWeek();
+            while ($currentPeriod->lessThanOrEqualTo($end)) {
+                $weekStr = $currentPeriod->format('oW'); 
+                $labels[] = 'Mg ' . $currentPeriod->format('W, M Y');
                 $in = $masukData->get($weekStr, 0);
                 $out = $keluarData->get($weekStr, 0);
                 $masukArr[] = $in;
                 $keluarArr[] = $out;
                 $netArr[] = $in - $out;
+                
+                $currentPeriod->addWeek();
             }
-        } elseif ($this->filterType === 'monthly') {
-            $startDate = Carbon::now()->subMonths(11)->startOfMonth();
-            $endDate = Carbon::now()->endOfMonth();
-            
+        } elseif ($diffDays <= 1825) { // MONTHLY (Max 5 years)
             $masukData = StockTransaction::where('type', 'IN')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as total')
                 ->groupBy('month')->pluck('total', 'month');
                 
             $keluarData = StockTransaction::where('type', 'OUT')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as total')
                 ->groupBy('month')->pluck('total', 'month');
 
-            for ($i = 0; $i < 12; $i++) {
-                $date = Carbon::now()->subMonths(11 - $i);
-                $monthStr = $date->format('Y-m');
-                $labels[] = $date->translatedFormat('M Y');
+            $currentPeriod = $start->copy()->startOfMonth();
+            while ($currentPeriod->lessThanOrEqualTo($end)) {
+                $monthStr = $currentPeriod->format('Y-m');
+                $labels[] = $currentPeriod->translatedFormat('M Y');
                 $in = $masukData->get($monthStr, 0);
                 $out = $keluarData->get($monthStr, 0);
                 $masukArr[] = $in;
                 $keluarArr[] = $out;
                 $netArr[] = $in - $out;
+                
+                $currentPeriod->addMonth();
             }
-        } elseif ($this->filterType === 'yearly') {
-            $startDate = Carbon::now()->subYears(4)->startOfYear();
-            $endDate = Carbon::now()->endOfYear();
-            
+        } else { // YEARLY (More than 5 years)
             $masukData = StockTransaction::where('type', 'IN')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('YEAR(created_at) as year, SUM(quantity) as total')
                 ->groupBy('year')->pluck('total', 'year');
                 
             $keluarData = StockTransaction::where('type', 'OUT')
-                ->whereBetween('created_at', [$startDate, $endDate])
+                ->whereBetween('created_at', [$start, $end])
                 ->selectRaw('YEAR(created_at) as year, SUM(quantity) as total')
                 ->groupBy('year')->pluck('total', 'year');
 
-            for ($i = 0; $i < 5; $i++) {
-                $date = Carbon::now()->subYears(4 - $i);
-                $yearStr = $date->format('Y');
+            $currentPeriod = $start->copy()->startOfYear();
+            while ($currentPeriod->lessThanOrEqualTo($end)) {
+                $yearStr = $currentPeriod->format('Y');
                 $labels[] = $yearStr;
                 $in = $masukData->get($yearStr, 0);
                 $out = $keluarData->get($yearStr, 0);
                 $masukArr[] = $in;
                 $keluarArr[] = $out;
                 $netArr[] = $in - $out;
+                
+                $currentPeriod->addYear();
             }
         }
 

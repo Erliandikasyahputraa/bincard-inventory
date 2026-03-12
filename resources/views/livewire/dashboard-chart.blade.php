@@ -1,14 +1,19 @@
 <div>
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-4">
         <h2 class="text-md lg:text-lg font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 ease-in-out">Grafik Transaksi Harian</h2>
         
-        <!-- Time Filter -->
-        <select wire:model.live="filterType" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full sm:w-auto p-2 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="daily">Harian (30 Hari Terakhir)</option>
-            <option value="weekly">Mingguan (12 Minggu Terakhir)</option>
-            <option value="monthly">Bulanan (12 Bulan Terakhir)</option>
-            <option value="yearly">Tahunan (5 Tahun Terakhir)</option>
-        </select>
+        <!-- Time Filter: Date Range -->
+        <div class="flex items-center gap-2 w-full xl:w-auto overflow-x-auto no-scrollbar pb-1">
+            <div class="relative w-full sm:w-36 flex-shrink-0">
+                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                <input type="date" wire:model.live="startDate" class="pl-8 pr-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+            </div>
+            <span class="text-slate-400 text-xs font-medium">s/d</span>
+            <div class="relative w-full sm:w-36 flex-shrink-0">
+                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                <input type="date" wire:model.live="endDate" class="pl-8 pr-3 py-1.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+            </div>
+        </div>
     </div>
     
     <div class="flex-1 w-full relative min-h-[300px] overflow-hidden" wire:ignore>
@@ -43,18 +48,11 @@
                 const textColor = isDark ? '#c9d1d9' : '#64748b';
                 const gridColor = isDark ? '#30363D' : '#e2e8f0';
 
-                    // Smart starting value definition prioritizing "Present Date" focus over historical mass
-                    let frameSize = 12; // default
-                    const filterDropdown = document.querySelector('select[wire\\:model\\.live="filterType"]');
-                    if (filterDropdown) {
-                        const t = filterDropdown.value;
-                        if (t === 'daily') frameSize = 7;
-                        else if (t === 'weekly') frameSize = 4;
-                        else if (t === 'monthly') frameSize = 6;
-                    }
-
-                    const zoomStartValue = data.labels.length > frameSize ? data.labels.length - frameSize : 0;
-                    const zoomEndValue = data.labels.length - 1;
+                    // Smart zoom calculation: show about latest 15 bars max initially
+                    let frameSize = 15;
+                    const totalBars = data.labels.length;
+                    const zoomStartValue = totalBars > frameSize ? totalBars - frameSize : 0;
+                    const zoomEndValue = totalBars - 1;
 
                     const option = {
                         tooltip: {

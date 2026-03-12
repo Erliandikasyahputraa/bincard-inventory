@@ -17,8 +17,7 @@
                 <div class="flex gap-2">
                     <div class="relative flex-1">
                         <i data-lucide="scan-line" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 transition-colors duration-300 ease-in-out"></i>
-                        <input type="text" wire:model="barcodeTerpilih" wire:keydown.enter.prevent="pilihProdukDariBarcode"
-                            id="barcode"
+                        <input type="text" enterkeyhint="search" x-data x-on:keydown.enter.prevent="$el.blur(); $wire.pilihProdukDariBarcode()" wire:model="barcodeTerpilih" id="barcode"
                             class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-xl focus:bg-white dark:focus:bg-slate-950 focus:ring-1 focus:ring-blue-500 font-mono text-lg tracking-wider transition-all duration-300 shadow-inner"
                             placeholder="Ketik kode atau scan QR..."
                             autofocus>

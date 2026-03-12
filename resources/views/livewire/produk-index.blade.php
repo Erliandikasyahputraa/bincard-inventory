@@ -6,16 +6,16 @@
 </x-slot:header>
 
 <div class="w-full">
-    <div class="flex flex-col md:flex-row justify-end items-center gap-4 mb-4 lg:mb-6">
-        <div class="flex flex-col sm:flex-row w-full md:w-auto gap-3 flex-1 md:flex-none">
-            <div class="relative group flex-1 md:w-64">
+    <div class="flex flex-col lg:flex-row justify-end lg:items-center gap-4 mb-4 lg:mb-6">
+        <div class="flex flex-col sm:flex-row w-full lg:w-auto gap-3 flex-1 lg:flex-none">
+            <div class="relative group flex-1 md:w-80 lg:w-96">
                 <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
                 <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
                 <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="cari" placeholder="Cari nama, barcode, SKU..."
                     class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm">
             </div>
 
-            <div class="relative w-full sm:w-48">
+            <div class="relative w-full sm:w-40 flex-shrink-0">
                 <i data-lucide="arrow-up-down" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
                 <select wire:model.live="sortBy" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
                     <option value="name_asc">Nama (A-Z)</option>
@@ -27,11 +27,11 @@
                 <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
             </div>
             
-            <div class="flex gap-2">
-                <a href="{{ route('produk.import') }}" class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+            <div class="flex gap-2 w-full sm:w-auto">
+                <a href="{{ route('produk.import') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
                     <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-slate-500 dark:text-slate-400 transition-colors duration-300 ease-in-out"></i> Import
                 </a>
-                <a href="{{ route('produk.tambah') }}" class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm whitespace-nowrap">
+                <a href="{{ route('produk.tambah') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm whitespace-nowrap">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah
                 </a>
             </div>

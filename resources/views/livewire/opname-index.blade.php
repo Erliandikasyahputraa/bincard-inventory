@@ -8,12 +8,12 @@
 <div class="w-full">
     <div class="mb-6 flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4">
         @if(!$opname)
-            <div class="flex items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
-                <div class="relative w-full sm:w-40">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                <div class="relative w-full sm:w-40 flex-shrink-0">
                     <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
                     <input type="date" wire:model.live="tanggalBaru" class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
                 </div>
-                <button type="button" wire:click="buatOpname" class="inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap">
+                <button type="button" wire:click="buatOpname" class="inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap flex-shrink-0">
                     <i data-lucide="folder-plus" class="w-4 h-4 mr-2"></i> Buat Sesi Opname Baru
                 </button>
             </div>
@@ -68,7 +68,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800">
                         @foreach($details as $d)
-                            <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                            <tr wire:key="detail-{{ $d->id }}" class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $d->product->name }}</td>
                                 <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $d->product->barcode }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
@@ -120,7 +120,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800">
                         @forelse($daftarOpname as $o)
-                            <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                            <tr wire:key="opname-{{ $o->id }}" class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $o->tanggal_opname->format('d M Y') }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
                                     <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
