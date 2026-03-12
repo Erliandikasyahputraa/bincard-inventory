@@ -70,7 +70,7 @@
                 </div>
                 <div class="flex items-baseline gap-1 mt-auto sm:mt-0">
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white truncate">{{ number_format($stats['low_stock'], 0, ',', '.') }}</h3>
-                    <span class="text-[9px] sm:text-[10px] text-slate-400">Brg</span>
+                    <span class="text-[9px] sm:text-[10px] text-slate-400">Barang</span>
                 </div>
             </div>
         </div>
@@ -234,9 +234,9 @@
                 },
                 grid: {
                     left: '1%',
-                    right: '3%',
+                    right: '4%',
                     top: '5%',
-                    bottom: '32%',
+                    bottom: '20%', // room for legend + x-labels (no slider needed)
                     containLabel: true
                 },
                 xAxis: {
@@ -273,55 +273,28 @@
                          return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
                     }
                 },
-                // Dual dataZoom: inside (mouse-wheel/touch) + slider (visible drag bar)
-                // Use percentage-based start/end so slider handle never goes out of bounds
-                dataZoom: (function() {
-                    const total = data.labels.length;
-                    const show = Math.min(10, total);                         // Max 10 columns visible
-                    const startPct = total > 0 ? Math.round(((total - show) / total) * 100) : 0;
-                    const shared = { start: startPct, end: 100, zoomLock: true };
-                    return [
-                        Object.assign({ type: 'inside', moveOnMouseWheel: true, moveOnMouseMove: true }, shared),
-                        Object.assign({
-                            type: 'slider',
-                            height: 20,
-                            bottom: '13%',
-                            borderColor: isDark ? '#334155' : '#e2e8f0',
-                            backgroundColor: isDark ? '#1e293b' : '#f1f5f9',
-                            fillerColor: isDark ? 'rgba(59,130,246,0.2)' : 'rgba(59,130,246,0.12)',
-                            handleStyle: { color: '#3b82f6', borderColor: '#3b82f6' },
-                            textStyle: { color: textColor, fontSize: 9 },
-                            showDetail: false,
-                            showDataShadow: true,
-                            dataBackground: {
-                                lineStyle: { color: '#3b82f6', opacity: 0.3 },
-                                areaStyle: { color: '#3b82f6', opacity: 0.08 }
-                            }
-                        }, shared)
-                    ];
-                })(),
                 series: [
                     {
                         name: 'Barang Masuk',
                         type: 'bar',
                         data: data.masuk,
+                        clip: false, // ECharts clips bars that are on the boundary; this prevents that
                         itemStyle: { 
-                            color: isDark ? '#10b981' : '#34d399', // Emerald
-                            borderRadius: [4, 4, 0, 0] // Rounded tops
+                            color: isDark ? '#10b981' : '#34d399',
+                            borderRadius: [4, 4, 0, 0]
                         },
-                        barMaxWidth: 28,
-                        barGap: '10%'
+                        barMaxWidth: 28
                     },
                     {
                         name: 'Barang Keluar',
                         type: 'bar',
                         data: data.keluar,
+                        clip: false,
                         itemStyle: { 
-                            color: isDark ? '#f43f5e' : '#fb7185', // Rose
-                            borderRadius: [4, 4, 0, 0] // Rounded tops
+                            color: isDark ? '#f43f5e' : '#fb7185',
+                            borderRadius: [4, 4, 0, 0]
                         },
-                        barMaxWidth: 28,
-                        barGap: '10%'
+                        barMaxWidth: 28
                     }
                 ]
             };
