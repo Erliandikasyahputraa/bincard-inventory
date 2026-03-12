@@ -32,7 +32,7 @@ class LaporanTransaksiExport implements FromQuery, WithHeadings, WithMapping, Wi
 
     public function headings(): array
     {
-        return ['Tanggal', 'Produk', 'Barcode', 'Tipe', 'Stok Awal', 'Transaksi', 'Stok Akhir', 'Referensi', 'Yang Mengeluarkan', 'Penerima Barang', 'Catatan'];
+        return ['Tanggal', 'Produk', 'Barcode', 'Tipe', 'Stok Awal', 'Transaksi', 'Stok Akhir', 'Yang Mengeluarkan', 'Penerima Barang', 'Catatan'];
     }
 
     public function map($row): array
@@ -47,10 +47,9 @@ class LaporanTransaksiExport implements FromQuery, WithHeadings, WithMapping, Wi
             $row->product->name ?? '',
             $row->product->barcode ?? '',
             $row->type,
-            $row->stock_before,
-            $row->type === StockTransaction::TIPE_IN ? '+' . abs($row->quantity) : '-' . abs($row->quantity),
-            $row->stock_after,
-            $row->reference_id ?? '',
+            $row->stock_before ?? 0,
+            $row->type === StockTransaction::TIPE_IN ? '+' . abs((int)$row->quantity) : '-' . abs((int)$row->quantity),
+            $row->stock_after ?? 0,
             $row->user->name ?? '', // Yang Mengeluarkan
             $penerima,              // Penerima Barang
             $row->note ?? '',

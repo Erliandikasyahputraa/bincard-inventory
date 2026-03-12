@@ -269,25 +269,6 @@
                     // Suggested Max so bars look fuller, but leave room for large spikes automatically
                     max: function (value) {
                          // Always create roof of +20% above the single highest spike
-                         return value.max === 0 ? 10 : Math.ceil(value.max * 1.2);
-                    }
-                },
-                dataZoom: [
-                    {
-                        type: 'inside', // Allow mouse-wheel / touch dragging
-                        start: 0,
-                        end: 100
-                    },
-                    {
-                        type: 'slider', // Visual horizontal scrollbar below the chart
-                        start: 0,
-                        end: 100,
-                        bottom: 0,
-                        height: 20,
-                        borderColor: 'transparent',
-                        textStyle: { color: textColor, fontSize: 9 }
-                    }
-                ],
                 series: [
                     {
                         name: 'Barang Masuk',
