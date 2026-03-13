@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name', 'BINGO'))</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -32,8 +33,8 @@
         <!-- Sidebar - Dark Enterprise Style -->
         <aside :class="sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'" class="bg-white dark:bg-slate-900 transition-colors duration-300 transition-all duration-500 fixed h-full z-50 flex flex-col border-r border-slate-200 dark:border-[#21262D] shadow-xl">
             <div class="p-8 flex items-center space-x-3 h-24 border-b border-slate-200 dark:border-[#21262D] transition-colors duration-300">
-                <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 flex-shrink-0 transition-colors duration-300 ease-in-out">
-                    <i data-lucide="scan" stroke-width="2.5" class="w-5 h-5"></i>
+                <div class="w-10 h-10 overflow-hidden rounded-xl flex items-center justify-center bg-white shadow-lg flex-shrink-0 transition-all duration-300 ease-in-out">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-1">
                 </div>
                 <span x-show="sidebarOpen" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight whitespace-nowrap flex-1 transition-colors duration-300 ease-in-out">BINGO</span>
                 <button x-show="sidebarOpen" @click="sidebarOpen = false" class="lg:hidden p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-200 dark:border-slate-800">

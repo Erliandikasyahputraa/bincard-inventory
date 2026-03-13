@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - BINGO</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -13,8 +14,8 @@
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#238636] to-[#58A6FF] transition-colors duration-300 ease-in-out"></div>
         
         <div class="text-center mb-8 transition-colors duration-300 ease-in-out">
-            <div class="w-16 h-16 bg-emerald-600 dark:bg-emerald-500 rounded-2xl mx-auto flex items-center justify-center text-white shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 mb-5 relative top-0 hover:-top-1 transition-all">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            <div class="w-20 h-20 bg-white border border-slate-100 dark:border-slate-800 rounded-3xl mx-auto flex items-center justify-center overflow-hidden shadow-xl mb-5 relative top-0 hover:-top-1 transition-all">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-2">
             </div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">BINGO</h1>
             <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 transition-colors duration-300 ease-in-out">Sistem Manajemen Inventaris Digital</p>

@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+CHECKLIST DEPLOYMENT APLIKASI BINCARD (SIAP HOSTING)
+--------------------------------------------------------------------------------
+
+PANDUAN CEPAT PINDAH DARI LOKAL KE PRODUKSI:
+
+1. ZIP & UPLOAD:
+   - Kompres semua file (kecuali folder /vendor dan /node_modules).
+   - Upload ke File Manager hosting Anda satu level di atas public_html.
+   - Ekstrak filenya.
+
+2. KONFIGURASI DATABASE:
+   - Buat database, user, dan password di MySQL/cPanel.
+   - Buka file .env hasil ekstrak tadi.
+   - Sesuaikan DB_DATABASE, DB_USERNAME, dan DB_PASSWORD.
+   - Ubah APP_ENV=production dan APP_DEBUG=false.
+   - Ubah APP_URL=https://nama-domain-anda.com.
+
+3. SETTING FOLDER PUBLIC:
+   - Pindahkan seluruh file di dalam folder /public (termasuk .htaccess) ke dalam folder public_html hosting Anda.
+   - Buka public_html/index.php.
+   - Edit baris require yang mengarah ke bootstrap/app.php agar path-nya sesuai ke lokasi folder ekstraksi Anda tadi.
+
+4. PERINTAH WAJIB (Run via SSH Terminal):
+   - composer install --no-dev
+   - php artisan migrate
+   - php artisan storage:link
+   - php artisan key:generate
+
+5. JIKA TERJADI ERROR 500:
+   - Pastikan folder storage dan bootstrap/cache memilik izin tulis (Permission 775 atau 755).
+   - Pastikan versi PHP di hosting adalah PHP 8.2 ke atas.
+   - Cek storage/logs/laravel.log untuk detail error.
+
+6. INTEGRASi SISTEM QR:
+   - Pastikan website sudah memakai HTTPS (SSL) agar fitur SCAN QR di browser bisa mengakses kamera HP.
+
+--------------------------------------------------------------------------------
+Dibuat Oleh: Asisten Profesional Anda 🚀
+--------------------------------------------------------------------------------

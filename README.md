@@ -1,154 +1,67 @@
-<div align="center">
-    <img src="public/logo-placeholder.png" alt="Logo" width="120" style="border-radius: 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px;">
-    <h1>Digital Bincard & Inventory Management</h1>
-    <p><b>Sistem Pencatatan Gudang, Stock Opname, dan Generator QR Code Modern</b></p>
-    <a href="#fitur-utama">🚀 Fitur Utama</a> •
-    <a href="#tech-stack">⚙️ Tech Stack</a> •
-    <a href="#instalasi-lokal">💻 Instalasi</a>
-</div>
+# Digital Bincard & Inventory System 📦
+
+Sistem Manajemen Inventaris Modern berbasis Web yang dirancang untuk menggantikan buku bincard manual (ledger) menjadi sistem digital yang akurat, cepat, dan visual.
 
 ---
 
-## 📌 Deskripsi Sistem
+## 🚀 Overview Proyek
 
-**Digital Bincard** adalah solusi aplikasi berbasis Web generasi terbaru yang dirancang untuk mentransformasi sistem pencatatan stok gudang manual menjadi ekosistem digital penuh. Mengusung antarmuka **Hybrid Pro** yang dirancang secara khusus untuk kecepatan operasional (Fast-Entry) dan kenyamanan mata (Real-time Dark Mode).
+Proyek ini adalah solusi *Warehouse Management System* (WMS) skala menengah yang fokus pada kemudahan input, akurasi data, dan visualisasi stok secara *real-time*. Dengan fitur scanning QR Code dan integrasi laporan otomatis, sistem ini meminimalkan kesalahan manusia (human error) dalam pencatatan barang.
 
-Aplikasi ini dapat mencetak label *QR Code* pintar, melacak riwayat inventaris (*Audit Trail*), serta menerbitkan dokumen Surat Jalan dan Laporan PDF/Excel siap cetak dalam hitungan detik.
+## 🛠️ Technology Stack (Mamma Mia Stack)
 
-## 🚀 Fitur Utama (Core Modules)
+Sistem ini dibangun menggunakan teknologi mutakhir dalam ekosistem PHP untuk memastikan performa yang cepat dan pengalaman pengguna yang luar biasa:
 
-### 📦 1. Manajemen Master Data (Produk, Pemasok, Pelanggan)
-Modul utama untuk mendata entitas sistem dengan cepat.
-- **Bulk Import via Excel:** Masukkan ribuan data produk secara instan menggunakan format `.xlsx`.
-- **Intelligent Stock Tracking:** Menyimpan *SKU*, harga, unit (pcs/dus/box), serta histori perputaran barang.
-
-### 🖨️ 2. QR Code Generator & Label Printing
-Mencetak ID unik untuk menempel di barang fisik.
-- **Satu-Klik Cetak (Massal):** Fitur untuk menge-print seluruh stok dalam bentuk *grid* QR Code untuk dipotong dan ditempel.
-- **Cetak Tunggal:** Cetak QR spesifik per-barang ukuran penuh.
-- **Decrypted Scanning:** QR memuat URL pintar, seketika discan akan langsung diarahkan ke form aksi produk tersebut.
-
-### 🔄 3. Ledger Transaksi & Scan Cepat (Barang Masuk/Keluar)
-Mencatat lalu lintas (*In/Out*) fisik barang layaknya kartu stok konvensional.
-- **Retroactive Binding:** Kemampuan untuk "Backdating" / menyesuaikan tanggal riwayat ke masa lalu.
-- **Barcode Scanner Optimized:** Form difokuskan untuk interaksi instan dengan *Hardware Scanner Laser*. Sekali "Tit!", barang masuk terekam.
-- **Auto-Generate Surat Jalan:** Setelah log transaksi keluar tersimpan, sistem langsung menawarkan *Download Surat Jalan PDF* bermaterai (logo) perusahaan.
-
-### 📋 4. Sesi Stock Opname (Gudang vs Sistem)
-Audit integritas data secara proaktif.
-- **Sesi Audit Real-time:** Menampilkan perbandingan antara jumlah *Stok Sistem* versus *Stok Fisik Aktual* yang sedang dihitung manual di lapangan.
-- **Automated Reconciliation:** Jika ada *selisih* (kurang/lebih), tombol **Rekonsiliasi** akan secara otomatis membuat Log Transaksi (*Penyesuaian/Adjust*) siluman untuk menyeimbangkan angka mesin dengan angka nyata.
-
-### 📊 5. Visualisasi Dashboard & Laporan Analitik
-Pemantauan lalu lintas inventaris di ujung jari.
-- **Area Spline Chart (ApexCharts):** Grafik tren stok Masuk & Keluar harian dengan gradien modern.
-- **Laporan Dinamis (PDF & Excel):** Filter transaksi berdasar rentang waktu (*Mulai - Sampai*) dan ekspor ke laporan format CSV Excel atau *Cetak PDF Tabular*.
-
-### 🎨 6. Arsitektur UX (Glassmorphic) & Master Theme
-- **Livewire Seamless Nav:** Transisi halaman tanpa kedip (SPA feel).
-- **Master Light/Dark Mode:** Algoritma tema UI yang bisa menukar keseluruhan warna *(Slate/Emerald/Blue)* tanpa memuat ulang layar, responsif secara reaktif ke semua input, kalender, peringatan (*SweetAlert*), dan grafik statistik.
+1.  **Core Framework**: Laravel 11 (Versi terbaru dengan struktur paling ringan).
+2.  **Frontend Engine**: Livewire 3 & Alpine.js (Memungkinkan interaksi *real-time* tanpa refresh halaman).
+3.  **Styling**: Tailwind CSS (Desain modern, responsif, dan mendukung Dark Mode).
+4.  **Database**: MySQL (Reliability dan integritas data tinggi).
+5.  **Data Visualization**: ECharts 5 (Grafik interaktif untuk tren stok).
+6.  **Icons**: Lucide Icons (Ikon vektor yang tajam dan elegan).
+7.  **Export Engine**: Laravel Excel & DomPDF (Untuk laporan Excel dan PDF Surat Jalan).
 
 ---
 
-## ⚙️ Tech Stack & Ekosistem Spesifikasi
+## ✨ Fitur Utama & Fungsi
 
-Aplikasi ini dibangun menggunakan tumpukan teknologi paling progresif dan termutakhir dalam ekosistem *Fullstack PHP Framework*:
+### 1. Dashboard "Overview" (Komando Pusat)
+- **Ringkasan Metrik**: TOTAL JENIS, STOK KRITIS, BARANG MASUK & KELUAR secara instan.
+- **Grafik Arus Barang**: Visualisasi tren harian/bulanan untuk memantau pergerakan gudang.
+- **Aktivitas Terbaru**: Feed log transaksi secara real-time untuk pengawasan instan.
+- **Smart Filter**: Filter cepat (Harian, Mingguan, Bulanan) dengan reaktivitas instan.
 
-| Lapisan (Layer)         | Teknologi & Versi                                                                 |
-| ----------------------- | --------------------------------------------------------------------------------- |
-| **Server Framework**    | Laravel 11.x (PHP 8.2+)                                                         |
-| **Frontend Renderer**   | Livewire 3 (Reaktivitas API & DOM Morphing)                                        |
-| **Client Scripting**    | Alpine.js (State Management ringan di browser, *Theme Switching*)                 |
-| **Styling & CSS**       | Tailwind CSS v4.0.0-alpha (Utility-first CSS dengan *Custom Variables*)            |
-| **Database Engine**     | MySQL / MariaDB (Relational Database)                                              |
-| **PDF Engine Engine**   | dompdf (`barryvdh/laravel-dompdf`)                                                |
-| **Excel Spreadsheet**   | Maatwebsite/Laravel-Excel (`maatwebsite/excel`)                                    |
-| **Data Visualization**  | ApexCharts.js (Interaktif Dashboard)                                               |
-| **Iconography**         | Lucide SVG Icons (`lucide.createIcons()`)                                          |
-| **Notification Engine** | SweetAlert 2 (Pop-up Dinamis)                                                      |
+### 2. Master Data (Pondasi Sistem)
+- **Manajemen Produk**: Input detail barang dengan kategori dan satuan.
+- **Pemasok & Pelanggan**: Database rekanan bisnis untuk mempermudah tracking asal dan tujuan barang.
+- **Bulk Import**: Mendukung impor data besar dalam hitungan detik menggunakan template Excel.
 
----
+### 3. Inventarisasi & Operasi (Input Cepat)
+- **Barang Masuk (IN)**: Pencatatan stok masuk dari pemasok dengan validasi otomatis.
+- **Barang Keluar (OUT)**: Pencatatan pengiriman barang ke pelanggan.
+- **Scan Barcode/QR**: Dukungan scanner via kamera browser untuk pencarian barang kilat.
+- **Surat Jalan Otomatis**: Generate PDF Surat Jalan secara profesional langsung dari transaksi.
 
-## 💻 Instalasi Lokal (Developer & Admin Setup)
+### 4. Pelaporan & Audit (Transparansi)
+- **Stock Opname**: Fitur sinkronisasi stok fisik dengan sistem untuk audit berkala.
+- **Laporan Transaksi**: Filter laporan mendalam yang dapat diekspor ke Excel.
+- **Audit Logs**: Rekaman jejak setiap perubahan data (siapa melakukan apa, kapan) untuk keamanan tingkat tinggi.
 
-Ikuti panduan ini jika Anda ingin menjalankan Digital Bincard di *Localhost* (XAMPP/Laragon/Valet).
-
-### Prasyarat
-- PHP >= 8.2 (Pastikan ekstensi dom, fileinfo, gd, curl aktif di `php.ini`)
-- Node.js (Versi 18+ disarankan) & NPM
-- Composer
-- Database Server (MySQL/MariaDB)
-
-### Langkah Pemasangan
-
-1. **Clone & Masuk ke Direktori**
-   ```bash
-   git clone https://github.com/Erliandikasyahputraa/bincard-inventory.git
-   cd bincard-inventory
-   ```
-
-2. **Install Ketergantungan Backend (PHP)**
-   ```bash
-   composer install
-   ```
-
-3. **Install Ketergantungan Frontend (CSS/JS)**
-   ```bash
-   npm install
-   ```
-
-4. **Konfigurasi Environment Database**
-   Salin file environtment *blueprint*:
-   ```bash
-   cp .env.example .env
-   ```
-   Buka file `.env`. Ubah pengaturan kredensial database sesuai komputer Anda:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=bincard_db
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
-
-5. **Generate App Key & Siapkan Penyimpanan**
-   ```bash
-   php artisan key:generate
-   php artisan storage:link
-   ```
-
-6. **Bangun Struktur Database (Migrasi & Dummy Data)**
-   Aplikasi menuntut *Seeder* awal untuk membuat akun Admin Pertama Pintu Masuk.
-   ```bash
-   php artisan migrate:fresh --seed
-   ```
-   *(Secara otomatis akan membuat Akun Role: Admin dan Role: Pelaksana)*
-
-7. **Compile Asset (Live-Reload CSS & JS Tailwind)**
-   ```bash
-   npm run build
-   ```
-
-8. **Nyalakan Server Aplikasi**
-   ```bash
-   php artisan serve
-   ```
-   *(Akses `http://127.0.0.1:8000` di broswer Anda)*
+### 5. Keamanan & Personalisasi
+- **User Management**: Pengaturan hak akses (Administrator vs Pelaksana).
+- **Dark Mode Support**: UI yang nyaman di mata untuk penggunaan jangka panjang di gudang.
+- **Pengaturan Perusahaan**: Kustomisasi nama, logo, dan alamat perusahaan pada invoice/surat jalan.
 
 ---
 
-### Informasi Default Login
+## 📖 Cara Penggunaan (Panduan Singkat)
 
-Setelah proses `php artisan migrate:fresh --seed` selesai, sistem membuat dua jenis aktor untuk pengujian:
-
-**1. Level Administrator (Akses Penuh):**
-- **Email:** `admin@bincard.test`
-- **Password:** `password`
-
-**2. Level Staf / Pelaksana (Terbatas):**
-- **Email:** `pelaksana@bincard.test`
-- **Password:** `password`
+1.  **Persiapan**: Login ke sistem dan isi **Master Produk** (atau impor via Excel).
+2.  **Transaksi**: Gunakan menu **Barang Masuk** saat stok tiba, atau **Barang Keluar** untuk pengiriman.
+3.  **Monitoring**: Pantau pergerakan di **Dashboard** setiap pagi untuk melihat stok yang kritis (hampir habis).
+4.  **Audit**: Lakukan **Stock Opname** setiap akhir bulan untuk memastikan data sistem 100% akurat dengan fisik.
+5.  **Pelaporan**: Ekspor laporan dari menu **Laporan** untuk kebutuhan manajemen atau cetak Surat Jalan di detail transaksi.
 
 ---
-*© 2026 Developed with Laravel & Livewire Ecosystem.*
+
+**Dikerjakan Oleh**: [Nama Anda/Perusahaan Anda]  
+**Status**: Production Ready 🚀
