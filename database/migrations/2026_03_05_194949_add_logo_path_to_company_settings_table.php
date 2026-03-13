@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('company_settings', function (Blueprint $table) {
-            $table->string('logo_path')->nullable()->after('email');
-        });
+        if (!Schema::hasColumn('company_settings', 'logo_path')) {
+            Schema::table('company_settings', function (Blueprint $table) {
+                $table->string('logo_path')->nullable()->after('email');
+            });
+        }
     }
 
     /**
