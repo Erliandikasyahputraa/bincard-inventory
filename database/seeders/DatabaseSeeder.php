@@ -26,9 +26,11 @@ class DatabaseSeeder extends Seeder
             ])->assignRole('Admin');
         }
         if (User::where('email', 'pelaksana@example.com')->doesntExist()) {
-            User::factory()->create([
+            User::create([
                 'name' => 'Pelaksana',
                 'email' => 'pelaksana@example.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'email_verified_at' => now(),
             ])->assignRole('Pelaksana');
         }
     }
