@@ -117,10 +117,9 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             $kodeRak,
             $product?->name ?? '-',
             $row->type,                                // Column F
-            // Use stored values if available, fallback to computed, then 0
-            (int)($row->stock_before ?? ($row->computed_stock_before ?? 0)), 
+            (int) ($row->getAttribute('stock_before') ?? ($row->computed_stock_before ?? 0)), 
             $qtyStr,                                   // Column H
-            (int)($row->stock_after ?? ($row->computed_stock_after ?? 0)),
+            (int) ($row->getAttribute('stock_after') ?? ($row->computed_stock_after ?? 0)),
             $row->user?->name ?? '-',
             $penerima ?: '-',
             $row->note ?? '-',

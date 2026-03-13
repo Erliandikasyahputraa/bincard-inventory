@@ -18,6 +18,8 @@ class StockTransaction extends Model
         'product_id',
         'type',
         'quantity',
+        'stock_before',
+        'stock_after',
         'reference_id',
         'user_id',
         'note',
