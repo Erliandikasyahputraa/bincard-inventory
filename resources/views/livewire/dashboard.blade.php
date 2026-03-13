@@ -281,16 +281,15 @@ document.addEventListener('livewire:initialized', () => {
                 textStyle: { color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 12 },
                 padding: [10, 14],
                 formatter: function(params) {
-                    if (!params[0].name) return ''; // Hide tooltip for trailing empty slot
+                    if (!params[0].name) return '';
                     let html = `<div style="font-weight:700;margin-bottom:8px;font-size:11px;color:${textColor};letter-spacing:0.04em;text-transform:uppercase">${params[0].name}</div>`;
                     params.forEach(p => {
-                        if (p.value > 0) {
-                            html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                                <span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${p.color}"></span>
-                                <span style="flex:1;font-size:12px">${p.seriesName}</span>
-                                <b>${p.value.toLocaleString('id-ID')} Unit</b>
-                            </div>`;
-                        }
+                        // Display value with series name
+                        html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                            <span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${p.color}"></span>
+                            <span style="flex:1;font-size:12px">${p.seriesName}</span>
+                            <b>${Math.abs(p.value).toLocaleString('id-ID')} Unit</b>
+                        </div>`;
                     });
                     return html;
                 }
@@ -298,17 +297,36 @@ document.addEventListener('livewire:initialized', () => {
 
             legend: {
                 data: ['Barang Masuk', 'Barang Keluar'],
-                bottom: 4,
+                bottom: 35, // Moved up to make room for slider
                 textStyle: { color: textColor, fontSize: 11, fontWeight: 600 },
                 icon: 'roundRect',
                 itemWidth: 12, itemHeight: 8, itemGap: 20
             },
 
+            // --- THE SLIDER (dataZoom) ---
+            dataZoom: [
+                {
+                    type: 'slider',
+                    show: true,
+                    height: 20,
+                    bottom: 5,
+                    handleSize: '100%',
+                    handleStyle: { color: isDark ? '#475569' : '#cbd5e1' },
+                    textStyle: { color: textColor, fontSize: 9 },
+                    fillerColor: isDark ? 'rgba(51,65,85,0.4)' : 'rgba(203,213,225,0.4)',
+                    borderColor: 'transparent',
+                    backgroundColor: 'transparent',
+                    start: 0,
+                    end: 100
+                },
+                { type: 'inside' } // Enable mousewheel/pinch zoom
+            ],
+
             grid: {
                 left: '25',
-                right: '60', // Max focus: prevent all possible clipping on long ranges
+                right: '40',
                 top: '45',
-                bottom: '75',
+                bottom: '100', // Increased to accommodate slider + legend
                 containLabel: true
             },
 

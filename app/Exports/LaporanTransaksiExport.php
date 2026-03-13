@@ -62,6 +62,10 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
                 $runningBalance[$productId] = $stockAfter;
             }
 
+            // Explicitly set attributes on the model to ensure visibility in map()
+            $row->setAttribute('computed_stock_before', $row->computed_stock_before);
+            $row->setAttribute('computed_stock_after', $row->computed_stock_after);
+
             return $row;
         });
 
@@ -112,10 +116,11 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             $kodeBarang,
             $kodeRak,
             $product?->name ?? '-',
-            $row->type,                                // Column F — used by styles() to determine color
-            (int)($row->computed_stock_before ?? 0),   // Column G — force int, never blank
-            $qtyStr,                                   // Column H — always signed string
-            (int)($row->computed_stock_after  ?? 0),   // Column I — force int, never blank
+            $row->type,                                // Column F
+            // Use stored values if available, fallback to computed, then 0
+            (int)($row->stock_before ?? ($row->computed_stock_before ?? 0)), 
+            $qtyStr,                                   // Column H
+            (int)($row->stock_after ?? ($row->computed_stock_after ?? 0)),
             $row->user?->name ?? '-',
             $penerima ?: '-',
             $row->note ?? '-',

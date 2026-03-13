@@ -182,7 +182,7 @@ class StockService
                 
             $keluarData = StockTransaction::where('type', StockTransaction::TIPE_OUT)
                 ->whereBetween('created_at', [$start, $end])
-                ->selectRaw('DATE(created_at) as date, SUM(quantity) as total')
+                ->selectRaw('DATE(created_at) as date, ABS(SUM(quantity)) as total')
                 ->groupBy('date')->pluck('total', 'date');
 
             for ($i = 0; $i < $diffDays; $i++) {
@@ -200,7 +200,7 @@ class StockService
                 
             $keluarData = StockTransaction::where('type', StockTransaction::TIPE_OUT)
                 ->whereBetween('created_at', [$start, $end])
-                ->selectRaw('YEARWEEK(created_at, 1) as week, SUM(quantity) as total')
+                ->selectRaw('YEARWEEK(created_at, 1) as week, ABS(SUM(quantity)) as total')
                 ->groupBy('week')->pluck('total', 'week');
 
             $currentPeriod = $start->copy()->startOfWeek();
@@ -219,7 +219,7 @@ class StockService
                 
             $keluarData = StockTransaction::where('type', StockTransaction::TIPE_OUT)
                 ->whereBetween('created_at', [$start, $end])
-                ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as total')
+                ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, ABS(SUM(quantity)) as total')
                 ->groupBy('month')->pluck('total', 'month');
 
             $currentPeriod = $start->copy()->startOfMonth();
@@ -238,7 +238,7 @@ class StockService
                 
             $keluarData = StockTransaction::where('type', StockTransaction::TIPE_OUT)
                 ->whereBetween('created_at', [$start, $end])
-                ->selectRaw('YEAR(created_at) as year, SUM(quantity) as total')
+                ->selectRaw('YEAR(created_at) as year, ABS(SUM(quantity)) as total')
                 ->groupBy('year')->pluck('total', 'year');
 
             $currentPeriod = $start->copy()->startOfYear();
