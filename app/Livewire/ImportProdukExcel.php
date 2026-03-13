@@ -7,6 +7,9 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 
+use Livewire\Attributes\Title;
+
+#[Title('Import Produk')]
 class ImportProdukExcel extends Component
 {
     use WithFileUploads;

@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Profil Saya')]
 class ProfileForm extends Component
 {
     public string $name = '';

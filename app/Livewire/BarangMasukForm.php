@@ -6,6 +6,9 @@ use App\Models\Product;
 use App\Services\StockService;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Barang Masuk')]
 class BarangMasukForm extends Component
 {
     public ?int $product_id = null;

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\Attributes\Title;
+
+#[Title('Stock Opname')]
 class OpnameIndex extends Component
 {
     use WithPagination;

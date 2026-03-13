@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Models\Supplier;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Data Pemasok')]
 class PemasokForm extends Component
 {
     public ?int $pemasokId = null;

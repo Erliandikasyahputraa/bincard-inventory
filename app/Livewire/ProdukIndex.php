@@ -6,6 +6,9 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\Attributes\Title;
+
+#[Title('Data Produk')]
 class ProdukIndex extends Component
 {
     use WithPagination;

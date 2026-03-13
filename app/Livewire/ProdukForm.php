@@ -6,6 +6,9 @@ use App\Models\Product;
 use App\Models\Supplier;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Edit Produk')]
 class ProdukForm extends Component
 {
     public ?int $produkId = null;

@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Models\Customer;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Data Pelanggan')]
 class PelangganForm extends Component
 {
     public ?int $pelangganId = null;

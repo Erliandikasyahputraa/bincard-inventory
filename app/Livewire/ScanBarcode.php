@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Scan QR / Barcode')]
 class ScanBarcode extends Component
 {
     public string $barcodeTerpilih = '';

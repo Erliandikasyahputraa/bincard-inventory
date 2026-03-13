@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Models\StockTransaction;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Laporan')]
 class LaporanIndex extends Component
 {
     public string $tanggalMulai = '';

@@ -6,6 +6,9 @@ use App\Models\Supplier;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\Attributes\Title;
+
+#[Title('Data Pemasok')]
 class PemasokIndex extends Component
 {
     use WithPagination;

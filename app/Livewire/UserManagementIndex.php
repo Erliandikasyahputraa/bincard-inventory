@@ -8,6 +8,9 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
+use Livewire\Attributes\Title;
+
+#[Title('Manajemen Pengguna')]
 class UserManagementIndex extends Component
 {
     public $users;

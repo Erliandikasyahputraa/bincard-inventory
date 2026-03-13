@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\StockTransaction;
 use Carbon\Carbon;
 
+use Livewire\Attributes\Title;
+
+#[Title('Dashboard')]
 class Dashboard extends Component
 {
     public string $startDate = '';

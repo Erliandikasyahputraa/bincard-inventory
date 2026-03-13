@@ -6,6 +6,9 @@ use App\Models\Customer;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\Attributes\Title;
+
+#[Title('Data Pelanggan')]
 class PelangganIndex extends Component
 {
     use WithPagination;

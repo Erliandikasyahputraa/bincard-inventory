@@ -6,6 +6,9 @@ use App\Models\AuditLog;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\Attributes\Title;
+
+#[Title('Audit Log')]
 class AuditLogIndex extends Component
 {
     use WithPagination;

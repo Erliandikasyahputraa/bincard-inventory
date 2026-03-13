@@ -7,6 +7,9 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
+use Livewire\Attributes\Title;
+
+#[Title('Pengaturan Perusahaan')]
 class PengaturanPerusahaan extends Component
 {
     use WithFileUploads;

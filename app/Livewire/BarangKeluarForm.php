@@ -9,6 +9,9 @@ use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
+use Livewire\Attributes\Title;
+
+#[Title('Barang Keluar')]
 class BarangKeluarForm extends Component
 {
     public ?int $product_id = null;
