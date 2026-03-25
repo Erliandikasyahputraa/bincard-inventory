@@ -71,6 +71,22 @@
             </div>
         </div>
 
+        <!-- Panel 3: Data Stok Barang -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
+            <h2 class="font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center gap-2 transition-colors duration-300 ease-in-out">
+                <i data-lucide="boxes" class="w-4 h-4 text-emerald-500 transition-colors duration-300 ease-in-out"></i> Data Stok Barang
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 transition-colors duration-300 ease-in-out leading-relaxed pr-4">
+                Snapshot kondisi stok seluruh produk saat ini. Berisi Kode Material, Deskripsi, Lokasi, UoM, dan jumlah stok aktual beserta status (Normal, Kritis, Habis).
+            </p>
+            <div class="flex gap-3 mt-auto pt-4 border-t border-slate-100 dark:border-slate-800/50">
+                <a href="{{ route('laporan.export-stok-barang') }}"
+                    class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-bold rounded-xl transition-colors text-sm whitespace-nowrap">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2"></i> Unduh Excel
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <!-- Table Toolbar: Sort Control -->

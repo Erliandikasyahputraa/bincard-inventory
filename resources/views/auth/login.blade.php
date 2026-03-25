@@ -18,7 +18,8 @@
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-2">
             </div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">BINGO</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 transition-colors duration-300 ease-in-out">Barcode Inventory Gudang Online</p>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-0.5 transition-colors duration-300 ease-in-out">Barcode Inventory Gudang Online</p>
+            <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1 transition-colors duration-300 ease-in-out">Triputra Agro Persada</p>
         </div>
         
         @if ($errors->any())

@@ -80,13 +80,11 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             'Kode Barang',
             'Kode Rak / Lokasi',
             'Nama Barang',
-            'UoM',
-            'Tipe',
+            'Satuan (UoM)',
+            'Tipe Transaksi',
             'Stok Awal',
-            'SO / Mutasi',
+            'Mutasi / SO',
             'Stok Akhir',
-            'Yang Mengeluarkan',
-            'Penerima Barang',
             'Keterangan',
         ];
     }
@@ -98,18 +96,23 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
     {
         $this->rowNumber++;
 
-        $penerima = '';
-        if ($row->type === StockTransaction::TIPE_OUT && $row->suratJalan && $row->suratJalan->customer) {
-            $penerima = $row->suratJalan->customer->nama;
-        }
-
         $product    = $row->product;
         $kodeBarang = $product?->barcode ?: ($product?->sku ?: '-');
         $kodeRak    = $product?->location ?: '-';
 
-        $qty = (int) $row->quantity;
-        // Always output as string with sign so Excel treats as text (prevents + stripping)
+        $qty    = (int) $row->quantity;
         $qtyStr = $qty >= 0 ? '+' . $qty : (string) $qty;
+
+        // Auto-generate keterangan berdasarkan tipe transaksi
+        $keterangan = match($row->type) {
+            'IN'     => 'Penerimaan Barang',
+            'OUT'    => 'Pengeluaran Barang',
+            'ADJUST' => ($qty >= 0 ? 'Penyesuaian Stok (+)' : 'Penyesuaian Stok (-)'),
+            default  => $row->note ?? '-',
+        };
+        if ($row->note && $row->note !== '') {
+            $keterangan .= ' – ' . $row->note;
+        }
 
         return [
             $this->rowNumber,
@@ -117,85 +120,84 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             $kodeBarang,
             $kodeRak,
             $product?->name ?? '-',
-            $product?->uom ?? 'PCS',                   // Column F: UoM
-            $row->type,                                // Column G
+            $product?->uom ?? 'PCS',
+            $row->type,
             strval($row->getAttribute('stock_before') ?? ($row->computed_stock_before ?? '0')),
             $qtyStr,
             strval($row->getAttribute('stock_after')  ?? ($row->computed_stock_after  ?? '0')),
-            $row->user?->name ?? '-',
-            $penerima ?: '-',
-            $row->note ?? '-',
+            $keterangan,
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         $lastRow    = $sheet->getHighestRow();
-        $lastColumn = $sheet->getHighestColumn(); // Should be 'L'
+        $lastColumn = $sheet->getHighestColumn(); // Now 'K'
 
         // Full border
         $sheet->getStyle('A1:' . $lastColumn . $lastRow)
             ->getBorders()->getAllBorders()
             ->setBorderStyle(Border::BORDER_THIN);
 
-        // Header row style
+        // Header: bold, clean — NO yellow colour
         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font'      => ['bold' => true, 'color' => ['rgb' => '000000']],
-            'fill'      => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFFF00']],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
         ]);
 
         $sheet->setAutoFilter('A1:' . $lastColumn . '1');
 
-        // Center: NO, Kode Barang, Kode Rak, Tipe, Stok Awal, Mutasi, Stok Akhir
+        // Centre-align columns
         $sheet->getStyle('A2:A' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('C2:F' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('G2:I' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('C2:G' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('H2:J' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        // Color the Tipe column (F) AND the SO/Mutasi column (H) based on transaction type
+        // Colour Tipe column (G) and Mutasi column (I) per transaction type
         for ($r = 2; $r <= $lastRow; $r++) {
-            $tipe = (string) $sheet->getCell('F' . $r)->getValue();
+            $tipe = (string) $sheet->getCell('G' . $r)->getValue();
 
-            // --- Tipe column (F) background badges ---
             if ($tipe === 'IN') {
-                $sheet->getStyle('F' . $r)->applyFromArray([
+                $sheet->getStyle('G' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
                     'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
                 ]);
-                // SO/Mutasi (H) — green for positive
-                $sheet->getStyle('H' . $r)->applyFromArray([
+                $sheet->getStyle('I' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
                     'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
+                ]);
+                // Keterangan (K) — green
+                $sheet->getStyle('K' . $r)->applyFromArray([
+                    'font' => ['color' => ['rgb' => '155724']],
                 ]);
             } elseif ($tipe === 'OUT') {
-                $sheet->getStyle('F' . $r)->applyFromArray([
+                $sheet->getStyle('G' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
                     'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
                 ]);
-                // SO/Mutasi (H) — red for negative
-                $sheet->getStyle('H' . $r)->applyFromArray([
+                $sheet->getStyle('I' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
                     'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
+                ]);
+                // Keterangan (K) — red
+                $sheet->getStyle('K' . $r)->applyFromArray([
+                    'font' => ['color' => ['rgb' => 'CC0000']],
                 ]);
             } elseif ($tipe === 'ADJUST') {
-                $sheet->getStyle('F' . $r)->applyFromArray([
+                $sheet->getStyle('G' . $r)->applyFromArray([
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFF3CD']],
                     'font' => ['color' => ['rgb' => '856404'], 'bold' => true],
                 ]);
-                // SO/Mutasi (H) — check sign for adjust (can be + or -)
-                $hVal = (string) $sheet->getCell('H' . $r)->getValue();
-                $isNeg = str_starts_with($hVal, '-') || (int)$hVal < 0;
-                if ($isNeg) {
-                    $sheet->getStyle('H' . $r)->applyFromArray([
-                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
-                        'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
-                    ]);
-                } else {
-                    $sheet->getStyle('H' . $r)->applyFromArray([
-                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
-                        'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
-                    ]);
-                }
+                $hVal   = (string) $sheet->getCell('I' . $r)->getValue();
+                $isNeg  = str_starts_with($hVal, '-') || (int)$hVal < 0;
+                $color  = $isNeg ? 'CC0000' : '155724';
+                $bgColor = $isNeg ? 'FFB6C1' : 'D4EDDA';
+                $sheet->getStyle('I' . $r)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => $bgColor]],
+                    'font' => ['color' => ['rgb' => $color], 'bold' => true],
+                ]);
+                $sheet->getStyle('K' . $r)->applyFromArray([
+                    'font' => ['color' => ['rgb' => $color]],
+                ]);
             }
         }
 

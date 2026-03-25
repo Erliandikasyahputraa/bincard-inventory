@@ -33,7 +33,7 @@
         <!-- Sidebar - Dark Enterprise Style -->
         <aside :class="sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'" class="bg-white dark:bg-slate-900 transition-colors duration-300 transition-all duration-500 fixed h-full z-50 flex flex-col border-r border-slate-200 dark:border-[#21262D] shadow-xl">
             <div class="p-8 flex items-center space-x-3 h-24 border-b border-slate-200 dark:border-[#21262D] transition-colors duration-300">
-                <div class="w-10 h-10 overflow-hidden rounded-xl flex items-center justify-center bg-white shadow-lg flex-shrink-0 transition-all duration-300 ease-in-out">
+                <div class="w-12 h-12 overflow-hidden rounded-xl flex items-center justify-center bg-white shadow-lg flex-shrink-0 transition-all duration-300 ease-in-out border border-slate-100 dark:border-slate-700">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-1">
                 </div>
                 <span x-show="sidebarOpen" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight whitespace-nowrap flex-1 transition-colors duration-300 ease-in-out">BINGO</span>
@@ -117,7 +117,7 @@
                         <li>
                             <a href="{{ route('laporan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('laporan.*') ? 'bg-blue-500/10 text-blue-500 border-l-4 border-blue-500 dark:border-blue-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></span>
-                                <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Laporan Opname</span>
+                                <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Laporan</span>
                             </a>
                         </li>
                         <!-- Tambahan Menu Cetak QR -->
