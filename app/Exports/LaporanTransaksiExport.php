@@ -103,16 +103,13 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
         $qty    = (int) $row->quantity;
         $qtyStr = $qty >= 0 ? '+' . $qty : (string) $qty;
 
-        // Auto-generate keterangan berdasarkan tipe transaksi
+        // Auto-generate keterangan ringkas — tanpa waktu (sudah ada di kolom Tanggal)
         $keterangan = match($row->type) {
             'IN'     => 'Penerimaan Barang',
             'OUT'    => 'Pengeluaran Barang',
-            'ADJUST' => ($qty >= 0 ? 'Penyesuaian Stok (+)' : 'Penyesuaian Stok (-)'),
-            default  => $row->note ?? '-',
+            'ADJUST' => 'Penyesuaian Stok ' . ($qty >= 0 ? '(+' . $qty . ' unit)' : '(' . $qty . ' unit)'),
+            default  => '-',
         };
-        if ($row->note && $row->note !== '') {
-            $keterangan .= ' – ' . $row->note;
-        }
 
         return [
             $this->rowNumber,

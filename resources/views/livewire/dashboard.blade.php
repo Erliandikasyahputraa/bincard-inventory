@@ -305,38 +305,20 @@ document.addEventListener('livewire:initialized', () => {
 
             legend: {
                 data: ['Barang Masuk', 'Barang Keluar'],
-                bottom: 60, // Above the slider
+                bottom: 8,
                 textStyle: { color: textColor, fontSize: 11, fontWeight: 600 },
                 icon: 'roundRect',
                 itemWidth: 12, itemHeight: 8, itemGap: 20
             },
 
-            // --- THE SLIDER (dataZoom) ---
-            dataZoom: [
-                {
-                    type: 'slider',
-                    show: true,
-                    height: 18,
-                    bottom: 8,
-                    left: 30,
-                    right: 40,
-                    handleSize: '100%',
-                    handleStyle: { color: isDark ? '#475569' : '#cbd5e1' },
-                    textStyle: { color: 'transparent', fontSize: 0 }, // Hide edge date labels
-                    fillerColor: isDark ? 'rgba(51,65,85,0.5)' : 'rgba(120,185,120,0.3)',
-                    borderColor: 'transparent',
-                    backgroundColor: isDark ? 'rgba(30,41,59,0.5)' : 'rgba(220,252,231,0.5)',
-                    start: 0,
-                    end: 100
-                },
-                { type: 'inside' }
-            ],
+            // Mousewheel/pinch zoom only — no slider bar
+            dataZoom: [{ type: 'inside', start: 0, end: 100 }],
 
             grid: {
                 left: '25',
                 right: '40',
                 top: '45',
-                bottom: '115', // Room for slider (18px) + legend (40px) + padding
+                bottom: '55',
                 containLabel: true
             },
 
