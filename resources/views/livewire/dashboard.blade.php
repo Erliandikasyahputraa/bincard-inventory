@@ -133,7 +133,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
 
     {{-- Chart Panel --}}
-    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:440px"
+    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:420px"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
         {{-- Skeleton overlay while loading —— pointer-events-none prevents blocking filter buttons --}}
