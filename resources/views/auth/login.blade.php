@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - {{ config('app.name', 'BINGO') }}</title>
+    <title>Login - BINGO – Barcode Inventory Gudang Online</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,7 +18,7 @@
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-2">
             </div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">BINGO</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 transition-colors duration-300 ease-in-out">Sistem Manajemen Inventaris Digital</p>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 transition-colors duration-300 ease-in-out">Barcode Inventory Gudang Online</p>
         </div>
         
         @if ($errors->any())

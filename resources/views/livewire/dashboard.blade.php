@@ -55,9 +55,10 @@
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
 
     {{-- Katalog --}}
-    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="animate-in group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
-        <div class="shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400">
+    <a href="{{ route('produk.index') }}" wire:navigate
+       wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+       class="animate-in group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition cursor-pointer">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform">
             <i data-lucide="package-2" class="w-5 h-5" stroke-width="2"></i>
         </div>
         <div class="min-w-0 flex-1">
@@ -65,24 +66,28 @@
             <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['total_jenis'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Jenis</span></p>
             <p class="text-sm font-bold text-blue-500 dark:text-blue-400 mt-0.5">{{ number_format($stats['total_inventory'], 0, ',', '.') }} <span class="text-[10px] font-normal text-blue-400/70">Fisik</span></p>
         </div>
-    </div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-700 group-hover:text-blue-400 transition-colors ml-auto shrink-0"></i>
+    </a>
 
     {{-- Stok Kritis --}}
-    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="animate-in animation-delay-100 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
-        <div class="shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400">
+    <a href="{{ route('produk.index') }}?filter=kritis" wire:navigate
+       wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+       class="animate-in animation-delay-100 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-orange-400 dark:hover:border-orange-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition cursor-pointer">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform">
             <i data-lucide="alert-triangle" class="w-5 h-5" stroke-width="2"></i>
         </div>
-        <div class="min-w-0">
+        <div class="min-w-0 flex-1">
             <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Stok Kritis</p>
             <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['low_stock'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Barang</span></p>
         </div>
-    </div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-700 group-hover:text-orange-400 transition-colors ml-auto shrink-0"></i>
+    </a>
 
     {{-- Masuk --}}
-    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="animate-in animation-delay-200 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
-        <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+    <a href="{{ route('laporan.index') }}?tipe=IN" wire:navigate
+       wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+       class="animate-in animation-delay-200 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition cursor-pointer">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
         <div class="min-w-0 flex-1">
@@ -97,12 +102,14 @@
             </div>
             <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['masuk_range'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Unit</span></p>
         </div>
-    </div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-700 group-hover:text-emerald-400 transition-colors ml-auto shrink-0"></i>
+    </a>
 
     {{-- Keluar --}}
-    <div wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
-         class="animate-in animation-delay-300 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition">
-        <div class="shrink-0 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400">
+    <a href="{{ route('laporan.index') }}?tipe=OUT" wire:navigate
+       wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
+       class="animate-in animation-delay-300 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-rose-400 dark:hover:border-rose-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition cursor-pointer">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform">
             <i data-lucide="arrow-up-right" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
         <div class="min-w-0 flex-1">
@@ -117,7 +124,8 @@
             </div>
             <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['keluar_range'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Unit</span></p>
         </div>
-    </div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-700 group-hover:text-rose-400 transition-colors ml-auto shrink-0"></i>
+    </a>
 
 </div>
 

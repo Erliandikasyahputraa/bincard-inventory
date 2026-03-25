@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan', LaporanIndex::class)->name('laporan.index');
     Route::get('/laporan/export-transaksi', [\App\Http\Controllers\LaporanExportController::class, 'transaksi'])->name('laporan.export-transaksi');
     Route::get('/laporan/export-harian', [\App\Http\Controllers\LaporanExportController::class, 'harian'])->name('laporan.export-harian');
+    Route::get('/laporan/export-stok-barang', [\App\Http\Controllers\LaporanExportController::class, 'stokBarang'])->name('laporan.export-stok-barang');
     Route::get('/laporan/pdf', [\App\Http\Controllers\LaporanPdfController::class, 'transaksi'])->name('laporan.pdf');
     Route::get('/laporan/pdf-harian', [\App\Http\Controllers\LaporanPdfController::class, 'harian'])->name('laporan.pdf-harian');
 

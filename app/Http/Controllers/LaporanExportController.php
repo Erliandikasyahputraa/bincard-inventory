@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\LaporanStokHarianExport;
 use App\Exports\LaporanTransaksiExport;
+use App\Exports\LaporanStokBarangExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -12,9 +13,9 @@ class LaporanExportController extends Controller
 {
     public function transaksi(Request $request): BinaryFileResponse
     {
-        $tanggalMulai = filled($request->input('tanggalMulai')) ? $request->input('tanggalMulai') : now()->startOfMonth()->format('Y-m-d');
+        $tanggalMulai   = filled($request->input('tanggalMulai'))   ? $request->input('tanggalMulai')   : now()->startOfMonth()->format('Y-m-d');
         $tanggalSelesai = filled($request->input('tanggalSelesai')) ? $request->input('tanggalSelesai') : now()->format('Y-m-d');
-        $tipe = (string) ($request->input('tipeTransaksi') ?? '');
+        $tipe           = (string) ($request->input('tipeTransaksi') ?? '');
         return Excel::download(
             new LaporanTransaksiExport($tanggalMulai, $tanggalSelesai, $tipe),
             'Laporan_Transaksi_' . $tanggalMulai . '_' . $tanggalSelesai . '.xlsx'
@@ -27,6 +28,14 @@ class LaporanExportController extends Controller
         return Excel::download(
             new LaporanStokHarianExport($tanggal),
             'Laporan_Stok_Harian_' . $tanggal . '.xlsx'
+        );
+    }
+
+    public function stokBarang(): BinaryFileResponse
+    {
+        return Excel::download(
+            new LaporanStokBarangExport(),
+            'Data_Stok_Barang_' . now()->format('Y-m-d') . '.xlsx'
         );
     }
 }

@@ -23,6 +23,14 @@ class ProdukIndex extends Component
         $this->dispatch('sukses', 'Produk dihapus.');
     }
 
+    public function mount(): void
+    {
+        // Auto-filter when coming from dashboard "Stok Kritis" card
+        if (request()->query('filter') === 'kritis') {
+            $this->sortBy = 'stock_critical';
+        }
+    }
+
     public function render()
     {
         $query = Product::with('supplier')

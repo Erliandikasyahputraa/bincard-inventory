@@ -16,6 +16,7 @@ class Product extends Model
         'barcode',
         'sku',
         'name',
+        'uom',
         'min_stock',
         'max_stock',
         'location',

@@ -17,8 +17,14 @@ class LaporanIndex extends Component
 
     public function mount(): void
     {
-        $this->tanggalMulai = now()->startOfMonth()->format('Y-m-d');
+        $this->tanggalMulai   = now()->startOfMonth()->format('Y-m-d');
         $this->tanggalSelesai = now()->format('Y-m-d');
+
+        // Auto-filter when coming from dashboard Masuk/Keluar cards
+        $tipe = request()->query('tipe', '');
+        if (in_array($tipe, ['IN', 'OUT', 'ADJUST'])) {
+            $this->tipeTransaksi = $tipe;
+        }
     }
 
     public function render()

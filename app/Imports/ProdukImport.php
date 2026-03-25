@@ -33,15 +33,20 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
             }
             try {
                 $supplierId = isset($row['supplier_id']) && $row['supplier_id'] !== '' ? (int) $row['supplier_id'] : null;
+                $allowedUom = ['PCS','SET','KLG','UN','KG','CM','BOX','BTG','BTL','DUS','LBR','MTR','TON','SAK','CAN','GLS','PKT'];
+                $uom = strtoupper(trim((string) ($row['uom'] ?? 'PCS')));
+                if (!in_array($uom, $allowedUom)) $uom = 'PCS';
+
                 Product::create([
-                    'barcode' => $barcode,
-                    'sku' => $barcode, // Set SKU equal to KOMAT for this specific client use case
-                    'name' => $name,
-                    'min_stock' => (int) ($row['min_stock'] ?? 0),
-                    'max_stock' => isset($row['max_stock']) && $row['max_stock'] !== '' ? (int) $row['max_stock'] : null,
-                    'location' => $row['mapping'] ?? $row['location'] ?? null,
+                    'barcode'       => $barcode,
+                    'sku'           => $barcode,
+                    'name'          => $name,
+                    'uom'           => $uom,
+                    'min_stock'     => (int) ($row['min_stock'] ?? 0),
+                    'max_stock'     => isset($row['max_stock']) && $row['max_stock'] !== '' ? (int) $row['max_stock'] : null,
+                    'location'      => $row['mapping'] ?? $row['location'] ?? null,
                     'current_stock' => (int) ($row['stock_sap'] ?? $row['stok_awal'] ?? $row['current_stock'] ?? 0),
-                    'supplier_id' => $supplierId,
+                    'supplier_id'   => $supplierId,
                 ]);
                 $this->barisSukses++;
             } catch (QueryException $e) {

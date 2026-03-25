@@ -17,9 +17,7 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
 {
     protected int $rowNumber = 0;
 
-    public function __construct(protected int $opnameId)
-    {
-    }
+    public function __construct(protected int $opnameId) {}
 
     public function collection()
     {
@@ -30,101 +28,108 @@ class LaporanStockOpnameExport implements FromCollection, WithHeadings, WithMapp
     public function headings(): array
     {
         return [
-            'NO',
-            'Kode Barang / QR',
-            'Nama Produk',
-            'Letak / Rak',
-            'Jumlah Awal',
-            'Adjust',
-            'Jumlah Akhir',
-            'Keterangan'
+            'No',
+            'Kode Material',
+            'Material Description',
+            'Mapping / Lokasi',
+            'UoM',
+            'Stok SAP (Sistem)',
+            'Stok Fisik',
+            'Keterangan',
+            'Hasil / Selisih',
         ];
     }
 
     public function map($row): array
     {
         $this->rowNumber++;
-        
-        $selisih = $row->selisih;
-        $keterangan = '';
-        if ($selisih < 0) {
-            $keterangan = 'Minus ' . abs($selisih);
+
+        $selisih     = (int) $row->selisih;
+        $stokFisik   = $row->stok_fisik;
+        $stokSistem  = (int) $row->stok_sistem;
+
+        // Auto-generate human-friendly Keterangan
+        if ($stokFisik === null) {
+            $keterangan = 'Belum Dihitung';
+        } elseif ($selisih < 0) {
+            $keterangan = 'Kurang ' . abs($selisih);
         } elseif ($selisih > 0) {
-            $keterangan = 'Plus ' . $selisih;
+            $keterangan = 'Lebih ' . $selisih;
         } else {
             $keterangan = 'Sesuai';
         }
 
+        $selisihFmt = $selisih > 0 ? '+' . $selisih : (string) $selisih;
+
         return [
             $this->rowNumber,
-            $row->product->barcode ?? $row->product->sku ?? '',
-            $row->product->name ?? '',
+            $row->product->barcode ?? $row->product->sku ?? '-',
+            $row->product->name ?? '-',
             $row->product->location ?? '-',
-            $row->stok_sistem,
-            $selisih > 0 ? '+' . $selisih : $selisih,
-            $row->stok_fisik ?? 0,
+            $row->product->uom ?? 'PCS',
+            $stokSistem,
+            $stokFisik ?? '-',
             $keterangan,
+            $selisihFmt,
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $lastRow = $sheet->getHighestRow();
+        $lastRow    = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
-        $range = 'A1:' . $lastColumn . $lastRow;
 
-        // 1. Set All Borders
-        $sheet->getStyle($range)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        // Full border
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)
+              ->getBorders()->getAllBorders()
+              ->setBorderStyle(Border::BORDER_THIN);
 
-        // 2. Format Header (Yellow, Bold)
+        // Header — bold only, no colour (per request)
         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
-            'font' => [
-                'bold' => true,
-            ],
-            'fill' => [
-                'fillType' => Fill::FILL_SOLID,
-                'startColor' => [
-                    'rgb' => 'FFFF00', // Yellow
-                ],
-            ],
-            'alignment' => [
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-            ]
+            'font'      => ['bold' => true, 'size' => 10],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
         ]);
-        
+
         $sheet->setAutoFilter('A1:' . $lastColumn . '1');
 
-        // Alignments
+        // Centre-align number columns
         $sheet->getStyle('A2:A' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('E2:H' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('E2:I' . $lastRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        // Conditional Formatting for "Adjust" column (F)
+        // Row-level conditional colour based on selisih (column I)
         for ($row = 2; $row <= $lastRow; $row++) {
-            $adjustValue = $sheet->getCell('F' . $row)->getValue();
-            
-            // Clean up the value for numeric comparison (remove + if present)
-            $numericValue = (int) str_replace('+', '', $adjustValue);
-            
-            if ($numericValue < 0) {
-                // Formatting for Negative (Red)
-                $sheet->getStyle('F' . $row)->applyFromArray([
-                    'fill' => [
-                        'fillType' => Fill::FILL_SOLID,
-                        'startColor' => ['rgb' => 'FFB6C1'], // Light Pink
-                    ],
-                    'font' => ['color' => ['rgb' => 'FF0000'], 'bold' => true]
+            $selisihRaw = (string) $sheet->getCell('I' . $row)->getValue();
+            $selisihNum = (int) str_replace('+', '', $selisihRaw);
+
+            if ($selisihNum < 0) {
+                // Kurang → full row light red
+                $sheet->getStyle('A' . $row . ':' . $lastColumn . $row)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFE5E5']],
                 ]);
-            } elseif ($numericValue > 0) {
-                // Formatting for Positive (Green)
-                $sheet->getStyle('F' . $row)->applyFromArray([
-                    'fill' => [
-                        'fillType' => Fill::FILL_SOLID,
-                        'startColor' => ['rgb' => 'D4EDDA'], // Light Green
-                    ],
-                    'font' => ['color' => ['rgb' => '155724'], 'bold' => true]
+                // Keterangan cell bold red
+                $sheet->getStyle('H' . $row)->applyFromArray([
+                    'font' => ['color' => ['rgb' => 'CC0000'], 'bold' => true],
+                ]);
+                // Selisih cell red
+                $sheet->getStyle('I' . $row)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'FFB6C1']],
+                    'font' => ['color' => ['rgb' => 'FF0000'], 'bold' => true],
+                ]);
+            } elseif ($selisihNum > 0) {
+                // Lebih → full row light green
+                $sheet->getStyle('A' . $row . ':' . $lastColumn . $row)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'E8F5E9']],
+                ]);
+                // Keterangan cell bold green
+                $sheet->getStyle('H' . $row)->applyFromArray([
+                    'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
+                ]);
+                // Selisih cell green
+                $sheet->getStyle('I' . $row)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D4EDDA']],
+                    'font' => ['color' => ['rgb' => '155724'], 'bold' => true],
                 ]);
             }
-            // If 0, do nothing (default black)
         }
 
         return [];
