@@ -78,7 +78,7 @@ class Dashboard extends Component
         $this->dispatch('updateDashboardChart', data: $chartData);
 
         return view('livewire.dashboard', compact('stats', 'aktivitas', 'chartData'))
-               ->title('Dashboard - BINGO')
+               ->title('Dashboard')
                ->layout('layouts.app');
     }
 }

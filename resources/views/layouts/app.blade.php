@@ -190,7 +190,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'" class="flex-1 transition-all duration-500 w-full min-h-screen flex flex-col pt-0 bg-slate-100 dark:bg-slate-50 dark:bg-slate-950">
+        <main :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'" class="flex-1 transition-all duration-500 w-full min-h-screen flex flex-col pt-0 bg-transparent">
             
             <div class="flex-1 p-6 md:p-8 lg:p-10 h-screen overflow-y-auto">
                 <!-- Top Header -->
