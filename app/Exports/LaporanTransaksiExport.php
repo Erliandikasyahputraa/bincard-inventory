@@ -103,13 +103,20 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
         $qty    = (int) $row->quantity;
         $qtyStr = $qty >= 0 ? '+' . $qty : (string) $qty;
 
-        // Auto-generate keterangan ringkas — tanpa waktu (sudah ada di kolom Tanggal)
+        // Auto-generate keterangan ringkas
         $keterangan = match($row->type) {
             'IN'     => 'Penerimaan Barang',
             'OUT'    => 'Pengeluaran Barang',
             'ADJUST' => 'Penyesuaian Stok ' . ($qty >= 0 ? '(+' . $qty . ' unit)' : '(' . $qty . ' unit)'),
             default  => '-',
         };
+        // Append user-written note — but strip auto-generated "Stock Opname YYYY-MM-DD" timestamps
+        if (!empty($row->note)) {
+            $userNote = trim(preg_replace('/Stock Opname\s+\d{4}-\d{2}-\d{2}/i', '', $row->note));
+            if ($userNote !== '' && $userNote !== '-') {
+                $keterangan .= ' – ' . $userNote;
+            }
+        }
 
         return [
             $this->rowNumber,

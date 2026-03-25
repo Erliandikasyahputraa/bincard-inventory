@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@hasSection('title')@yield('title') – {{ config('app.name', 'BINGO') }}@else{{ config('app.name', 'BINGO') }}@endif</title>
+    <title>@if(isset($title)){{ $title }} – {{ config('app.name', 'BINGO') }}@else{{ config('app.name', 'BINGO') }}@endif</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,900" rel="stylesheet" />
@@ -24,7 +24,7 @@
         }
     </style>
 </head>
-<body class="bg-[#EEF4EE] dark:bg-[#13151A] text-slate-600 dark:text-slate-300 antialiased font-sans selection:bg-blue-500/30 selection:text-blue-200 transition-colors duration-300" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+<body class="bg-green-50 dark:bg-[#13151A] text-slate-600 dark:text-slate-300 antialiased font-sans selection:bg-blue-500/30 selection:text-blue-200 transition-colors duration-300" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
     
     <!-- Mobile sidebar backdrop -->
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-slate-900/50 dark:bg-[#0A0D14]/80 backdrop-blur-sm lg:hidden transition-colors duration-300 ease-in-out" @click="sidebarOpen = false"></div>
