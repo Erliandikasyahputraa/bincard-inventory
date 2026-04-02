@@ -95,7 +95,7 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Masuk</p>
                 @if($stats['trend_masuk'] !== null)
                     @php $pct = $stats['trend_masuk']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-[#F0FDF4] dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-emerald-50 dark:bg-emerald-500/10 text-[#10B981] dark:text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
@@ -117,7 +117,7 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Keluar</p>
                 @if($stats['trend_keluar'] !== null)
                     @php $pct = $stats['trend_keluar']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-[#F0FDF4] dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
@@ -129,24 +129,21 @@
 
 </div>
 
-{{-- â”€â”€â”€ Chart + Peringatan & Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
+{{-- ─── Chart (Solo Full Width) ─── --}}
+<div class="w-full mb-5 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 card-shadow p-5 flex flex-col shadow-sm relative loading-transition animate-in animation-delay-300" style="height:380px"
+     wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
-    {{-- Chart Panel (2/3) --}}
-    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:420px"
-         wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
-
-        {{-- Skeleton overlay while loading â€”â€” pointer-events-none prevents blocking filter buttons --}}
-        <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
-            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5 pointer-events-none">
-            <div class="skeleton h-5 w-40 rounded-lg"></div>
-            <div class="skeleton h-3 w-56 rounded-md"></div>
-            <div class="flex-1 flex items-end gap-2 pt-4">
-                @for($i = 0; $i < 10; $i++)
-                    <div class="skeleton flex-1 rounded-t-md" style="height: {{ rand(20,90) }}%"></div>
-                @endfor
-            </div>
+    {{-- Skeleton overlay while loading --}}
+    <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
+        class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5 pointer-events-none">
+        <div class="skeleton h-5 w-40 rounded-lg"></div>
+        <div class="skeleton h-3 w-56 rounded-md"></div>
+        <div class="flex-1 flex items-end gap-2 pt-4">
+            @for($i = 0; $i < 15; $i++)
+                <div class="skeleton flex-1 rounded-t-md" style="height: {{ rand(20,90) }}%"></div>
+            @endfor
         </div>
+    </div>
 
         {{-- Chart header --}}
         <div class="flex items-start justify-between mb-3 shrink-0">
@@ -173,10 +170,91 @@
         </div>
 
         <div id="dashboardEcharts" wire:ignore class="flex-1 w-full min-h-0"></div>
+</div>
+
+{{-- ─── Peringatan & Status & Activity Feed (Side by Side) ─── --}}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-400">
+
+    {{-- Activity Feed (2/3) --}}
+    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 card-shadow p-5 shadow-sm relative loading-transition"
+         wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
+
+        {{-- Skeleton overlay --}}
+        <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
+            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-4 p-5 pointer-events-none">
+            <div class="skeleton h-5 w-36 rounded-lg"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                @for($i = 0; $i < 6; $i++)
+                    <div class="flex gap-3 items-start">
+                        <div class="skeleton w-14 h-5 rounded-md shrink-0"></div>
+                        <div class="flex flex-col gap-1.5 flex-1">
+                            <div class="skeleton h-3 w-full rounded"></div>
+                            <div class="skeleton h-2.5 w-2/3 rounded"></div>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between mb-4 shrink-0">
+            <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-blue-500"></i>
+                Aktivitas Terakhir
+                <span class="text-[10px] font-bold px-2 py-0.5 bg-[#F0FDF4] dark:bg-emerald-500/10 text-[#10B981] dark:text-emerald-400 rounded-full">{{ $aktivitas->count() }}</span>
+            </h3>
+            <a href="{{ route('laporan.index') }}" wire:navigate
+                class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-[#F0FDF4] hover:bg-[#D1FAE5] dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-[#10B981] dark:text-emerald-400 transition-colors">
+                Semua Laporan →
+            </a>
+        </div>
+
+        {{-- Grid 2 kolom untuk aktivitas --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            @forelse($aktivitas as $act)
+                <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#F0FDF4] dark:hover:bg-slate-800/50 transition-colors group">
+                    {{-- Avatar PIC --}}
+                    <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-extrabold
+                        {{ $act->type === 'IN' ? 'bg-[#D1FAE5] dark:bg-emerald-500/20 text-[#064E3B] dark:text-emerald-300' : ($act->type === 'OUT' ? 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300' : 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300') }}">
+                        {{ strtoupper(substr($act->user?->name ?? 'SI', 0, 2)) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-1 mb-0.5">
+                            <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate leading-tight">{{ $act->product->name }}</p>
+                            <span class="text-[9px] text-slate-400 whitespace-nowrap flex-shrink-0">{{ $act->created_at->diffForHumans(null, true, true) }}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            @if($act->type == 'IN')
+                                <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-[#D1FAE5] dark:bg-emerald-500/15 text-[#064E3B] dark:text-emerald-400">
+                                    ↓ Masuk
+                                </span>
+                            @elseif($act->type == 'OUT')
+                                <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
+                                    ↑ Keluar
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
+                                    ↺ Adjust
+                                </span>
+                            @endif
+                            <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-[#10B981] dark:text-emerald-400' }} text-[10px] font-extrabold">
+                                {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
+                            </span>
+                            <span class="text-slate-300 dark:text-slate-600 text-[9px]">·</span>
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 truncate">{{ $act->user?->name ?? 'Sistem' }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-2 flex flex-col items-center justify-center py-12 gap-2">
+                    <i data-lucide="inbox" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
+                    <p class="text-xs text-slate-400">Tidak ada aktivitas di periode ini.</p>
+                </div>
+            @endforelse
+        </div>
     </div>
 
     {{-- Peringatan & Status (1/3) --}}
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-[#E2E8F0] dark:border-slate-800 card-shadow p-5 flex flex-col shadow-sm"
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 card-shadow p-5 flex flex-col shadow-sm"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
         <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
@@ -243,7 +321,7 @@
                         class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                         <div class="min-w-0 flex-1">
                             <p class="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">{{ $kp->name }}</p>
-                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? 'â€”' }}</p>
+                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? '—' }}</p>
                         </div>
                         <div class="text-right flex-shrink-0 ml-2">
                             <span class="text-[11px] font-extrabold {{ $kp->current_stock <= 0 ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400' }}">
@@ -253,7 +331,7 @@
                         </div>
                     </a>
                 @empty
-                    <p class="text-[11px] text-slate-400 text-center py-3">âœ… Semua stok aman!</p>
+                    <p class="text-[11px] text-slate-400 text-center py-3">✓ Semua stok aman!</p>
                 @endforelse
             </div>
 
@@ -302,7 +380,7 @@
         </h3>
         <a href="{{ route('laporan.index') }}" wire:navigate
             class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-[#10B981] dark:text-blue-400 transition-colors">
-            Semua Laporan â†’
+            Semua Laporan →
         </a>
     </div>
 
@@ -323,21 +401,21 @@
                     <div class="flex items-center gap-1.5">
                         @if($act->type == 'IN')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
-                                â†“ Masuk
+                                ↓ Masuk
                             </span>
                         @elseif($act->type == 'OUT')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
-                                â†‘ Keluar
+                                ↑ Keluar
                             </span>
                         @else
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
-                                â†º Adjust
+                                ↺ Adjust
                             </span>
                         @endif
                         <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-[#10B981] dark:text-emerald-400' }} text-[10px] font-extrabold">
                             {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
                         </span>
-                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">Â·</span>
+                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">·</span>
                         <span class="text-[10px] text-slate-500 dark:text-slate-400 truncate">{{ $act->user?->name ?? 'Sistem' }}</span>
                     </div>
                 </div>
@@ -361,7 +439,7 @@
 document.addEventListener('livewire:initialized', () => {
     const chartDom   = document.getElementById('dashboardEcharts');
     const emptyState = document.getElementById('chartEmptyState');
-    // Use Canvas renderer â€” more reliable clip behavior than SVG
+    // Use Canvas renderer — more reliable clip behavior than SVG
     let myChart = echarts.init(chartDom, null, { renderer: 'canvas' });
 
     const getChartOptions = (data, isDark) => {
@@ -420,7 +498,7 @@ document.addEventListener('livewire:initialized', () => {
                 itemWidth: 12, itemHeight: 8, itemGap: 20
             },
 
-            // Mousewheel/pinch zoom only â€” no slider bar
+            // Mousewheel/pinch zoom only — no slider bar
             dataZoom: [{ type: 'inside', start: 0, end: 100 }],
 
             grid: {
@@ -434,7 +512,7 @@ document.addEventListener('livewire:initialized', () => {
             xAxis: {
                 type: 'category',
                 data: data.labels,
-                boundaryGap: true,  // Half-slot padding on both sides â€” permanent last-bar fix
+                boundaryGap: true,  // Half-slot padding on both sides — permanent last-bar fix
                 axisLine: { lineStyle: { color: axisLineColor } },
                 axisTick: { show: false },
                 axisLabel: {
