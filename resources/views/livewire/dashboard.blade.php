@@ -160,16 +160,16 @@
             </div>
         </div>
 
-        {{-- Empty State + Chart: wire:ignore to prevent Livewire morphing from destroying canvas --}}
-        <div wire:ignore class="flex-1 w-full min-h-0 relative">
-            <div id="chartEmptyState" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-3 z-5">
+        {{-- Empty State + Chart: wire:ignore prevents Livewire morphing from destroying ECharts canvas --}}
+        <div wire:ignore class="flex-1 w-full min-h-0 flex flex-col relative">
+            <div id="chartEmptyState" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
                 <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
                     <i data-lucide="bar-chart-2" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
                 </div>
                 <p class="text-sm font-semibold text-slate-400 dark:text-slate-500">Tidak Ada Transaksi</p>
                 <p class="text-xs text-slate-400 dark:text-slate-600 max-w-[180px] text-center">Pilih rentang tanggal berbeda atau tambah data.</p>
             </div>
-            <div id="dashboardEcharts" class="absolute inset-0"></div>
+            <div id="dashboardEcharts" class="flex-1 w-full min-h-0"></div>
         </div>
 </div>
 

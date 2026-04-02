@@ -385,6 +385,8 @@
     (function initBinCardQr() {
         const barcode = @json($product->barcode ?? $product->sku ?? 'PROD-' . $product->id);
         const productName = @json($product->name);
+        // QR encodes the scan URL so camera scanning goes directly to the scan page
+        const scanUrl = window.location.origin + '/scan-barcode?barcode=' + encodeURIComponent(barcode);
 
         function renderQr() {
             const el = document.getElementById('binCardQr');
@@ -392,7 +394,7 @@
             el.innerHTML = '';
             try {
                 new QRCode(el, {
-                    text: barcode,
+                    text: scanUrl,
                     width: 56, height: 56,
                     colorDark: '#064E3B',
                     colorLight: '#ffffff',
@@ -429,6 +431,7 @@
                 <img src="${img.src}" alt="QR">
                 <h2>${productName}</h2>
                 <p>${barcode}</p>
+                <p style="font-size:10px;color:#94a3b8;margin-top:6px">Scan untuk buka di sistem</p>
                 <script>window.onload = () => window.print();<\/script>
             </body></html>`);
             win.document.close();
