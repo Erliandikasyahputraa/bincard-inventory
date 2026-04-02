@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BinCardExport;
 
-#[Title('Bin Card')]
+#[Title('Data Rinci Produk')]
 class BinCardDetail extends Component
 {
     public int $id;

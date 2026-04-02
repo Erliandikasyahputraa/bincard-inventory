@@ -381,20 +381,16 @@ document.addEventListener('livewire:initialized', () => {
         chartDom.style.opacity = '1';
         emptyState.classList.add('hidden');
 
-        // Filter: only keep labels where at least one series has a value > 0
-        const labels = data.labels;
-        const masuk  = data.masuk;
-        const keluar = data.keluar;
-
-        // Build compact arrays (skip trailing empty slot used for bar padding)
+        // Build arrays: use null for zero values so line gaps appear (no connection through zero)
         const filteredLabels = [];
         const filteredMasuk  = [];
         const filteredKeluar = [];
         for (let i = 0; i < realMasuk.length; i++) {
-            // Always include days that have activity, skip silent stretches only if VERY long range
             filteredLabels.push(labels[i]);
-            filteredMasuk.push(Number(masuk[i]) || 0);
-            filteredKeluar.push(Number(keluar[i]) || 0);
+            const m = Number(masuk[i]);
+            const k = Number(keluar[i]);
+            filteredMasuk.push(m > 0 ? m : null);
+            filteredKeluar.push(k > 0 ? k : null);
         }
 
         const colorMasuk  = isDark ? '#34d399' : '#10B981';
@@ -488,6 +484,7 @@ document.addEventListener('livewire:initialized', () => {
                     name: 'Barang Masuk',
                     type: 'line',
                     smooth: 0.4,
+                    connectNulls: false,
                     data: filteredMasuk,
                     symbol: 'circle',
                     symbolSize: v => v > 0 ? 6 : 0,
@@ -509,6 +506,7 @@ document.addEventListener('livewire:initialized', () => {
                     name: 'Barang Keluar',
                     type: 'line',
                     smooth: 0.4,
+                    connectNulls: false,
                     data: filteredKeluar,
                     symbol: 'circle',
                     symbolSize: v => v > 0 ? 6 : 0,

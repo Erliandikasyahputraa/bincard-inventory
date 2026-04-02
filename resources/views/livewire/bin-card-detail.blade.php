@@ -1,7 +1,7 @@
 <div class="px-2 sm:px-0 space-y-5 max-w-screen-2xl mx-auto">
 
 <x-slot:header>
-    <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Bin Card</h2>
+    <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Data Rinci Produk</h2>
 </x-slot:header>
 
 {{-- ─── Page header ─── --}}
@@ -30,6 +30,12 @@
             <span class="hidden sm:inline">Export Excel</span>
             <span class="sm:hidden">Excel</span>
         </button>
+        <a href="{{ route('produk.edit', $product->id) }}"
+            class="flex-shrink-0 inline-flex items-center gap-2 px-3 py-2.5 text-xs font-bold bg-white dark:bg-slate-800 border border-[#D1D5DB] dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-all"
+            title="Edit Produk">
+            <i data-lucide="pencil" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Edit</span>
+        </a>
     </div>
 
     {{-- Row 2: Filter periode (full width, compact) --}}
@@ -63,10 +69,12 @@
     style="box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06)">
     <div class="flex flex-col lg:flex-row gap-4">
 
-        {{-- Left: Identitas Produk --}}
+        {{-- Left: Identitas Produk + QR --}}
         <div class="flex items-start gap-4 flex-1 min-w-0">
-            <div class="w-14 h-14 rounded-2xl bg-[#D1FAE5] dark:bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="package-2" class="w-8 h-8 text-[#10B981] dark:text-emerald-400"></i>
+            {{-- QR Code (mini) - hidden on very small, show on sm+ --}}
+            <div class="flex-shrink-0 flex flex-col items-center gap-1">
+                <div id="binCardQr" class="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#D1D5DB] dark:border-slate-700 p-1 flex items-center justify-center"></div>
+                <span class="text-[8px] text-[#94A3B8] font-mono text-center leading-tight">QR Produk</span>
             </div>
             <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-2 mb-1">
@@ -85,6 +93,25 @@
                 @if($product->supplier)
                     <p class="text-xs text-[#94A3B8] mt-0.5">Supplier: {{ $product->supplier->name }}</p>
                 @endif
+                {{-- Quick Actions Row --}}
+                <div class="flex flex-wrap items-center gap-2 mt-2">
+                    <a href="{{ route('barang-masuk.index') }}?product_id={{ $product->id }}" wire:navigate
+                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-[#D1FAE5] text-[#16A34A] hover:bg-emerald-200 transition-colors">
+                        <i data-lucide="arrow-down-left" class="w-3 h-3"></i> Stok Masuk
+                    </a>
+                    <a href="{{ route('barang-keluar.index') }}?product_id={{ $product->id }}" wire:navigate
+                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-[#FEE2E2] text-[#DC2626] hover:bg-rose-200 transition-colors">
+                        <i data-lucide="arrow-up-right" class="w-3 h-3"></i> Stok Keluar
+                    </a>
+                    <a href="{{ route('produk.edit', $product->id) }}"
+                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+                        <i data-lucide="pencil" class="w-3 h-3"></i> Edit
+                    </a>
+                    <button onclick="printQR()" type="button"
+                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+                        <i data-lucide="printer" class="w-3 h-3"></i> Cetak QR
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -353,7 +380,63 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+    (function initBinCardQr() {
+        const barcode = @json($product->barcode ?? $product->sku ?? 'PROD-' . $product->id);
+        const productName = @json($product->name);
+
+        function renderQr() {
+            const el = document.getElementById('binCardQr');
+            if (!el || typeof QRCode === 'undefined') return;
+            el.innerHTML = '';
+            try {
+                new QRCode(el, {
+                    text: barcode,
+                    width: 56, height: 56,
+                    colorDark: '#064E3B',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+                // Make the img responsive inside the container
+                const img = el.querySelector('img');
+                if (img) { img.style.width = '100%'; img.style.height = 'auto'; }
+            } catch(e) { console.warn('QR render failed:', e); }
+        }
+
+        // Render on page load and after Livewire navigations
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderQr);
+        } else {
+            setTimeout(renderQr, 100);
+        }
+        document.addEventListener('livewire:navigated', renderQr);
+
+        window.printQR = function() {
+            const qrEl = document.getElementById('binCardQr');
+            const img = qrEl?.querySelector('img');
+            if (!img) { alert('QR belum siap, coba lagi.'); return; }
+            const win = window.open('', '_blank', 'width=400,height=500');
+            win.document.write(`<!DOCTYPE html><html><head>
+                <title>QR - ${productName}</title>
+                <style>
+                    body { font-family: sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0; }
+                    img { width: 200px; height: 200px; image-rendering: pixelated; }
+                    h2 { margin: 16px 0 4px; font-size: 16px; text-align:center; }
+                    p { margin:0; font-size:12px; color:#64748b; font-family:monospace; }
+                </style>
+            </head><body>
+                <img src="${img.src}" alt="QR">
+                <h2>${productName}</h2>
+                <p>${barcode}</p>
+                <script>window.onload = () => window.print();<\/script>
+            </body></html>`);
+            win.document.close();
+        };
+    })();
+</script>
 <script>
     document.addEventListener('livewire:navigated', () => { lucide.createIcons(); });
 </script>
 @endpush
+
