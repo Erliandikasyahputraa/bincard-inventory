@@ -104,12 +104,13 @@ class BinCardDetail extends Component
         $totalKeluar = abs($rawTransactions->where('quantity', '<', 0)->sum('quantity'));
         $lastActivity = $rawTransactions->last();
 
-        // Status stok
-        $stockStatus = 'aman';
-        if ($product->min_stock && $product->current_stock <= 0) {
+        // Status stok — habis cek tanpa syarat min_stock
+        if ($product->current_stock <= 0) {
             $stockStatus = 'habis';
         } elseif ($product->min_stock && $product->current_stock <= $product->min_stock) {
             $stockStatus = 'kritis';
+        } else {
+            $stockStatus = 'aman';
         }
 
         return view('livewire.bin-card-detail', compact(

@@ -1,6 +1,6 @@
 <div class="px-2 sm:px-0 space-y-6">
 
-{{-- Skeleton shimmer CSS — inside single root div (Livewire 3 needs ONE root element as first node) --}}
+{{-- Skeleton shimmer CSS â€” inside single root div (Livewire 3 needs ONE root element as first node) --}}
 <style>
 @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -19,7 +19,7 @@
     <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Dashboard</h2>
 </x-slot:header>
 
-{{-- ─── Header + Filter ────────────────────────────────── --}}
+{{-- â”€â”€â”€ Header + Filter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
     <div>
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Overview Gudang</h1>
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-{{-- ─── Stats Cards ────────────────────────────────────── --}}
+{{-- â”€â”€â”€ Stats Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
 
     {{-- Katalog --}}
@@ -95,7 +95,7 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Masuk</p>
                 @if($stats['trend_masuk'] !== null)
                     @php $pct = $stats['trend_masuk']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
@@ -117,7 +117,7 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Keluar</p>
                 @if($stats['trend_keluar'] !== null)
                     @php $pct = $stats['trend_keluar']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? '↑' : '↓' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
@@ -129,14 +129,14 @@
 
 </div>
 
-{{-- ─── Chart + Peringatan & Status ─────────────────────── --}}
+{{-- â”€â”€â”€ Chart + Peringatan & Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
 
     {{-- Chart Panel (2/3) --}}
     <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:420px"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
-        {{-- Skeleton overlay while loading —— pointer-events-none prevents blocking filter buttons --}}
+        {{-- Skeleton overlay while loading â€”â€” pointer-events-none prevents blocking filter buttons --}}
         <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
             class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5 pointer-events-none">
             <div class="skeleton h-5 w-40 rounded-lg"></div>
@@ -176,7 +176,7 @@
     </div>
 
     {{-- Peringatan & Status (1/3) --}}
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm"
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-[#E2E8F0] dark:border-slate-800 card-shadow p-5 flex flex-col shadow-sm"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
         <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
@@ -243,7 +243,7 @@
                         class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                         <div class="min-w-0 flex-1">
                             <p class="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">{{ $kp->name }}</p>
-                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? '—' }}</p>
+                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? 'â€”' }}</p>
                         </div>
                         <div class="text-right flex-shrink-0 ml-2">
                             <span class="text-[11px] font-extrabold {{ $kp->current_stock <= 0 ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400' }}">
@@ -253,7 +253,7 @@
                         </div>
                     </a>
                 @empty
-                    <p class="text-[11px] text-slate-400 text-center py-3">✅ Semua stok aman!</p>
+                    <p class="text-[11px] text-slate-400 text-center py-3">âœ… Semua stok aman!</p>
                 @endforelse
             </div>
 
@@ -273,8 +273,8 @@
 
 </div>
 
-{{-- ─── Activity Feed (Full Width, upgraded) ───────────────── --}}
-<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm relative loading-transition animate-in animation-delay-300"
+{{-- â”€â”€â”€ Activity Feed (Full Width, upgraded) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-[#E2E8F0] dark:border-slate-800 card-shadow p-5 shadow-sm relative loading-transition animate-in animation-delay-300"
      wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
     {{-- Skeleton overlay --}}
@@ -302,7 +302,7 @@
         </h3>
         <a href="{{ route('laporan.index') }}" wire:navigate
             class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 transition-colors">
-            Semua Laporan →
+            Semua Laporan â†’
         </a>
     </div>
 
@@ -323,21 +323,21 @@
                     <div class="flex items-center gap-1.5">
                         @if($act->type == 'IN')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
-                                ↓ Masuk
+                                â†“ Masuk
                             </span>
                         @elseif($act->type == 'OUT')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
-                                ↑ Keluar
+                                â†‘ Keluar
                             </span>
                         @else
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
-                                ↺ Adjust
+                                â†º Adjust
                             </span>
                         @endif
                         <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400' }} text-[10px] font-extrabold">
                             {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
                         </span>
-                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">·</span>
+                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">Â·</span>
                         <span class="text-[10px] text-slate-500 dark:text-slate-400 truncate">{{ $act->user?->name ?? 'Sistem' }}</span>
                     </div>
                 </div>
@@ -361,13 +361,13 @@
 document.addEventListener('livewire:initialized', () => {
     const chartDom   = document.getElementById('dashboardEcharts');
     const emptyState = document.getElementById('chartEmptyState');
-    // Use Canvas renderer — more reliable clip behavior than SVG
+    // Use Canvas renderer â€” more reliable clip behavior than SVG
     let myChart = echarts.init(chartDom, null, { renderer: 'canvas' });
 
     const getChartOptions = (data, isDark) => {
         const textColor      = isDark ? '#94a3b8' : '#64748b';
-        const splitLineColor = isDark ? '#1e293b' : '#f1f5f9';
-        const axisLineColor  = isDark ? '#334155' : '#e2e8f0';
+        const splitLineColor = isDark ? '#1e293b' : '#E5E7EB';
+        const axisLineColor  = isDark ? '#334155' : '#E2E8F0';
 
         // Check sum (exclude the trailing empty padding entry)
         const realMasuk  = data.masuk.slice(0, -1);
@@ -420,7 +420,7 @@ document.addEventListener('livewire:initialized', () => {
                 itemWidth: 12, itemHeight: 8, itemGap: 20
             },
 
-            // Mousewheel/pinch zoom only — no slider bar
+            // Mousewheel/pinch zoom only â€” no slider bar
             dataZoom: [{ type: 'inside', start: 0, end: 100 }],
 
             grid: {
@@ -434,7 +434,7 @@ document.addEventListener('livewire:initialized', () => {
             xAxis: {
                 type: 'category',
                 data: data.labels,
-                boundaryGap: true,  // Half-slot padding on both sides — permanent last-bar fix
+                boundaryGap: true,  // Half-slot padding on both sides â€” permanent last-bar fix
                 axisLine: { lineStyle: { color: axisLineColor } },
                 axisTick: { show: false },
                 axisLabel: {
@@ -467,8 +467,8 @@ document.addEventListener('livewire:initialized', () => {
                     itemStyle: {
                         color: { type: 'linear', x:0,y:0,x2:0,y2:1,
                             colorStops: [
-                                { offset: 0, color: isDark ? '#34d399' : '#10b981' },
-                                { offset: 1, color: isDark ? '#10b98199' : '#10b98177' }
+                                { offset: 0, color: isDark ? '#34d399' : '#22C55E' },
+                                { offset: 1, color: isDark ? '#10b98199' : '#22C55E66' }
                             ]
                         },
                         borderRadius: [5, 5, 0, 0]
@@ -483,8 +483,8 @@ document.addEventListener('livewire:initialized', () => {
                     itemStyle: {
                         color: { type: 'linear', x:0,y:0,x2:0,y2:1,
                             colorStops: [
-                                { offset: 0, color: isDark ? '#fb7185' : '#f43f5e' },
-                                { offset: 1, color: isDark ? '#f43f5e99' : '#f43f5e77' }
+                                { offset: 0, color: isDark ? '#fb7185' : '#EF4444' },
+                                { offset: 1, color: isDark ? '#f43f5e99' : '#EF444466' }
                             ]
                         },
                         borderRadius: [5, 5, 0, 0]
@@ -520,3 +520,4 @@ document.addEventListener('livewire:initialized', () => {
 });
 </script>
 @endpush
+
