@@ -382,6 +382,10 @@ document.addEventListener('livewire:initialized', () => {
         chartDom.style.opacity = '1';
         emptyState.classList.add('hidden');
 
+        const labels = data.labels;
+        const masuk  = data.masuk;
+        const keluar = data.keluar;
+
         // Build arrays: use null for zero values so line gaps appear (no connection through zero)
         const filteredLabels = [];
         const filteredMasuk  = [];
