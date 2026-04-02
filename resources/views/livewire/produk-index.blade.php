@@ -40,37 +40,46 @@
     <!-- Mobile Card View (visible on small screens) -->
     <div class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 overflow-hidden shadow-sm">
         @forelse($produk as $p)
-            <div class="px-4 py-3 flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                {{-- Status dot --}}
-                <div class="shrink-0 w-9 h-9 rounded-xl {{ $p->current_stock <= $p->min_stock ? ($p->current_stock == 0 ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600') : 'bg-emerald-100 text-emerald-600' }} flex items-center justify-center font-bold text-xs">
+            @php
+                $isHabis = $p->current_stock == 0;
+                $isKritis = !$isHabis && $p->current_stock <= $p->min_stock;
+                $rowBg = $isHabis
+                    ? 'bg-rose-50 dark:bg-rose-900/10 border-l-4 border-l-rose-400'
+                    : ($isKritis ? 'bg-amber-50 dark:bg-amber-900/10 border-l-4 border-l-amber-400' : '');
+            @endphp
+            <div class="px-3 py-2.5 flex items-center gap-2.5 {{ $rowBg }} transition-colors">
+                {{-- Stock badge (compact) --}}
+                <span class="shrink-0 text-xs font-bold w-8 text-center {{ $isHabis ? 'text-rose-600' : ($isKritis ? 'text-amber-600' : 'text-emerald-600 dark:text-emerald-400') }}">
                     {{ $p->current_stock }}
-                </div>
+                </span>
                 {{-- Product info --}}
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ $p->name }}</p>
-                    <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white truncate leading-snug">{{ $p->name }}</p>
+                    <div class="flex items-center gap-1.5 mt-0.5">
                         <span class="text-[10px] text-slate-400 font-mono">{{ $p->barcode }}</span>
                         @if($p->location)
-                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded font-mono">{{ $p->location }}</span>
+                            <span class="text-[9px] px-1 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded font-mono">{{ $p->location }}</span>
                         @endif
-                        @if($p->current_stock <= $p->min_stock)
-                            <span class="text-[9px] font-bold text-rose-600 dark:text-rose-400 uppercase">{{ $p->current_stock == 0 ? 'Habis' : 'Kritis' }}</span>
+                        @if($isHabis)
+                            <span class="text-[8px] font-bold text-rose-600 bg-rose-100 dark:bg-rose-900/30 px-1 py-0.5 rounded uppercase">HABIS</span>
+                        @elseif($isKritis)
+                            <span class="text-[8px] font-bold text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded uppercase">KRITIS</span>
                         @endif
                     </div>
                 </div>
                 {{-- Actions --}}
-                <div class="flex items-center gap-1 shrink-0">
+                <div class="flex items-center shrink-0">
                     <a href="{{ route('produk.bin-card', $p->id) }}" wire:navigate
-                        class="p-2 rounded-lg text-slate-400 hover:text-[#10B981] hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors" title="Bin Card">
-                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                        class="p-1.5 rounded-lg text-slate-400 hover:text-[#10B981] transition-colors" title="Bin Card">
+                        <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
                     </a>
                     <a href="{{ route('produk.edit', $p->id) }}"
-                        class="p-2 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" title="Edit">
-                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                        class="p-1.5 rounded-lg text-slate-400 hover:text-blue-500 transition-colors" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </a>
                     <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"
-                        class="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors" title="Hapus">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 transition-colors" title="Hapus">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </div>
@@ -97,7 +106,14 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                     @forelse($produk as $p)
-                        <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                        @php
+                            $dIsHabis = $p->current_stock == 0;
+                            $dIsKritis = !$dIsHabis && $p->current_stock <= $p->min_stock;
+                            $dRowBg = $dIsHabis
+                                ? 'bg-rose-50 dark:bg-rose-900/10'
+                                : ($dIsKritis ? 'bg-amber-50 dark:bg-amber-900/10' : '');
+                        @endphp
+                        <tr class="{{ $dRowBg }} border-l-4 {{ $dIsHabis ? 'border-l-rose-400' : ($dIsKritis ? 'border-l-amber-400' : 'border-l-transparent') }} hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors group">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
                                     <span class="text-slate-800 dark:text-slate-200 font-mono text-xs transition-colors duration-300 ease-in-out">{{ $p->barcode }}</span>
@@ -109,9 +125,11 @@
                             </td>
                             <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
                                 <div class="inline-flex flex-col items-center">
-                                    <span class="text-lg font-bold {{ $p->current_stock <= $p->min_stock ? 'text-rose-600 dark:text-rose-400' : 'text-blue-500' }} transition-colors duration-300 ease-in-out">{{ $p->current_stock }}</span>
-                                    @if($p->current_stock <= $p->min_stock)
-                                        <span class="text-[9px] text-rose-600 dark:text-rose-500 font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Kritis</span>
+                                    <span class="text-lg font-bold {{ $dIsHabis ? 'text-rose-600 dark:text-rose-400' : ($dIsKritis ? 'text-amber-600 dark:text-amber-400' : 'text-blue-500') }} transition-colors duration-300 ease-in-out">{{ $p->current_stock }}</span>
+                                    @if($dIsHabis)
+                                        <span class="text-[9px] text-rose-600 dark:text-rose-500 font-bold uppercase tracking-wider">Habis</span>
+                                    @elseif($dIsKritis)
+                                        <span class="text-[9px] text-amber-600 dark:text-amber-500 font-bold uppercase tracking-wider">Kritis</span>
                                     @endif
                                 </div>
                             </td>

@@ -211,9 +211,9 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'" class="flex-1 transition-all duration-500 w-full min-h-screen flex flex-col pt-0 bg-transparent">
+        <main :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'" class="flex-1 min-w-0 transition-all duration-500 min-h-screen flex flex-col pt-0 bg-transparent overflow-x-hidden">
             
-            <div class="flex-1 p-6 md:p-8 lg:p-10 h-screen overflow-y-auto">
+            <div class="flex-1 p-4 md:p-6 lg:p-8 min-h-screen overflow-y-auto overflow-x-hidden">
                 <!-- Top Header -->
                 <header class="flex flex-wrap items-center justify-between mb-10 gap-6 mt-4 lg:mt-0">
                     <div class="flex items-center gap-4 flex-1">

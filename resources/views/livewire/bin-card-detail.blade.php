@@ -226,7 +226,45 @@
             </a>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Mobile Transaction Cards -->
+        <div class="md:hidden flex flex-col divide-y divide-[#E2E8F0] dark:divide-slate-800">
+            @forelse($transactions as $i => $trx)
+                <div class="px-4 py-3 {{ $trx->type === 'IN' ? 'border-l-4 border-l-emerald-400' : ($trx->type === 'OUT' ? 'border-l-4 border-l-rose-400' : 'border-l-4 border-l-amber-400') }}">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            @if($trx->type === 'IN')
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#DCFCE7] text-[#16A34A]">Masuk</span>
+                            @elseif($trx->type === 'OUT')
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#FEE2E2] text-[#DC2626]">Keluar</span>
+                            @else
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#FEF3C7] text-[#D97706]">Adjust</span>
+                            @endif
+                            <span class="text-xs font-mono text-[#334155] dark:text-slate-300">{{ $trx->created_at->format('d/m/Y H:i') }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            @if($trx->quantity > 0)
+                                <span class="font-bold text-[#16A34A]">+{{ $trx->quantity }}</span>
+                            @else
+                                <span class="font-bold text-[#DC2626]">{{ $trx->quantity }}</span>
+                            @endif
+                            <span class="text-[#94A3B8]">→</span>
+                            <span class="font-extrabold {{ $trx->balance <= 0 ? 'text-[#DC2626]' : ($trx->balance <= ($product->min_stock ?? 0) ? 'text-[#D97706]' : 'text-[#10B981]') }}">{{ $trx->balance }}</span>
+                        </div>
+                    </div>
+                    @if($trx->reference || $trx->notes)
+                        <p class="text-[10px] text-[#94A3B8] mt-1 truncate">{{ $trx->reference ?? '' }}{{ $trx->reference && $trx->notes ? ' · ' : '' }}{{ $trx->notes ?? '' }}</p>
+                    @endif
+                </div>
+            @empty
+                <div class="py-12 flex flex-col items-center gap-2">
+                    <i data-lucide="inbox" class="w-8 h-8 text-[#E2E8F0] dark:text-slate-600"></i>
+                    <p class="text-sm text-[#94A3B8]">Tidak ada transaksi di periode ini</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Desktop Transaction Table -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-xs">
                 <thead>
                     <tr class="bg-[#F6F8FB] dark:bg-slate-800/50 border-b border-[#D1D5DB] dark:border-slate-800">
