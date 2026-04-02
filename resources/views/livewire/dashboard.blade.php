@@ -364,8 +364,9 @@ document.addEventListener('livewire:initialized', () => {
 
     const getChartOptions = (data, isDark) => {
         const textColor      = isDark ? '#94a3b8' : '#64748b';
-        const splitLineColor = isDark ? '#1e293b' : '#E5E7EB';
-        const axisLineColor  = isDark ? '#334155' : '#E2E8F0';
+        const splitLineColor = isDark ? '#1e293b' : '#f1f5f9';
+        const axisLineColor  = isDark ? '#334155' : '#e2e8f0';
+        const gridBg         = isDark ? 'rgba(15,23,42,0)' : 'rgba(255,255,255,0)';
 
         // Check sum (exclude the trailing empty padding entry)
         const realMasuk  = data.masuk.slice(0, -1);
@@ -380,30 +381,53 @@ document.addEventListener('livewire:initialized', () => {
         chartDom.style.opacity = '1';
         emptyState.classList.add('hidden');
 
+        // Filter: only keep labels where at least one series has a value > 0
+        const labels = data.labels;
+        const masuk  = data.masuk;
+        const keluar = data.keluar;
+
+        // Build compact arrays (skip trailing empty slot used for bar padding)
+        const filteredLabels = [];
+        const filteredMasuk  = [];
+        const filteredKeluar = [];
+        for (let i = 0; i < realMasuk.length; i++) {
+            // Always include days that have activity, skip silent stretches only if VERY long range
+            filteredLabels.push(labels[i]);
+            filteredMasuk.push(Number(masuk[i]) || 0);
+            filteredKeluar.push(Number(keluar[i]) || 0);
+        }
+
+        const colorMasuk  = isDark ? '#34d399' : '#10B981';
+        const colorKeluar = isDark ? '#fb7185' : '#ef4444';
+
         return {
             backgroundColor: 'transparent',
             animation: true,
-            animationDuration: 400,
+            animationDuration: 600,
             animationEasing: 'cubicOut',
 
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'none' },
-                backgroundColor: isDark ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.97)',
+                axisPointer: {
+                    type: 'cross',
+                    lineStyle: { color: isDark ? '#334155' : '#e2e8f0', width: 1 },
+                    crossStyle: { color: isDark ? '#334155' : '#e2e8f0' }
+                },
+                backgroundColor: isDark ? 'rgba(15,23,42,0.97)' : 'rgba(255,255,255,0.98)',
                 borderColor: isDark ? '#334155' : '#e2e8f0',
                 borderWidth: 1,
-                borderRadius: 10,
+                borderRadius: 12,
                 textStyle: { color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 12 },
-                padding: [10, 14],
+                padding: [12, 16],
                 formatter: function(params) {
-                    if (!params[0].name) return '';
-                    let html = `<div style="font-weight:700;margin-bottom:8px;font-size:11px;color:${textColor};letter-spacing:0.04em;text-transform:uppercase">${params[0].name}</div>`;
+                    if (!params[0]?.name) return '';
+                    let html = `<div style="font-weight:700;margin-bottom:8px;font-size:11px;color:${textColor};letter-spacing:0.06em;text-transform:uppercase">${params[0].name}</div>`;
                     params.forEach(p => {
-                        // Display value with series name
+                        if (p.value === null || p.value === undefined) return;
                         html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                            <span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${p.color}"></span>
+                            <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color};box-shadow:0 0 6px ${p.color}80"></span>
                             <span style="flex:1;font-size:12px">${p.seriesName}</span>
-                            <b>${Math.abs(p.value).toLocaleString('id-ID')} Unit</b>
+                            <b style="color:${p.color}">${p.value.toLocaleString('id-ID')} Unit</b>
                         </div>`;
                     });
                     return html;
@@ -412,83 +436,95 @@ document.addEventListener('livewire:initialized', () => {
 
             legend: {
                 data: ['Barang Masuk', 'Barang Keluar'],
-                bottom: 8,
+                bottom: 4,
                 textStyle: { color: textColor, fontSize: 11, fontWeight: 600 },
-                icon: 'roundRect',
-                itemWidth: 12, itemHeight: 8, itemGap: 20
+                icon: 'circle',
+                itemWidth: 8, itemHeight: 8, itemGap: 24
             },
 
-            // Mousewheel/pinch zoom only — no slider bar
             dataZoom: [{ type: 'inside', start: 0, end: 100 }],
 
             grid: {
-                left: '25',
-                right: '40',
-                top: '45',
-                bottom: '55',
+                left: '8',
+                right: '16',
+                top: '24',
+                bottom: '48',
                 containLabel: true
             },
 
             xAxis: {
                 type: 'category',
-                data: data.labels,
-                boundaryGap: true,  // Half-slot padding on both sides — permanent last-bar fix
-                axisLine: { lineStyle: { color: axisLineColor } },
+                data: filteredLabels,
+                boundaryGap: false,
+                axisLine: { show: false },
                 axisTick: { show: false },
                 axisLabel: {
                     color: textColor,
                     fontSize: 9,
                     interval: 'auto',
                     hideOverlap: true,
-                    rotate: 0,
-                    // Don't render label for the empty trailing slot
                     formatter: v => v || ''
-                }
+                },
+                splitLine: { show: false }
             },
 
             yAxis: {
                 type: 'value',
-                splitLine: { lineStyle: { type: 'dashed', color: splitLineColor } },
+                splitLine: {
+                    lineStyle: { type: 'dashed', color: splitLineColor, width: 1 }
+                },
+                axisLine: { show: false },
+                axisTick: { show: false },
                 axisLabel: {
                     color: textColor, fontSize: 10,
                     formatter: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v
                 },
                 min: 0,
-                max: v => v.max === 0 ? 10 : Math.ceil(v.max * 1.25)
+                max: v => v.max === 0 ? 10 : Math.ceil(v.max * 1.3)
             },
 
             series: [
                 {
                     name: 'Barang Masuk',
-                    type: 'bar',
-                    data: data.masuk,
-                    itemStyle: {
-                        color: { type: 'linear', x:0,y:0,x2:0,y2:1,
+                    type: 'line',
+                    smooth: 0.4,
+                    data: filteredMasuk,
+                    symbol: 'circle',
+                    symbolSize: v => v > 0 ? 6 : 0,
+                    showSymbol: true,
+                    lineStyle: { color: colorMasuk, width: 2.5, shadowBlur: 8, shadowColor: colorMasuk + '60' },
+                    itemStyle: { color: colorMasuk, borderColor: '#fff', borderWidth: 2 },
+                    areaStyle: {
+                        color: {
+                            type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
                             colorStops: [
-                                { offset: 0, color: isDark ? '#34d399' : '#22C55E' },
-                                { offset: 1, color: isDark ? '#10b98199' : '#22C55E66' }
+                                { offset: 0, color: colorMasuk + (isDark ? '50' : '30') },
+                                { offset: 1, color: colorMasuk + '00' }
                             ]
-                        },
-                        borderRadius: [5, 5, 0, 0]
+                        }
                     },
-                    barMaxWidth: 32,
-                    emphasis: { itemStyle: { opacity: 0.85 } }
+                    emphasis: { scale: true, lineStyle: { width: 3 } }
                 },
                 {
                     name: 'Barang Keluar',
-                    type: 'bar',
-                    data: data.keluar,
-                    itemStyle: {
-                        color: { type: 'linear', x:0,y:0,x2:0,y2:1,
+                    type: 'line',
+                    smooth: 0.4,
+                    data: filteredKeluar,
+                    symbol: 'circle',
+                    symbolSize: v => v > 0 ? 6 : 0,
+                    showSymbol: true,
+                    lineStyle: { color: colorKeluar, width: 2.5, shadowBlur: 8, shadowColor: colorKeluar + '60' },
+                    itemStyle: { color: colorKeluar, borderColor: '#fff', borderWidth: 2 },
+                    areaStyle: {
+                        color: {
+                            type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
                             colorStops: [
-                                { offset: 0, color: isDark ? '#fb7185' : '#EF4444' },
-                                { offset: 1, color: isDark ? '#f43f5e99' : '#EF444466' }
+                                { offset: 0, color: colorKeluar + (isDark ? '50' : '25') },
+                                { offset: 1, color: colorKeluar + '00' }
                             ]
-                        },
-                        borderRadius: [5, 5, 0, 0]
+                        }
                     },
-                    barMaxWidth: 32,
-                    emphasis: { itemStyle: { opacity: 0.85 } }
+                    emphasis: { scale: true, lineStyle: { width: 3 } }
                 }
             ]
         };

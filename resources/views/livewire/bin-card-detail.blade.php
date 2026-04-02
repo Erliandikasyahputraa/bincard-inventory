@@ -133,7 +133,7 @@
 <div class="flex flex-col lg:flex-row gap-4">
 
     {{-- Kolom kiri: Ringkasan + Status --}}
-    <div class="lg:w-64 flex flex-col gap-4 flex-shrink-0">
+    <div class="lg:w-60 flex flex-col gap-4 flex-shrink-0 lg:sticky lg:top-4 lg:self-start">
 
         {{-- Ringkasan Periode --}}
         <div class="bg-white dark:bg-slate-900 border border-[#D1D5DB] dark:border-slate-800 rounded-2xl p-4"
@@ -192,7 +192,7 @@
                     </div>
                 </a>
                 @else
-                <a href="{{ route('barang-masuk.index') }}" wire:navigate
+                <a href="{{ route('barang-masuk.index') }}?product_id={{ $product->id }}" wire:navigate
                     class="flex items-center gap-2 p-3 bg-[#FEE2E2] dark:bg-red-500/10 rounded-xl border border-red-100 dark:border-red-500/20 hover:shadow-md transition-all">
                     <i data-lucide="x-circle" class="w-4 h-4 text-[#DC2626] dark:text-red-400 flex-shrink-0"></i>
                     <div>
@@ -202,7 +202,7 @@
                 </a>
                 @endif
 
-                <a href="{{ route('barang-masuk.index') }}" wire:navigate
+                <a href="{{ route('barang-masuk.index') }}?product_id={{ $product->id }}" wire:navigate
                     class="flex items-center justify-center gap-2 w-full mt-1 px-3 py-2 text-[11px] font-bold text-[#10B981] dark:text-emerald-400 bg-[#D1FAE5] dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl hover:bg-emerald-200/60 dark:hover:bg-emerald-500/20 transition-colors">
                     <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Tambah Stok
                 </a>
@@ -212,8 +212,8 @@
     </div>
 
     {{-- Kolom kanan: Tabel riwayat transaksi --}}
-    <div class="flex-1 bg-white dark:bg-slate-900 border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden min-w-0"
-        style="box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06)">
+    <div class="flex-1 bg-white dark:bg-slate-900 border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden min-w-0 flex flex-col"
+        style="box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);">
         <div class="flex items-center justify-between px-5 py-4 border-b border-[#D1D5DB] dark:border-slate-800">
             <h3 class="text-sm font-bold text-[#334155] dark:text-slate-200 flex items-center gap-2">
                 <i data-lucide="list" class="w-4 h-4 text-[#10B981]"></i>
@@ -264,9 +264,9 @@
         </div>
 
         <!-- Desktop Transaction Table -->
-        <div class="hidden md:block overflow-x-auto">
+        <div class="hidden md:block overflow-x-auto lg:overflow-y-auto lg:max-h-[72vh] flex-1">
             <table class="w-full text-xs">
-                <thead>
+                <thead class="sticky top-0 z-10">
                     <tr class="bg-[#F6F8FB] dark:bg-slate-800/50 border-b border-[#D1D5DB] dark:border-slate-800">
                         <th class="px-4 py-3 text-left font-semibold text-[#94A3B8] whitespace-nowrap">#</th>
                         <th class="px-4 py-3 text-left font-semibold text-[#94A3B8] whitespace-nowrap">Tanggal & Waktu</th>
