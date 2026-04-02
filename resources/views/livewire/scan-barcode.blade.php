@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="scan-line" class="w-5 h-5 text-emerald-500 transition-colors duration-300 ease-in-out"></i> Scanner Interaktif
@@ -11,7 +11,7 @@
     <!-- Result Area (Appears on top when product is found or explicitly not found) -->
     @if($produkDitemukan)
         <div class="mb-8 flex-1 bg-gradient-to-br from-[#161B22] to-[#0D1117] border border-[#238636]/30 rounded-3xl p-6 lg:p-8 relative overflow-hidden ring-1 ring-[#238636]/50 shadow-[0_0_30px_rgba(35,134,54,0.1)] transition-all animate-in fade-in zoom-in duration-300">
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#16A34A] dark:bg-emerald-500/10 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#10B981] dark:bg-emerald-500/10 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
             
             <div class="relative z-10">
                 <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 pb-6 border-b border-slate-700/50">
@@ -85,7 +85,7 @@
         
         <!-- Manual Input Area (Top / Left) -->
         <div class="relative group z-30 w-full mx-auto">
-            <div class="flex flex-col h-full bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-5 lg:p-6 lg:px-8 shadow-xl transition-colors duration-300 ease-in-out items-center justify-center text-center pb-8 border-t-4 border-t-blue-500">
+            <div class="flex flex-col h-full bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-5 lg:p-6 lg:px-8 shadow-xl transition-colors duration-300 ease-in-out items-center justify-center text-center pb-8 border-t-4 border-t-blue-500">
                 <div class="w-12 h-12 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center mb-4 transition-colors p-3 mt-2">
                     <i data-lucide="keyboard" class="w-full h-full text-blue-500 transition-colors duration-300 ease-in-out"></i>
                 </div>
@@ -100,13 +100,13 @@
 
                     <!-- Dropdown Hasil Pencarian Fuzzy -->
                     @if(count($hasilPencarian) > 0)
-                    <div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto ring-1 ring-slate-900/5 z-50">
+                    <div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto ring-1 ring-slate-900/5 z-50">
                         <ul class="py-2">
                             @foreach($hasilPencarian as $h)
                             <li>
                                 <button type="button" wire:click="pilihProduk({{ $h['id'] }})" class="w-full text-left px-5 py-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50 last:border-0 group">
                                     <div>
-                                        <p class="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#3B82F6] dark:group-hover:text-blue-400 transition-colors">{{ $h['name'] }}</p>
+                                        <p class="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#10B981] dark:group-hover:text-blue-400 transition-colors">{{ $h['name'] }}</p>
                                         <p class="text-[11px] text-slate-500 font-mono mt-0.5">{{ $h['barcode'] }}</p>
                                     </div>
                                     <span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center shadow-inner">
@@ -123,7 +123,7 @@
         </div>
         
         <!-- Scanner Camera Area (Bottom / Right) -->
-        <div wire:ignore class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-4 lg:p-6 lg:px-8 shadow-xl relative overflow-hidden flex flex-col items-center transition-colors duration-300 ease-in-out w-full mx-auto border-t-4 border-t-emerald-500">
+        <div wire:ignore class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-4 lg:p-6 lg:px-8 shadow-xl relative overflow-hidden flex flex-col items-center transition-colors duration-300 ease-in-out w-full mx-auto border-t-4 border-t-emerald-500">
             <div class="mb-5 text-center mt-2">
                 <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200 flex items-center justify-center gap-2 transition-colors duration-300 ease-in-out">
                     <i data-lucide="scan-line" class="w-5 h-5 text-emerald-500"></i>
@@ -137,7 +137,7 @@
             </div>
             
             <div class="mt-6 flex gap-3 w-full max-w-md justify-center relative z-10 mb-2">
-                <button type="button" @click="startScan()" class="flex-1 py-3.5 px-4 bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center text-sm ring-1 ring-emerald-500/50">
+                <button type="button" @click="startScan()" class="flex-1 py-3.5 px-4 bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center text-sm ring-1 ring-emerald-500/50">
                     <i data-lucide="camera" class="w-4 h-4 mr-2"></i> Mulai Kamera
                 </button>
                 <button type="button" @click="stopScan()" class="py-3 px-6 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 font-bold border border-rose-200 dark:border-rose-500/20 rounded-xl transition-all flex items-center justify-center">
@@ -208,4 +208,3 @@
         }
     </script>
 </div>
-

@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="user-cog" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
@@ -19,7 +19,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         <!-- Identitas Dasar -->
-        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
             <div class="absolute top-0 right-0 w-32 h-32 bg-[#58A6FF]/5 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
             
             <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-800 pb-3 flex items-center gap-2 transition-colors duration-300 ease-in-out">
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="pt-4 border-t border-slate-200 dark:border-slate-800/50 transition-colors duration-300 ease-in-out">
-                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#1F6FEB]/20 flex items-center justify-center gap-2" wire:loading.attr="disabled">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#1F6FEB]/20 flex items-center justify-center gap-2" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="updateProfile">Simpan Informasi</span>
                         <span wire:loading wire:target="updateProfile" class="flex items-center">
                             <i data-lucide="loader-2" class="w-4 h-4 animate-spin mr-2"></i> Menyimpan...
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Ubah Password -->
-        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
             <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
             
             <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-slate-800 pb-3 flex items-center gap-2 transition-colors duration-300 ease-in-out">
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="pt-4 border-t border-slate-200 dark:border-slate-800/50 transition-colors duration-300 ease-in-out">
-                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2" wire:loading.attr="disabled">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="updatePassword">Ubah Kata Sandi</span>
                         <span wire:loading wire:target="updatePassword" class="flex items-center">
                             <i data-lucide="loader-2" class="w-4 h-4 animate-spin mr-2"></i> Mengubah...
@@ -93,4 +93,3 @@
 
     </div>
 </div>
-

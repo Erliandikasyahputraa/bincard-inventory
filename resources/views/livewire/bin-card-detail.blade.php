@@ -1,10 +1,10 @@
-﻿<div class="px-2 sm:px-0 space-y-6">
+<div class="px-2 sm:px-0 space-y-6">
 
 <x-slot:header>
     <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Bin Card</h2>
 </x-slot:header>
 
-{{-- â”€â”€â”€ Page header â”€â”€â”€ --}}
+{{-- ─── Page header ─── --}}
 <div class="flex flex-col gap-4">
 
     {{-- Row 1: Back + judul + Export --}}
@@ -17,7 +17,7 @@
             </a>
             <div class="min-w-0">
                 <h1 class="text-xl font-extrabold text-[#0F172A] dark:text-white tracking-tight truncate">
-                    Bin Card â€” <span class="text-[#3B82F6]">{{ $product->name }}</span>
+                    Bin Card — <span class="text-[#3B82F6]">{{ $product->name }}</span>
                 </h1>
                 <p class="text-xs text-[#94A3B8] dark:text-slate-400">Riwayat &amp; status stok per produk</p>
             </div>
@@ -51,14 +51,14 @@
             <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#94A3B8]"></i>
             <input type="date" wire:model.live.debounce.500ms="startDate"
                 class="bg-transparent border-none text-xs font-medium text-[#334155] dark:text-slate-300 focus:ring-0 outline-none p-0.5 [color-scheme:light] dark:[color-scheme:dark] w-28">
-            <span class="text-[#94A3B8] text-[10px] font-bold">â€”</span>
+            <span class="text-[#94A3B8] text-[10px] font-bold">—</span>
             <input type="date" wire:model.live.debounce.500ms="endDate"
                 class="bg-transparent border-none text-xs font-medium text-[#334155] dark:text-slate-300 focus:ring-0 outline-none p-0.5 [color-scheme:light] dark:[color-scheme:dark] w-28">
         </div>
     </div>
 </div>
 
-{{-- â”€â”€â”€ Kartu Info Produk â”€â”€â”€ --}}
+{{-- ─── Kartu Info Produk ─── --}}
 <div class="bg-white dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-5"
     style="box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06)">
     <div class="flex flex-col lg:flex-row gap-5">
@@ -74,11 +74,11 @@
                         {{ $product->sku ?? $product->barcode ?? 'ID-' . $product->id }}
                     </span>
                     @if($stockStatus === 'habis')
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FEE2E2] text-[#DC2626] dark:bg-red-500/20 dark:text-red-400">ðŸ”´ HABIS</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FEE2E2] text-[#DC2626] dark:bg-red-500/20 dark:text-red-400">🔴 HABIS</span>
                     @elseif($stockStatus === 'kritis')
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] dark:bg-amber-500/20 dark:text-amber-400">âš  KRITIS</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] dark:bg-amber-500/20 dark:text-amber-400">⚠ KRITIS</span>
                     @else
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#16A34A] dark:bg-emerald-500/20 dark:text-emerald-400">âœ“ AKTIF</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#16A34A] dark:bg-emerald-500/20 dark:text-emerald-400">✓ AKTIF</span>
                     @endif
                 </div>
                 <h2 class="text-xl font-extrabold text-[#0F172A] dark:text-white leading-tight truncate">{{ $product->name }}</h2>
@@ -94,13 +94,13 @@
             {{-- Lokasi Bin --}}
             <div class="bg-[#DBEAFE] dark:bg-blue-500/10 rounded-xl p-3 text-center border border-blue-100 dark:border-blue-500/20">
                 <p class="text-[9px] font-bold text-[#3B82F6] uppercase tracking-widest mb-1">Lokasi Bin</p>
-                <p class="text-base font-extrabold text-[#1D4ED8] dark:text-blue-300 font-mono leading-tight">{{ $product->location ?? 'â€”' }}</p>
+                <p class="text-base font-extrabold text-[#1D4ED8] dark:text-blue-300 font-mono leading-tight">{{ $product->location ?? '—' }}</p>
             </div>
 
             {{-- UoM --}}
             <div class="bg-[#F1F5F9] dark:bg-slate-800 rounded-xl p-3 text-center border border-[#E2E8F0] dark:border-slate-700">
                 <p class="text-[9px] font-bold text-[#94A3B8] uppercase tracking-widest mb-1">Satuan</p>
-                <p class="text-base font-extrabold text-[#334155] dark:text-slate-200">{{ $product->uom ?? 'â€”' }}</p>
+                <p class="text-base font-extrabold text-[#334155] dark:text-slate-200">{{ $product->uom ?? '—' }}</p>
             </div>
 
             {{-- Stok On Hand --}}
@@ -129,7 +129,7 @@
     </div>
 </div>
 
-{{-- â”€â”€â”€ Row bawah: Ringkasan + Riwayat Transaksi â”€â”€â”€ --}}
+{{-- ─── Row bawah: Ringkasan + Riwayat Transaksi ─── --}}
 <div class="flex flex-col lg:flex-row gap-5">
 
     {{-- Kolom kiri: Ringkasan + Status --}}
@@ -158,7 +158,7 @@
                 <div class="flex justify-between items-center py-1.5">
                     <span class="text-[11px] text-[#94A3B8]">Trx Terakhir</span>
                     <span class="text-[10px] font-bold text-[#334155] dark:text-slate-300">
-                        {{ $lastActivity ? $lastActivity->created_at->diffForHumans() : 'â€”' }}
+                        {{ $lastActivity ? $lastActivity->created_at->diffForHumans() : '—' }}
                     </span>
                 </div>
             </div>
@@ -187,7 +187,7 @@
                     class="flex items-center gap-2 p-3 bg-[#FEF3C7] dark:bg-amber-500/10 rounded-xl border border-amber-100 dark:border-amber-500/20 hover:shadow-md transition-all">
                     <i data-lucide="alert-triangle" class="w-4 h-4 text-[#D97706] dark:text-amber-400 flex-shrink-0"></i>
                     <div>
-                        <p class="text-xs font-bold text-[#D97706] dark:text-amber-300">âš  Stok Kritis</p>
+                        <p class="text-xs font-bold text-[#D97706] dark:text-amber-300">⚠ Stok Kritis</p>
                         <p class="text-[9px] text-[#D97706]/70">Bawah min {{ $product->min_stock }} {{ $product->uom }}</p>
                     </div>
                 </a>
@@ -196,7 +196,7 @@
                     class="flex items-center gap-2 p-3 bg-[#FEE2E2] dark:bg-red-500/10 rounded-xl border border-red-100 dark:border-red-500/20 hover:shadow-md transition-all">
                     <i data-lucide="x-circle" class="w-4 h-4 text-[#DC2626] dark:text-red-400 flex-shrink-0"></i>
                     <div>
-                        <p class="text-xs font-bold text-[#DC2626] dark:text-red-300">ðŸ”´ Stok Habis</p>
+                        <p class="text-xs font-bold text-[#DC2626] dark:text-red-300">🔴 Stok Habis</p>
                         <p class="text-[9px] text-[#DC2626]/70">Klik untuk tambah stok</p>
                     </div>
                 </a>
@@ -222,7 +222,7 @@
             </h3>
             <a href="{{ route('laporan.index') }}" wire:navigate
                 class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-[#F1F5F9] hover:bg-[#E2E8F0] dark:bg-slate-800 dark:hover:bg-slate-700 text-[#334155] dark:text-slate-300 transition-colors">
-                Semua â†’
+                Semua →
             </a>
         </div>
 
@@ -264,19 +264,19 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-4 py-3 font-mono text-[11px] text-[#334155] dark:text-slate-300 whitespace-nowrap">{{ $trx->reference ?? 'â€”' }}</td>
+                        <td class="px-4 py-3 font-mono text-[11px] text-[#334155] dark:text-slate-300 whitespace-nowrap">{{ $trx->reference ?? '—' }}</td>
                         <td class="px-4 py-3 text-right font-bold">
                             @if($trx->quantity > 0)
                                 <span class="text-[#16A34A] dark:text-emerald-400">+{{ number_format($trx->quantity, 0, ',', '.') }}</span>
                             @else
-                                <span class="text-[#E2E8F0] dark:text-slate-700">â€”</span>
+                                <span class="text-[#E2E8F0] dark:text-slate-700">—</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-right font-bold">
                             @if($trx->quantity < 0)
                                 <span class="text-[#DC2626] dark:text-rose-400">{{ number_format(abs($trx->quantity), 0, ',', '.') }}</span>
                             @else
-                                <span class="text-[#E2E8F0] dark:text-slate-700">â€”</span>
+                                <span class="text-[#E2E8F0] dark:text-slate-700">—</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-right font-extrabold">
@@ -292,7 +292,7 @@
                                 <span class="text-[11px] text-[#334155] dark:text-slate-300">{{ $trx->pic }}</span>
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-[11px] text-[#94A3B8] dark:text-slate-400 max-w-[200px] truncate">{{ $trx->notes ?? 'â€”' }}</td>
+                        <td class="px-4 py-3 text-[11px] text-[#94A3B8] dark:text-slate-400 max-w-[200px] truncate">{{ $trx->notes ?? '—' }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -319,4 +319,3 @@
     document.addEventListener('livewire:navigated', () => { lucide.createIcons(); });
 </script>
 @endpush
-

@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="users-round" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
@@ -11,14 +11,14 @@
 <div class="max-w-6xl mx-auto pb-12">
     <div class="mb-6 flex flex-col md:flex-row justify-end items-end gap-4">
         <div>
-            <button wire:click="openModal" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20">
+            <button wire:click="openModal" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Pengguna
             </button>
         </div>
     </div>
 
     <!-- User Table List -->
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left border-collapse transition-colors duration-300 ease-in-out">
                 <thead>
@@ -34,7 +34,7 @@
                             <td class="py-4 px-4">
                                 <p class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:text-white transition-colors">{{ $user->name }}
                                     @if(auth()->id() === $user->id)
-                                        <span class="ml-2 px-2 py-0.5 rounded-full bg-[#3B82F6] dark:bg-blue-500/10 text-blue-500 text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Anda</span>
+                                        <span class="ml-2 px-2 py-0.5 rounded-full bg-[#10B981] dark:bg-blue-500/10 text-blue-500 text-[10px] font-bold uppercase tracking-wider transition-colors duration-300 ease-in-out">Anda</span>
                                     @endif
                                 </p>
                                 <p class="text-xs text-slate-500 font-mono transition-colors duration-300 ease-in-out">{{ $user->email }}</p>
@@ -48,7 +48,7 @@
                             </td>
                             <td class="py-4 px-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-slate-900 dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
+                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-slate-900 dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
                                         <i data-lucide="pencil" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold transition-colors duration-300 ease-in-out">Edit</span>
                                     </button>
                                     @if(auth()->id() !== $user->id)
@@ -75,7 +75,7 @@
     <!-- Modal Form Tambah/Edit -->
     @if($isModalOpen)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-colors duration-300 ease-in-out">
-            <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in duration-200 transition-colors duration-300 ease-in-out">
+            <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in duration-200 transition-colors duration-300 ease-in-out">
                 <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out">
                     <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 transition-colors duration-300 ease-in-out">
                         <i data-lucide="user-cog" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
@@ -115,7 +115,7 @@
 
                     <div class="pt-6 border-t border-slate-200 dark:border-slate-800/50 flex justify-end gap-3 transition-colors duration-300 ease-in-out">
                         <button type="button" wire:click="closeModal" class="px-6 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl transition-colors">Batal</button>
-                        <button type="submit" class="px-6 py-2.5 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 flex items-center" wire:loading.attr="disabled">
+                        <button type="submit" class="px-6 py-2.5 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 flex items-center" wire:loading.attr="disabled">
                             <span wire:loading.remove wire:target="simpan"><i data-lucide="save" class="w-4 h-4 inline-block mr-2 -mt-0.5"></i> Simpan Data</span>
                             <span wire:loading wire:target="simpan"><i data-lucide="loader-2" class="w-4 h-4 animate-spin inline-block mr-2 -mt-0.5"></i> Menyimpan...</span>
                         </button>
@@ -125,4 +125,3 @@
         </div>
     @endif
 </div>
-

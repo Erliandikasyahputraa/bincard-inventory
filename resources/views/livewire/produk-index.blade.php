@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Data Produk</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Kelola daftar seluruh inventaris gudang.</p>
@@ -31,14 +31,14 @@
                 <a href="{{ route('produk.import') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
                     <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-slate-500 dark:text-slate-400 transition-colors duration-300 ease-in-out"></i> Import
                 </a>
-                <a href="{{ route('produk.tambah') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm whitespace-nowrap">
+                <a href="{{ route('produk.tambah') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm whitespace-nowrap">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah
                 </a>
             </div>
         </div>
     </div>
     <!-- Table Area -->
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[800px] transition-colors duration-300 ease-in-out">
                 <thead>
@@ -76,7 +76,7 @@
                             <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('produk.bin-card', $p->id) }}" wire:navigate
-                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-[#3B82F6] hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-colors" title="Lihat Bin Card">
+                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-[#10B981] hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-colors" title="Lihat Bin Card">
                                         <i data-lucide="clipboard-list" class="w-4 h-4"></i>
                                     </a>
                                     <a href="{{ route('produk.edit', $p->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit Data">
@@ -111,4 +111,3 @@
         @endif
     </div>
 </div>
-

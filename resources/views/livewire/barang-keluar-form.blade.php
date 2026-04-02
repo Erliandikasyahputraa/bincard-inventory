@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="arrow-up-right" class="w-5 h-5 text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out"></i> Barang Keluar
@@ -9,11 +9,11 @@
 
 <div class="w-full">
 
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-4xl transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-4xl transition-colors duration-300 ease-in-out">
         <form wire:submit="simpan" class="p-6 md:p-8 space-y-6">
             
             <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-2 transition-colors duration-300 ease-in-out relative">
-                <label class="block text-[11px] font-bold text-[#3B82F6] dark:text-blue-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Pencarian Cepat (Barcode)</label>
+                <label class="block text-[11px] font-bold text-[#10B981] dark:text-blue-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Pencarian Cepat (Barcode)</label>
                 <div class="flex gap-2">
                     <div class="relative flex-1">
                         <i data-lucide="scan-line" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 transition-colors duration-300 ease-in-out"></i>
@@ -30,7 +30,7 @@
                 
                 <!-- Dropdown Hasil Pencarian Fuzzy -->
                 @if(count($hasilPencarian) > 0)
-                <div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto">
+                <div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto">
                     <ul class="py-2">
                         @foreach($hasilPencarian as $h)
                         <li>
@@ -110,7 +110,7 @@
             </div>
 
             <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end transition-colors duration-300 ease-in-out">
-                <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="w-full sm:w-auto px-6 py-3 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white disabled:opacity-50 font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 flex justify-center items-center text-sm">
+                <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="w-full sm:w-auto px-6 py-3 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-white disabled:opacity-50 font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 flex justify-center items-center text-sm">
                     <i data-lucide="minus-square" class="w-4 h-4 mr-2" wire:loading.remove wire:target="simpan"></i>
                     <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin" wire:loading wire:target="simpan" style="display: none;"></i>
                     <span wire:loading.remove wire:target="simpan">Proses Pengeluaran Stok</span>
@@ -120,4 +120,3 @@
         </form>
     </div>
 </div>
-

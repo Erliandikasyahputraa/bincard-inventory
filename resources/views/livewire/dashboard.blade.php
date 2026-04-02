@@ -1,6 +1,6 @@
-﻿<div class="px-2 sm:px-0 space-y-6">
+<div class="px-2 sm:px-0 space-y-6">
 
-{{-- Skeleton shimmer CSS Ã¢â‚¬â€ inside single root div (Livewire 3 needs ONE root element as first node) --}}
+{{-- Skeleton shimmer CSS â€” inside single root div (Livewire 3 needs ONE root element as first node) --}}
 <style>
 @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -19,7 +19,7 @@
     <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Dashboard</h2>
 </x-slot:header>
 
-{{-- Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Header + Filter Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ --}}
+{{-- â”€â”€â”€ Header + Filter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
     <div>
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Overview Gudang</h1>
@@ -29,15 +29,15 @@
     <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
         <div wire:key="filter-pill" class="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 gap-0.5">
             <button wire:key="btn-today" type="button" wire:click="applyFilter('today')"
-                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-900 text-[#3B82F6] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'today' ? 'bg-white dark:bg-slate-900 text-[#10B981] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 Hari Ini
             </button>
             <button wire:key="btn-7days" type="button" wire:click="applyFilter('last_7_days')"
-                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-900 text-[#3B82F6] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'last_7_days' ? 'bg-white dark:bg-slate-900 text-[#10B981] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 7 Hari
             </button>
             <button wire:key="btn-month" type="button" wire:click="applyFilter('this_month')"
-                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-900 text-[#3B82F6] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                class="px-3 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-200 {{ $activeFilter === 'this_month' ? 'bg-white dark:bg-slate-900 text-[#10B981] dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
                 Bulan Ini
             </button>
         </div>
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-{{-- Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Stats Cards Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ --}}
+{{-- â”€â”€â”€ Stats Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
 
     {{-- Katalog --}}
@@ -87,7 +87,7 @@
     <a href="{{ route('laporan.index') }}?tipe=IN" wire:navigate
        wire:loading.class="opacity-40 scale-[0.98] grayscale-[0.5]" wire:target="startDate,endDate,applyFilter"
        class="animate-in animation-delay-200 group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex items-center gap-3 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 loading-transition cursor-pointer">
-        <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-[#16A34A] dark:text-emerald-400 group-hover:scale-110 transition-transform">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-[#10B981] dark:text-emerald-400 group-hover:scale-110 transition-transform">
             <i data-lucide="arrow-down-left" class="w-5 h-5" stroke-width="2.5"></i>
         </div>
         <div class="min-w-0 flex-1">
@@ -95,9 +95,9 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Masuk</p>
                 @if($stats['trend_masuk'] !== null)
                     @php $pct = $stats['trend_masuk']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#16A34A] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'Ã¢â€ â€˜' : 'Ã¢â€ â€œ' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
                 @else
-                    <span class="text-[9px] bg-emerald-50 dark:bg-emerald-500/10 text-[#16A34A] dark:text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
+                    <span class="text-[9px] bg-emerald-50 dark:bg-emerald-500/10 text-[#10B981] dark:text-emerald-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
             </div>
             <p class="text-xl font-extrabold text-slate-900 dark:text-white leading-tight">{{ number_format($stats['masuk_range'], 0, ',', '.') }} <span class="text-[11px] font-normal text-slate-400">Unit</span></p>
@@ -117,7 +117,7 @@
                 <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Keluar</p>
                 @if($stats['trend_keluar'] !== null)
                     @php $pct = $stats['trend_keluar']; @endphp
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#16A34A] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'Ã¢â€ â€˜' : 'Ã¢â€ â€œ' }} {{ abs($pct) }}%</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md {{ $pct >= 0 ? 'text-[#10B981] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10' }}">{{ $pct >= 0 ? 'â†‘' : 'â†“' }} {{ abs($pct) }}%</span>
                 @else
                     <span class="text-[9px] bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded-md font-semibold">Rentang</span>
                 @endif
@@ -129,14 +129,14 @@
 
 </div>
 
-{{-- Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Chart + Peringatan & Status Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ --}}
+{{-- â”€â”€â”€ Chart + Peringatan & Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
 
     {{-- Chart Panel (2/3) --}}
     <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:420px"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
-        {{-- Skeleton overlay while loading Ã¢â‚¬â€Ã¢â‚¬â€ pointer-events-none prevents blocking filter buttons --}}
+        {{-- Skeleton overlay while loading â€”â€” pointer-events-none prevents blocking filter buttons --}}
         <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
             class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-3 p-5 pointer-events-none">
             <div class="skeleton h-5 w-40 rounded-lg"></div>
@@ -159,7 +159,7 @@
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
                 </span>
-                <span class="text-[10px] text-[#16A34A] dark:text-emerald-400 font-bold uppercase tracking-wider">Live</span>
+                <span class="text-[10px] text-[#10B981] dark:text-emerald-400 font-bold uppercase tracking-wider">Live</span>
             </div>
         </div>
 
@@ -195,17 +195,17 @@
             <a href="{{ route('produk.index') }}" wire:navigate
                 class="flex items-center gap-3 p-3 rounded-xl border border-emerald-100 dark:border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/10 hover:shadow-md hover:-translate-y-0.5 transition-all group">
                 <div class="w-8 h-8 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#16A34A] dark:text-emerald-400"></i>
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#10B981] dark:text-emerald-400"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Stok Aman</p>
                     <p class="text-[10px] text-emerald-500 dark:text-emerald-400">{{ max(0, $aman) }} produk di atas minimum</p>
                 </div>
-                <span class="text-lg font-extrabold text-[#16A34A] dark:text-emerald-400">{{ max(0, $aman) }}</span>
+                <span class="text-lg font-extrabold text-[#10B981] dark:text-emerald-400">{{ max(0, $aman) }}</span>
             </a>
 
             <a href="{{ route('produk.index') }}?filter=kritis" wire:navigate
-                class="flex items-center gap-3 p-3 rounded-xl border {{ $kritis > 0 ? 'border-orange-100 dark:border-orange-500/20 bg-orange-50 dark:bg-orange-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-[#F6F8FB] dark:bg-slate-800/50 border-b border-[#E2E8F0]' }} transition-all group">
+                class="flex items-center gap-3 p-3 rounded-xl border {{ $kritis > 0 ? 'border-orange-100 dark:border-orange-500/20 bg-orange-50 dark:bg-orange-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-[#F0FDF4] dark:bg-slate-800/50 border-b border-[#D1D5DB]' }} transition-all group">
                 <div class="w-8 h-8 rounded-lg {{ $kritis > 0 ? 'bg-orange-500/10 dark:bg-orange-500/20' : 'bg-slate-100 dark:bg-slate-800' }} flex items-center justify-center flex-shrink-0">
                     <i data-lucide="alert-triangle" class="w-4 h-4 {{ $kritis > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-slate-400' }}"></i>
                 </div>
@@ -217,15 +217,15 @@
             </a>
 
             <a href="{{ route('barang-masuk.index') }}" wire:navigate
-                class="flex items-center gap-3 p-3 rounded-xl border {{ $habis > 0 ? 'border-red-100 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-[#F6F8FB] dark:bg-slate-800/50 border-b border-[#E2E8F0]' }} transition-all group">
+                class="flex items-center gap-3 p-3 rounded-xl border {{ $habis > 0 ? 'border-red-100 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-[#F0FDF4] dark:bg-slate-800/50 border-b border-[#D1D5DB]' }} transition-all group">
                 <div class="w-8 h-8 rounded-lg {{ $habis > 0 ? 'bg-red-500/10 dark:bg-red-500/20' : 'bg-slate-100 dark:bg-slate-800' }} flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="x-circle" class="w-4 h-4 {{ $habis > 0 ? 'text-[#DC2626] dark:text-red-400' : 'text-slate-400' }}"></i>
+                    <i data-lucide="x-circle" class="w-4 h-4 {{ $habis > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400' }}"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-bold {{ $habis > 0 ? 'text-red-700 dark:text-red-300' : 'text-slate-500' }}">Stok Habis</p>
                     <p class="text-[10px] {{ $habis > 0 ? 'text-red-500 dark:text-red-400' : 'text-slate-400' }}">{{ $habis > 0 ? 'Klik untuk tambah stok' : 'Tidak ada stok habis' }}</p>
                 </div>
-                <span class="text-lg font-extrabold {{ $habis > 0 ? 'text-[#DC2626] dark:text-red-400' : 'text-slate-400' }}">{{ $habis }}</span>
+                <span class="text-lg font-extrabold {{ $habis > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400' }}">{{ $habis }}</span>
             </a>
 
             {{-- Divider --}}
@@ -243,17 +243,17 @@
                         class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                         <div class="min-w-0 flex-1">
                             <p class="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">{{ $kp->name }}</p>
-                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? 'Ã¢â‚¬â€' }}</p>
+                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? 'â€”' }}</p>
                         </div>
                         <div class="text-right flex-shrink-0 ml-2">
-                            <span class="text-[11px] font-extrabold {{ $kp->current_stock <= 0 ? 'text-[#DC2626] dark:text-red-400' : 'text-orange-600 dark:text-orange-400' }}">
+                            <span class="text-[11px] font-extrabold {{ $kp->current_stock <= 0 ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400' }}">
                                 {{ $kp->current_stock }}
                             </span>
                             <span class="text-[9px] text-slate-400">/{{ $kp->min_stock }}</span>
                         </div>
                     </a>
                 @empty
-                    <p class="text-[11px] text-slate-400 text-center py-3">Ã¢Å“â€¦ Semua stok aman!</p>
+                    <p class="text-[11px] text-slate-400 text-center py-3">âœ… Semua stok aman!</p>
                 @endforelse
             </div>
 
@@ -273,7 +273,7 @@
 
 </div>
 
-{{-- Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Activity Feed (Full Width, upgraded) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ --}}
+{{-- â”€â”€â”€ Activity Feed (Full Width, upgraded) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-[#E2E8F0] dark:border-slate-800 card-shadow p-5 shadow-sm relative loading-transition animate-in animation-delay-300"
      wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
@@ -298,11 +298,11 @@
         <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
             <i data-lucide="activity" class="w-4 h-4 text-blue-500"></i>
             Aktivitas Terakhir
-            <span class="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-[#3B82F6] dark:text-blue-400 rounded-full">{{ $aktivitas->count() }}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-[#10B981] dark:text-blue-400 rounded-full">{{ $aktivitas->count() }}</span>
         </h3>
         <a href="{{ route('laporan.index') }}" wire:navigate
-            class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-[#3B82F6] dark:text-blue-400 transition-colors">
-            Semua Laporan Ã¢â€ â€™
+            class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-[#10B981] dark:text-blue-400 transition-colors">
+            Semua Laporan â†’
         </a>
     </div>
 
@@ -323,21 +323,21 @@
                     <div class="flex items-center gap-1.5">
                         @if($act->type == 'IN')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
-                                Ã¢â€ â€œ Masuk
+                                â†“ Masuk
                             </span>
                         @elseif($act->type == 'OUT')
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
-                                Ã¢â€ â€˜ Keluar
+                                â†‘ Keluar
                             </span>
                         @else
                             <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
-                                Ã¢â€ Âº Adjust
+                                â†º Adjust
                             </span>
                         @endif
-                        <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-[#16A34A] dark:text-emerald-400' }} text-[10px] font-extrabold">
+                        <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-[#10B981] dark:text-emerald-400' }} text-[10px] font-extrabold">
                             {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
                         </span>
-                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">Ã‚Â·</span>
+                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">Â·</span>
                         <span class="text-[10px] text-slate-500 dark:text-slate-400 truncate">{{ $act->user?->name ?? 'Sistem' }}</span>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
 document.addEventListener('livewire:initialized', () => {
     const chartDom   = document.getElementById('dashboardEcharts');
     const emptyState = document.getElementById('chartEmptyState');
-    // Use Canvas renderer Ã¢â‚¬â€ more reliable clip behavior than SVG
+    // Use Canvas renderer â€” more reliable clip behavior than SVG
     let myChart = echarts.init(chartDom, null, { renderer: 'canvas' });
 
     const getChartOptions = (data, isDark) => {
@@ -420,7 +420,7 @@ document.addEventListener('livewire:initialized', () => {
                 itemWidth: 12, itemHeight: 8, itemGap: 20
             },
 
-            // Mousewheel/pinch zoom only Ã¢â‚¬â€ no slider bar
+            // Mousewheel/pinch zoom only â€” no slider bar
             dataZoom: [{ type: 'inside', start: 0, end: 100 }],
 
             grid: {
@@ -434,7 +434,7 @@ document.addEventListener('livewire:initialized', () => {
             xAxis: {
                 type: 'category',
                 data: data.labels,
-                boundaryGap: true,  // Half-slot padding on both sides Ã¢â‚¬â€ permanent last-bar fix
+                boundaryGap: true,  // Half-slot padding on both sides â€” permanent last-bar fix
                 axisLine: { lineStyle: { color: axisLineColor } },
                 axisTick: { show: false },
                 axisLabel: {
@@ -520,5 +520,4 @@ document.addEventListener('livewire:initialized', () => {
 });
 </script>
 @endpush
-
 

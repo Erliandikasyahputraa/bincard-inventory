@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="history" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Log Table -->
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left border-collapse transition-colors duration-300 ease-in-out">
                 <thead>
@@ -45,7 +45,7 @@
                             </td>
                             <td class="py-4 px-4 align-top w-48">
                                 <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border 
-                                    {{ $log->action == 'created' ? 'bg-[#16A34A] dark:bg-emerald-500/20 text-[#3FB950] border-[#238636]/30' : '' }}
+                                    {{ $log->action == 'created' ? 'bg-[#10B981] dark:bg-emerald-500/20 text-[#3FB950] border-[#238636]/30' : '' }}
                                     {{ $log->action == 'updated' ? 'bg-blue-500/10 text-blue-500 border-[#1F6FEB]/30' : '' }}
                                     {{ $log->action == 'deleted' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
                                     {{ strtoupper($log->action) }}
@@ -113,7 +113,7 @@
                                                         <span class="font-bold text-slate-800 dark:text-slate-100 uppercase text-[10px] tracking-wider">{{ $change['label'] }}:</span>
                                                         <span class="text-rose-500 line-through bg-rose-500/10 px-1 rounded">{{ $change['old'] ?: '-' }}</span>
                                                         <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400"></i>
-                                                        <span class="text-[#16A34A] dark:text-emerald-400 font-bold bg-emerald-500/10 px-1 rounded">{{ $change['new'] ?: '-' }}</span>
+                                                        <span class="text-[#10B981] dark:text-emerald-400 font-bold bg-emerald-500/10 px-1 rounded">{{ $change['new'] ?: '-' }}</span>
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -128,7 +128,7 @@
                                                 @php $label = $keyLabels[$k] ?? ucwords(str_replace('_', ' ', $k)); @endphp
                                                 <li class="pl-2 border-l-2 border-emerald-500/30 text-slate-700 dark:text-slate-300 break-all font-sans text-[11px]">
                                                     <span class="font-bold uppercase text-slate-800 dark:text-slate-100 text-[10px] tracking-wider">{{ $label }}:</span>
-                                                    <span class="text-[#16A34A] dark:text-emerald-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
+                                                    <span class="text-[#10B981] dark:text-emerald-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -164,4 +164,3 @@
         </div>
     </div>
 </div>
-

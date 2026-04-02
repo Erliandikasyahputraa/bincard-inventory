@@ -1,4 +1,4 @@
-﻿<x-slot:header>
+<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Data Pelanggan</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Kelola data pembeli atau pelanggan tujuan.</p>
@@ -14,13 +14,13 @@
                 <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="cari" placeholder="Cari nama..."
                     class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm">
             </div>
-            <a href="{{ route('pelanggan.tambah') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap">
+            <a href="{{ route('pelanggan.tambah') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap">
                 <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah Pelanggan
             </a>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[600px] transition-colors duration-300 ease-in-out">
                 <thead>
@@ -69,4 +69,3 @@
         @endif
     </div>
 </div>
-
