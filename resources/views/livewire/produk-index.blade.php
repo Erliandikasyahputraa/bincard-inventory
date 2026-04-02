@@ -75,7 +75,11 @@
                             </td>
                             <td class="px-6 py-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex justify-end gap-2">
-                                    <a href="{{ route('produk.edit', $p->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit Data">
+                                    <a href="{{ route('produk.bin-card', $p->id) }}" wire:navigate
+                                        class="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-colors" title="Lihat Bin Card">
+                                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                                    </a>
+                                    <a href="{{ route('produk.edit', $p->id) }}" class="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit Data">
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"

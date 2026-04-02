@@ -129,10 +129,10 @@
 
 </div>
 
-{{-- ─── Chart + Activity Feed ─────────────────────────── --}}
+{{-- ─── Chart + Peringatan & Status ─────────────────────── --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch animate-in animation-delay-300">
 
-    {{-- Chart Panel --}}
+    {{-- Chart Panel (2/3) --}}
     <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:420px"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
@@ -175,15 +175,114 @@
         <div id="dashboardEcharts" wire:ignore class="flex-1 w-full min-h-0"></div>
     </div>
 
-    {{-- Activity Feed --}}
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm relative loading-transition" style="height:440px"
+    {{-- Peringatan & Status (1/3) --}}
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col shadow-sm"
          wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
 
-        {{-- Skeleton overlay --}}
-        <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
-            class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-4 p-5 pointer-events-none">
-            <div class="skeleton h-5 w-36 rounded-lg"></div>
-            @for($i = 0; $i < 7; $i++)
+        <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-500"></i>
+            Peringatan & Status
+        </h3>
+
+        <div class="space-y-3 flex-1">
+            {{-- Stok Aman --}}
+            @php
+                $aman  = $stats['total_jenis'] - $stats['low_stock'] - ($stats['out_of_stock'] ?? 0);
+                $kritis = $stats['low_stock'] ?? 0;
+                $habis  = $stats['out_of_stock'] ?? 0;
+            @endphp
+
+            <a href="{{ route('produk.index') }}" wire:navigate
+                class="flex items-center gap-3 p-3 rounded-xl border border-emerald-100 dark:border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/10 hover:shadow-md hover:-translate-y-0.5 transition-all group">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Stok Aman</p>
+                    <p class="text-[10px] text-emerald-500 dark:text-emerald-400">{{ max(0, $aman) }} produk di atas minimum</p>
+                </div>
+                <span class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">{{ max(0, $aman) }}</span>
+            </a>
+
+            <a href="{{ route('produk.index') }}?filter=kritis" wire:navigate
+                class="flex items-center gap-3 p-3 rounded-xl border {{ $kritis > 0 ? 'border-orange-100 dark:border-orange-500/20 bg-orange-50 dark:bg-orange-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50' }} transition-all group">
+                <div class="w-8 h-8 rounded-lg {{ $kritis > 0 ? 'bg-orange-500/10 dark:bg-orange-500/20' : 'bg-slate-100 dark:bg-slate-800' }} flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 {{ $kritis > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-slate-400' }}"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold {{ $kritis > 0 ? 'text-orange-700 dark:text-orange-300' : 'text-slate-500' }}">Stok Kritis</p>
+                    <p class="text-[10px] {{ $kritis > 0 ? 'text-orange-500 dark:text-orange-400' : 'text-slate-400' }}">{{ $kritis }} produk di bawah minimum</p>
+                </div>
+                <span class="text-lg font-extrabold {{ $kritis > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-slate-400' }}">{{ $kritis }}</span>
+            </a>
+
+            <a href="{{ route('barang-masuk.index') }}" wire:navigate
+                class="flex items-center gap-3 p-3 rounded-xl border {{ $habis > 0 ? 'border-red-100 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50' }} transition-all group">
+                <div class="w-8 h-8 rounded-lg {{ $habis > 0 ? 'bg-red-500/10 dark:bg-red-500/20' : 'bg-slate-100 dark:bg-slate-800' }} flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="x-circle" class="w-4 h-4 {{ $habis > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400' }}"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold {{ $habis > 0 ? 'text-red-700 dark:text-red-300' : 'text-slate-500' }}">Stok Habis</p>
+                    <p class="text-[10px] {{ $habis > 0 ? 'text-red-500 dark:text-red-400' : 'text-slate-400' }}">{{ $habis > 0 ? 'Klik untuk tambah stok' : 'Tidak ada stok habis' }}</p>
+                </div>
+                <span class="text-lg font-extrabold {{ $habis > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400' }}">{{ $habis }}</span>
+            </a>
+
+            {{-- Divider --}}
+            <div class="border-t border-slate-100 dark:border-slate-800 pt-3">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Top Produk Kritis</p>
+                @php
+                    $topKritis = \App\Models\Product::whereNotNull('min_stock')
+                        ->whereColumn('current_stock', '<=', 'min_stock')
+                        ->orderBy('current_stock', 'asc')
+                        ->take(4)
+                        ->get();
+                @endphp
+                @forelse($topKritis as $kp)
+                    <a href="{{ route('produk.bin-card', $kp->id) }}" wire:navigate
+                        class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">{{ $kp->name }}</p>
+                            <p class="text-[9px] text-slate-400 font-mono">{{ $kp->location ?? '—' }}</p>
+                        </div>
+                        <div class="text-right flex-shrink-0 ml-2">
+                            <span class="text-[11px] font-extrabold {{ $kp->current_stock <= 0 ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400' }}">
+                                {{ $kp->current_stock }}
+                            </span>
+                            <span class="text-[9px] text-slate-400">/{{ $kp->min_stock }}</span>
+                        </div>
+                    </a>
+                @empty
+                    <p class="text-[11px] text-slate-400 text-center py-3">✅ Semua stok aman!</p>
+                @endforelse
+            </div>
+
+            {{-- Quick actions --}}
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <a href="{{ route('barang-masuk.index') }}" wire:navigate
+                    class="flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-colors">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Barang Masuk
+                </a>
+                <a href="{{ route('barang-keluar.index') }}" wire:navigate
+                    class="flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors">
+                    <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i> Barang Keluar
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{-- ─── Activity Feed (Full Width, upgraded) ───────────────── --}}
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm relative loading-transition animate-in animation-delay-300"
+     wire:loading.class="opacity-60 grayscale-[0.3]" wire:target="startDate,endDate,applyFilter">
+
+    {{-- Skeleton overlay --}}
+    <div wire:loading.flex wire:target="startDate,endDate,applyFilter"
+        class="absolute inset-0 rounded-2xl z-20 flex flex-col gap-4 p-5 pointer-events-none">
+        <div class="skeleton h-5 w-36 rounded-lg"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            @for($i = 0; $i < 6; $i++)
                 <div class="flex gap-3 items-start">
                     <div class="skeleton w-14 h-5 rounded-md shrink-0"></div>
                     <div class="flex flex-col gap-1.5 flex-1">
@@ -193,58 +292,68 @@
                 </div>
             @endfor
         </div>
-
-        <div class="flex items-center justify-between mb-4 shrink-0">
-            <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Transaksi Terbaru</h3>
-            <a href="{{ route('laporan.index') }}"
-                class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 transition-colors">
-                Semua →
-            </a>
-        </div>
-
-        <div class="flex flex-col gap-3 overflow-y-auto no-scrollbar flex-1 min-h-0">
-            @forelse($aktivitas as $act)
-                <div class="flex items-start gap-3 group">
-                    <div class="shrink-0 mt-0.5">
-                        @if($act->type == 'IN')
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-bold rounded-md bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
-                                <i data-lucide="arrow-down-left" class="w-2.5 h-2.5"></i> Masuk
-                            </span>
-                        @elseif($act->type == 'OUT')
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-bold rounded-md bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30">
-                                <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i> Keluar
-                            </span>
-                        @else
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-bold rounded-md bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30">
-                                <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Adjust
-                            </span>
-                        @endif
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex justify-between items-start gap-1">
-                            <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate leading-tight">{{ $act->product->name }}</p>
-                            <p class="text-[10px] text-slate-400 whitespace-nowrap">{{ $act->created_at->format('d M') }}</p>
-                        </div>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                            <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400' }} font-bold">
-                                {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
-                            </span>
-                            <span class="mx-1 text-slate-300 dark:text-slate-600">·</span>
-                            {{ $act->user?->name ?? 'Sistem' }}
-                        </p>
-                    </div>
-                </div>
-            @empty
-                <div class="flex flex-col items-center justify-center flex-1 gap-2">
-                    <i data-lucide="inbox" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
-                    <p class="text-xs text-slate-400">Tidak ada aktivitas di periode ini.</p>
-                </div>
-            @endforelse
-        </div>
     </div>
 
+    <div class="flex items-center justify-between mb-4 shrink-0">
+        <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <i data-lucide="activity" class="w-4 h-4 text-blue-500"></i>
+            Aktivitas Terakhir
+            <span class="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full">{{ $aktivitas->count() }}</span>
+        </h3>
+        <a href="{{ route('laporan.index') }}" wire:navigate
+            class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 transition-colors">
+            Semua Laporan →
+        </a>
+    </div>
+
+    {{-- Grid 2 kolom untuk aktivitas --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+        @forelse($aktivitas as $act)
+            <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                {{-- Avatar PIC --}}
+                <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-extrabold
+                    {{ $act->type === 'IN' ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' : ($act->type === 'OUT' ? 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300' : 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300') }}">
+                    {{ strtoupper(substr($act->user?->name ?? 'SI', 0, 2)) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-1 mb-0.5">
+                        <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate leading-tight">{{ $act->product->name }}</p>
+                        <span class="text-[9px] text-slate-400 whitespace-nowrap flex-shrink-0">{{ $act->created_at->diffForHumans(null, true, true) }}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        @if($act->type == 'IN')
+                            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                                ↓ Masuk
+                            </span>
+                        @elseif($act->type == 'OUT')
+                            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
+                                ↑ Keluar
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[8px] font-bold rounded bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
+                                ↺ Adjust
+                            </span>
+                        @endif
+                        <span class="{{ $act->quantity < 0 ? 'text-rose-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400' }} text-[10px] font-extrabold">
+                            {{ $act->quantity > 0 ? '+' : '' }}{{ $act->quantity }}
+                        </span>
+                        <span class="text-slate-300 dark:text-slate-600 text-[9px]">·</span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 truncate">{{ $act->user?->name ?? 'Sistem' }}</span>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-span-2 flex flex-col items-center justify-center py-12 gap-2">
+                <i data-lucide="inbox" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
+                <p class="text-xs text-slate-400">Tidak ada aktivitas di periode ini.</p>
+            </div>
+        @endforelse
+    </div>
 </div>
+
 </div>
+
+
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>

@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/produk/import', ImportProdukExcel::class)->name('produk.import');
     Route::get('/produk/template', [\App\Http\Controllers\TemplateProdukController::class, '__invoke'])->name('produk.template');
     Route::get('/produk/{id}/edit', ProdukForm::class)->name('produk.edit');
+    Route::get('/produk/{id}/bin-card', \App\Livewire\BinCardDetail::class)->name('produk.bin-card');
 
     Route::get('/pemasok', PemasokIndex::class)->name('pemasok.index');
     Route::get('/pemasok/tambah', PemasokForm::class)->name('pemasok.tambah');

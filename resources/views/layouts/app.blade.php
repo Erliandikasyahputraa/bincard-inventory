@@ -33,8 +33,8 @@
         <!-- Sidebar - Dark Enterprise Style -->
         <aside :class="sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'" class="bg-white dark:bg-slate-900 transition-colors duration-300 transition-all duration-500 fixed h-full z-50 flex flex-col border-r border-slate-200 dark:border-[#21262D] shadow-xl">
             <div :class="sidebarOpen ? 'p-6 space-x-3' : 'p-3 justify-center'" class="flex items-center h-20 border-b border-slate-200 dark:border-[#21262D] transition-all duration-300">
-                <div class="w-12 h-12 overflow-hidden rounded-xl flex items-center justify-center bg-white shadow-lg flex-shrink-0 transition-all duration-300 ease-in-out border border-slate-100 dark:border-slate-700">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-contain p-1">
+                <div class="w-12 h-12 overflow-hidden rounded-full flex items-center justify-center bg-white shadow-lg flex-shrink-0 transition-all duration-300 ease-in-out ring-2 ring-green-300 dark:ring-green-700">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-full h-full object-cover">
                 </div>
                 <span x-show="sidebarOpen" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight whitespace-nowrap flex-1 transition-colors duration-300 ease-in-out">BINGO</span>
                 <button x-show="sidebarOpen" @click="sidebarOpen = false" class="lg:hidden p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-200 dark:border-slate-800">

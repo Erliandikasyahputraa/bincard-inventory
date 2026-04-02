@@ -151,7 +151,8 @@ class StockService
         return [
             'total_jenis'     => Product::count(),
             'total_inventory' => (int) (Product::sum('current_stock') ?? 0),
-            'low_stock'       => Product::whereColumn('current_stock', '<=', 'min_stock')->count(),
+            'low_stock'       => Product::whereNotNull('min_stock')->whereColumn('current_stock', '<=', 'min_stock')->where('current_stock', '>', 0)->count(),
+            'out_of_stock'    => Product::where('current_stock', '<=', 0)->count(),
             'masuk_range'     => $masukNow,
             'keluar_range'    => $keluarNow,
             'prev_masuk'      => $masukPrev,
