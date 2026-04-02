@@ -1,4 +1,4 @@
-<x-slot:header>
+﻿<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Stock Opname</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Audit kesesuaian sistem dengan fisik gudang.</p>
@@ -13,7 +13,7 @@
                     <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
                     <input type="date" wire:model.live="tanggalBaru" class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
                 </div>
-                <button type="button" wire:click="buatOpname" class="inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap flex-shrink-0">
+                <button type="button" wire:click="buatOpname" class="inline-flex justify-center items-center px-4 py-2.5 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm whitespace-nowrap flex-shrink-0">
                     <i data-lucide="folder-plus" class="w-4 h-4 mr-2"></i> Buat Sesi Opname Baru
                 </button>
             </div>
@@ -21,11 +21,11 @@
     </div>
 
     @if($opname)
-        <div class="mb-6 p-5 sm:p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl flex flex-col gap-4 transition-colors duration-300 ease-in-out">
+        <div class="mb-6 p-5 sm:p-6 bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl shadow-xl flex flex-col gap-4 transition-colors duration-300 ease-in-out">
             <div>
                 <div class="flex items-center gap-3 mb-1">
                     <p class="font-bold text-slate-900 dark:text-white text-lg transition-colors duration-300 ease-in-out">Sesi Opname</p>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $opname->status == 'selesai' ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $opname->status == 'selesai' ? 'bg-[#16A34A] text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
                         {{ $opname->status }}
                     </span>
                 </div>
@@ -35,7 +35,7 @@
             
             <div class="flex flex-wrap gap-3">
                 <button type="button" wire:click="rekonsiliasi" wire:confirm="Sistem akan otomatis membuat log In/Out untuk menyamakan stok sistem dengan nilai fisik yang anda masukkan. Lanjutkan?"
-                    class="inline-flex justify-center items-center px-4 py-2.5 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm">
+                    class="inline-flex justify-center items-center px-4 py-2.5 bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm">
                     <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Rekonsiliasi Hasil
                 </button>
                 <a href="{{ route('opname.export', $opname->id) }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm">
@@ -51,10 +51,10 @@
             <i data-lucide="search" wire:loading.remove wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
             <i data-lucide="loader-2" wire:loading wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
             <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="cariBarang" placeholder="Cari barcode / nama produk dalam sesi ini..." 
-                class="pl-9 pr-4 py-2.5 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
+                class="pl-9 pr-4 py-2.5 w-full bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
         </div>
 
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[800px] transition-colors duration-300 ease-in-out">
                     <thead>
@@ -62,7 +62,7 @@
                             <th class="px-6 py-4 font-semibold whitespace-nowrap">Nama Produk</th>
                             <th class="px-6 py-4 font-semibold">SKU / Barcode</th>
                             <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">Sistem Saat Ini</th>
-                            <th class="px-6 py-4 font-semibold text-center bg-emerald-600 text-white dark:bg-emerald-500/5 dark:text-slate-400 transition-colors duration-300 ease-in-out">Masukan Aktual (Fisik)</th>
+                            <th class="px-6 py-4 font-semibold text-center bg-[#16A34A] text-white dark:bg-emerald-500/5 dark:text-slate-400 transition-colors duration-300 ease-in-out">Masukan Aktual (Fisik)</th>
                             <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">Estimasi Selisih</th>
                         </tr>
                     </thead>
@@ -74,7 +74,7 @@
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
                                     <span class="inline-block px-3 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-600 dark:text-slate-300 font-bold font-mono transition-colors duration-300 ease-in-out">{{ $d->stok_sistem }}</span>
                                 </td>
-                                <td class="px-6 py-4 text-center bg-emerald-600 dark:bg-emerald-500/5 transition-colors duration-300 ease-in-out">
+                                <td class="px-6 py-4 text-center bg-[#16A34A] dark:bg-emerald-500/5 transition-colors duration-300 ease-in-out">
                                     <input type="number" wire:model.live="stokFisik.{{ $d->product_id }}"
                                         class="w-24 text-center bg-white dark:bg-slate-950 border-transparent dark:border-slate-800 focus:border-white focus:ring-2 focus:ring-white dark:focus:ring-blue-500 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white placeholder-slate-400 outline-none transition-colors border-2" min="0" placeholder="0">
                                 </td>
@@ -91,7 +91,7 @@
             </div>
         </div>
     @else
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl mt-6 transition-colors duration-300 ease-in-out">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl mt-6 transition-colors duration-300 ease-in-out">
             <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h2 class="text-base font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 ease-in-out">Riwayat Sesi Audit / Opname</h2>
                 
@@ -123,7 +123,7 @@
                             <tr wire:key="opname-{{ $o->id }}" class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
                                 <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $o->tanggal_opname->format('d M Y') }}</td>
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
-                                    <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
+                                    <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $o->status == 'selesai' ? 'bg-[#16A34A] text-white dark:bg-emerald-500/20 dark:text-[#3FB950]' : 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' }} transition-colors duration-300 ease-in-out">
                                         {{ $o->status }}
                                     </span>
                                 </td>
@@ -161,3 +161,4 @@
         </div>
     @endif
 </div>
+

@@ -1,4 +1,4 @@
-<x-slot:header>
+﻿<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">Laporan & Export</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Export transaksi stok dan daily log ke format XLS/PDF.</p>
@@ -10,7 +10,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         
         <!-- Panel 1: Laporan Umum Transaksi -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
             <h2 class="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2 transition-colors duration-300 ease-in-out">
                 <i data-lucide="printer" class="w-4 h-4 text-blue-500 transition-colors duration-300 ease-in-out"></i> Laporan Jurnal Transaksi
             </h2>
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Panel 2: Rekap Surat Jalan Harian -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
             <h2 class="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2 transition-colors duration-300 ease-in-out">
                 <i data-lucide="calendar-check" class="w-4 h-4 text-indigo-500 transition-colors duration-300 ease-in-out"></i> Rekap Surat Jalan Harian
             </h2>
@@ -72,7 +72,7 @@
         </div>
 
         <!-- Panel 3: Data Stok Barang -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
+        <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-5 lg:p-6 shadow-xl transition-colors duration-300 ease-in-out flex flex-col">
             <h2 class="font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center gap-2 transition-colors duration-300 ease-in-out">
                 <i data-lucide="boxes" class="w-4 h-4 text-emerald-500 transition-colors duration-300 ease-in-out"></i> Data Stok Barang
             </h2>
@@ -94,7 +94,7 @@
         <h2 class="font-bold text-slate-800 dark:text-slate-200 px-1 transition-colors duration-300 ease-in-out">Log Aktivitas Tabel</h2>
         <div class="w-full sm:w-48 relative">
             <i data-lucide="arrow-down-up" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
-            <select wire:model.live="sortBy" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all pl-9 pr-8 py-2.5 text-sm appearance-none shadow-sm cursor-pointer">
+            <select wire:model.live="sortBy" class="w-full bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all pl-9 pr-8 py-2.5 text-sm appearance-none shadow-sm cursor-pointer">
                 <option value="terbaru">Terbaru (Waktu)</option>
                 <option value="terlama">Terlama (Waktu)</option>
                 <option value="terbanyak">Terbanyak (Jumlah)</option>
@@ -103,7 +103,7 @@
         </div>
     </div>
     
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
         <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between transition-colors duration-300 ease-in-out">
             <h2 class="font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 ease-in-out">Daily Log (Transaksi)</h2>
         </div>
@@ -125,7 +125,7 @@
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs font-mono transition-colors duration-300 ease-in-out">{{ $t->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $t->product->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
-                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-emerald-600 dark:bg-emerald-500/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30') }} transition-colors duration-300 ease-in-out">
+                                <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold rounded {{ $t->type == 'IN' ? 'bg-[#16A34A] dark:bg-emerald-500/20 text-[#3FB950] border border-[#238636]/30' : ($t->type == 'OUT' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30' : 'bg-blue-500/20 text-[#3B82F6] dark:text-blue-400 border border-blue-500/30') }} transition-colors duration-300 ease-in-out">
                                     {{ $t->type }}
                                 </span>
                             </td>
@@ -154,3 +154,4 @@
         @endif
     </div>
 </div>
+

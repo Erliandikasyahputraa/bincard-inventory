@@ -1,4 +1,4 @@
-<x-slot:header>
+﻿<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">{{ $pemasokId ? 'Edit Pemasok' : 'Tambah Pemasok Baru' }}</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Lengkapi informasi relasi vendor supplier Anda.</p>
@@ -12,7 +12,7 @@
         </a>
     </div>
 
-    <form wire:submit="simpan" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-3xl transition-colors duration-300 ease-in-out">
+    <form wire:submit="simpan" class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-3xl transition-colors duration-300 ease-in-out">
         <div class="p-6 md:p-8 space-y-5">
             <div>
                 <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Nama Vendor / Organisasi <span class="text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out">*</span></label>
@@ -43,7 +43,7 @@
         
         <div class="px-6 md:px-8 py-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3 transition-colors duration-300 ease-in-out">
             <a href="{{ route('pemasok.index') }}" class="px-5 py-2.5 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl transition-colors text-sm">Batal</a>
-            <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="inline-flex justify-center items-center px-6 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm">
+            <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="inline-flex justify-center items-center px-6 py-2.5 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#1F6FEB]/20 text-sm">
                 <i data-lucide="save" class="w-4 h-4 mr-2" wire:loading.remove wire:target="simpan"></i>
                 <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin" wire:loading wire:target="simpan" style="display: none;"></i>
                 <span wire:loading.remove wire:target="simpan">Simpan Data Vendor</span>
@@ -52,3 +52,4 @@
         </div>
     </form>
 </div>
+

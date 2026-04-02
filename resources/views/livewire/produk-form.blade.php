@@ -1,4 +1,4 @@
-<x-slot:header>
+﻿<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors duration-300 ease-in-out">{{ $produkId ? 'Edit Produk' : 'Tambah Produk Baru' }}</h1>
         <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5 transition-colors duration-300 ease-in-out">Lengkapi informasi detail mengenai produk.</p>
@@ -12,7 +12,7 @@
         </a>
     </div>
 
-    <form wire:submit="simpan" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-300 ease-in-out">
+    <form wire:submit="simpan" class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-300 ease-in-out">
         <div class="p-6 md:p-8 space-y-6">
             
             <!-- Section: Identifikasi -->
@@ -103,7 +103,7 @@
         
         <div class="px-6 md:px-8 py-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3 transition-colors duration-300 ease-in-out">
             <a href="{{ route('produk.index') }}" class="px-5 py-2.5 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl transition-colors text-sm">Batal</a>
-            <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="inline-flex justify-center items-center px-6 py-2.5 bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm">
+            <button type="submit" wire:loading.attr="disabled" wire:target="simpan" class="inline-flex justify-center items-center px-6 py-2.5 bg-[#16A34A] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#16A34A] disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm">
                 <i data-lucide="save" class="w-4 h-4 mr-2" wire:loading.remove wire:target="simpan"></i>
                 <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin" wire:loading wire:target="simpan" style="display: none;"></i>
                 <span wire:loading.remove wire:target="simpan">Simpan Data</span>
@@ -112,3 +112,4 @@
         </div>
     </form>
 </div>
+

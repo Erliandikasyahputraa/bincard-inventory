@@ -1,4 +1,4 @@
-<x-slot:header>
+﻿<x-slot:header>
     <div class="flex flex-col">
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 transition-colors duration-300 ease-in-out">
             <i data-lucide="building-2" class="w-5 h-5 text-blue-500 transition-colors duration-300 ease-in-out"></i>
@@ -13,7 +13,7 @@
     <div class="mb-4 lg:mb-6 flex flex-col md:flex-row md:items-center justify-end gap-4">
     </div>
 
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
+    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#E2E8F0] dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
         <div class="absolute top-0 right-0 w-32 h-32 bg-[#58A6FF]/5 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
         
         <form wire:submit="simpan" class="space-y-6 relative z-10">
@@ -70,7 +70,7 @@
             </div>
             
             <div class="pt-6 border-t border-slate-200 dark:border-slate-800/50 flex justify-end transition-colors duration-300 ease-in-out">
-                <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-blue-600 dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#1F6FEB]/20 flex items-center justify-center gap-2" wire:loading.attr="disabled">
+                <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-[#3B82F6] dark:bg-blue-500 hover:bg-[#388BFD] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#1F6FEB]/20 flex items-center justify-center gap-2" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="simpan" class="flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Simpan Pengaturan</span>
                     <span wire:loading wire:target="simpan" class="flex items-center">
                         <i data-lucide="loader-2" class="w-4 h-4 animate-spin mr-2"></i> Menyimpan...
@@ -80,4 +80,5 @@
         </form>
     </div>
 </div>
+
 
