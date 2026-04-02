@@ -1,4 +1,4 @@
-<div class="px-2 sm:px-0 space-y-6">
+<div class="px-2 sm:px-0 space-y-5 max-w-screen-2xl mx-auto">
 
 <x-slot:header>
     <h2 class="font-bold text-lg text-slate-800 dark:text-slate-200 leading-tight">Bin Card</h2>
