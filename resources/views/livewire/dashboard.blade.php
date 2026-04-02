@@ -386,16 +386,14 @@ document.addEventListener('livewire:initialized', () => {
         const masuk  = data.masuk;
         const keluar = data.keluar;
 
-        // Build arrays: use null for zero values so line gaps appear (no connection through zero)
+        // Build compact arrays
         const filteredLabels = [];
         const filteredMasuk  = [];
         const filteredKeluar = [];
         for (let i = 0; i < realMasuk.length; i++) {
             filteredLabels.push(labels[i]);
-            const m = Number(masuk[i]);
-            const k = Number(keluar[i]);
-            filteredMasuk.push(m > 0 ? m : null);
-            filteredKeluar.push(k > 0 ? k : null);
+            filteredMasuk.push(Number(masuk[i]) || 0);
+            filteredKeluar.push(Number(keluar[i]) || 0);
         }
 
         const colorMasuk  = isDark ? '#34d399' : '#10B981';
@@ -489,7 +487,6 @@ document.addEventListener('livewire:initialized', () => {
                     name: 'Barang Masuk',
                     type: 'line',
                     smooth: 0.4,
-                    connectNulls: false,
                     data: filteredMasuk,
                     symbol: 'circle',
                     symbolSize: v => v > 0 ? 6 : 0,
@@ -511,7 +508,6 @@ document.addEventListener('livewire:initialized', () => {
                     name: 'Barang Keluar',
                     type: 'line',
                     smooth: 0.4,
-                    connectNulls: false,
                     data: filteredKeluar,
                     symbol: 'circle',
                     symbolSize: v => v > 0 ? 6 : 0,
