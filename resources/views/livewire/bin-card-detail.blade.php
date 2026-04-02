@@ -71,8 +71,8 @@
 
         {{-- Left: Identitas Produk + QR --}}
         <div class="flex items-start gap-4 flex-1 min-w-0">
-            {{-- QR Code (mini) - hidden on very small, show on sm+ --}}
-            <div class="flex-shrink-0 flex flex-col items-center gap-1">
+            {{-- QR Code (mini) - wire:ignore prevents Livewire from clearing JS-generated QR --}}
+            <div wire:ignore class="flex-shrink-0 flex flex-col items-center gap-1">
                 <div id="binCardQr" class="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#D1D5DB] dark:border-slate-700 p-1 flex items-center justify-center"></div>
                 <span class="text-[8px] text-[#94A3B8] font-mono text-center leading-tight">QR Produk</span>
             </div>
