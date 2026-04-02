@@ -37,8 +37,53 @@
             </div>
         </div>
     </div>
-    <!-- Table Area -->
-    <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+    <!-- Mobile Card View (visible on small screens) -->
+    <div class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 overflow-hidden shadow-sm">
+        @forelse($produk as $p)
+            <div class="px-4 py-3 flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                {{-- Status dot --}}
+                <div class="shrink-0 w-9 h-9 rounded-xl {{ $p->current_stock <= $p->min_stock ? ($p->current_stock == 0 ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600') : 'bg-emerald-100 text-emerald-600' }} flex items-center justify-center font-bold text-xs">
+                    {{ $p->current_stock }}
+                </div>
+                {{-- Product info --}}
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ $p->name }}</p>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-[10px] text-slate-400 font-mono">{{ $p->barcode }}</span>
+                        @if($p->location)
+                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded font-mono">{{ $p->location }}</span>
+                        @endif
+                        @if($p->current_stock <= $p->min_stock)
+                            <span class="text-[9px] font-bold text-rose-600 dark:text-rose-400 uppercase">{{ $p->current_stock == 0 ? 'Habis' : 'Kritis' }}</span>
+                        @endif
+                    </div>
+                </div>
+                {{-- Actions --}}
+                <div class="flex items-center gap-1 shrink-0">
+                    <a href="{{ route('produk.bin-card', $p->id) }}" wire:navigate
+                        class="p-2 rounded-lg text-slate-400 hover:text-[#10B981] hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors" title="Bin Card">
+                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                    </a>
+                    <a href="{{ route('produk.edit', $p->id) }}"
+                        class="p-2 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" title="Edit">
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </a>
+                    <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"
+                        class="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors" title="Hapus">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        @empty
+            <div class="py-12 flex flex-col items-center gap-2">
+                <i data-lucide="package-search" class="w-8 h-8 text-slate-300"></i>
+                <p class="text-slate-400 text-sm">Tidak ada produk ditemukan</p>
+            </div>
+        @endforelse
+    </div>
+
+    <!-- Desktop Table View (hidden on small screens) -->
+    <div class="hidden md:block bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[800px] transition-colors duration-300 ease-in-out">
                 <thead>
@@ -103,11 +148,18 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if($produk->hasPages())
         <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300 ease-in-out">
             {{ $produk->links(data: ['scrollTo' => false]) }}
         </div>
         @endif
     </div>
+
+    {{-- Mobile pagination --}}
+    @if($produk->hasPages())
+    <div class="md:hidden px-2 py-3">
+        {{ $produk->links(data: ['scrollTo' => false]) }}
+    </div>
+    @endif
 </div>
