@@ -386,7 +386,7 @@
         const barcode = @json($product->barcode ?? $product->sku ?? 'PROD-' . $product->id);
         const productName = @json($product->name);
         // QR encodes the scan URL so camera scanning goes directly to the scan page
-        const scanUrl = window.location.origin + '/scan-barcode?barcode=' + encodeURIComponent(barcode);
+        const scanUrl = window.location.origin + '/scan?barcode=' + encodeURIComponent(barcode);
 
         function renderQr() {
             const el = document.getElementById('binCardQr');
