@@ -406,14 +406,22 @@
             } catch(e) { console.warn('QR render failed:', e); }
         }
 
+        // Polling to wait for QRCode to be injected and ready during SPA navigation
+        function tryRender() {
+            if (typeof QRCode !== 'undefined') {
+                renderQr();
+            } else {
+                setTimeout(tryRender, 50);
+            }
+        }
+
         // Render on page load and after Livewire navigations
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', renderQr);
+            document.addEventListener('DOMContentLoaded', tryRender);
         } else {
-            setTimeout(renderQr, 100);
+            tryRender();
         }
-        document.addEventListener('livewire:navigated', renderQr);
-
+        document.addEventListener('livewire:navigated', tryRender);
         window.printQR = function() {
             const qrEl = document.getElementById('binCardQr');
             const img = qrEl?.querySelector('img');
