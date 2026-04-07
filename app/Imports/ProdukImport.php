@@ -20,11 +20,11 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
             $baris = $index + 2;
             
             // Map new client headers to internal data structure
-            $barcode = trim((string) ($row['komat'] ?? $row['barcode'] ?? ''));
+            $barcode = trim((string) ($row['komat'] ?? $row['barcode'] ?? $row['material'] ?? ''));
             $name = trim((string) ($row['material_description'] ?? $row['name'] ?? $row['nama'] ?? ''));
             
             if ($barcode === '' || $name === '') {
-                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'KOMAT (Barcode) dan Material Description (Nama) wajib diisi'];
+                $this->barisGagal[] = ['baris' => $baris, 'alasan' => 'KOMAT/Material (Barcode) dan Material Description (Nama) wajib diisi'];
                 continue;
             }
             if (Product::where('barcode', $barcode)->exists()) {
@@ -34,7 +34,7 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
             try {
                 $supplierId = isset($row['supplier_id']) && $row['supplier_id'] !== '' ? (int) $row['supplier_id'] : null;
                 $allowedUom = ['PCS','SET','KLG','UN','KG','CM','BOX','BTG','BTL','DUS','LBR','MTR','TON','SAK','CAN','GLS','PKT'];
-                $uom = strtoupper(trim((string) ($row['uom'] ?? 'PCS')));
+                $uom = strtoupper(trim((string) ($row['uom'] ?? $row['base_unit_of_measure'] ?? 'PCS')));
                 if (!in_array($uom, $allowedUom)) $uom = 'PCS';
 
                 Product::create([
@@ -44,8 +44,8 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
                     'uom'           => $uom,
                     'min_stock'     => (int) ($row['min_stock'] ?? 0),
                     'max_stock'     => isset($row['max_stock']) && $row['max_stock'] !== '' ? (int) $row['max_stock'] : null,
-                    'location'      => $row['mapping'] ?? $row['location'] ?? null,
-                    'current_stock' => (int) ($row['stock_sap'] ?? $row['stok_awal'] ?? $row['current_stock'] ?? 0),
+                    'location'      => $row['mapping'] ?? $row['location'] ?? $row['storage_location'] ?? null,
+                    'current_stock' => (int) ($row['stock_sap'] ?? $row['stok_awal'] ?? $row['current_stock'] ?? $row['unrestricted'] ?? 0),
                     'supplier_id'   => $supplierId,
                 ]);
                 $this->barisSukses++;
