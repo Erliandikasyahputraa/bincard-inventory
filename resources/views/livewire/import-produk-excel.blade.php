@@ -21,7 +21,7 @@
                 <i data-lucide="info" class="w-5 h-5 text-[#10B981] dark:text-blue-400 shrink-0 mt-0.5 transition-colors duration-300 ease-in-out"></i>
                 <div>
                     <h4 class="text-sm border-none font-bold text-[#10B981] dark:text-blue-400 mb-1 transition-colors duration-300 ease-in-out">Panduan Import</h4>
-                    <p class="text-xs text-blue-200/70 leading-relaxed transition-colors duration-300 ease-in-out">
+                    <p class="text-xs text-slate-600 dark:text-blue-200/80 leading-relaxed transition-colors duration-300 ease-in-out">
                         Gunakan tombol <strong>Download Template</strong> di atas untuk mendapatkan format Excel yang benar.
                         Kolom yang wajib dan opsional sudah tertera di sana. Jangan ubah nama header (baris pertama) pada template agar sistem dapat membaca data dengan benar.
                     </p>

@@ -312,7 +312,7 @@
                     cancelButtonText: 'Tutup',
                     background: isDark ? '#161B22' : '#ffffff',
                     color: isDark ? '#c9d1d9' : '#1e293b',
-                    confirmButtonColor: '#1F6FEB',
+                    confirmButtonColor: '#10B981',
                     cancelButtonColor: isDark ? '#30363D' : '#e2e8f0'
                 }).then((result) => {
                     if (result.isConfirmed && sjId) {
@@ -332,7 +332,7 @@
                     icon: 'error',
                     background: isDark ? '#161B22' : '#ffffff',
                     color: isDark ? '#c9d1d9' : '#1e293b',
-                    confirmButtonColor: '#1F6FEB'
+                    confirmButtonColor: '#10B981'
                 });
             });
         });
