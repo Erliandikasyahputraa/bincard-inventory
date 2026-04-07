@@ -32,7 +32,7 @@
                         <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">Ringkasan Perubahan Detail</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/50 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800/50 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
                     @forelse($logs as $log)
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
                             <td class="py-4 px-4 align-top w-56">
@@ -45,9 +45,9 @@
                             </td>
                             <td class="py-4 px-4 align-top w-48">
                                 <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border 
-                                    {{ $log->action == 'created' ? 'bg-[#10B981] dark:bg-emerald-500/20 text-[#3FB950] border-[#238636]/30' : '' }}
-                                    {{ $log->action == 'updated' ? 'bg-blue-500/10 text-blue-500 border-[#1F6FEB]/30' : '' }}
-                                    {{ $log->action == 'deleted' ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
+                                    {{ $log->action == 'created' ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-500/30' : '' }}
+                                    {{ $log->action == 'updated' ? 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-500/30' : '' }}
+                                    {{ $log->action == 'deleted' ? 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-500/30' : '' }} transition-colors duration-300 ease-in-out">
                                     {{ strtoupper($log->action) }}
                                 </span>
                                 @php
@@ -128,7 +128,7 @@
                                                 @php $label = $keyLabels[$k] ?? ucwords(str_replace('_', ' ', $k)); @endphp
                                                 <li class="pl-2 border-l-2 border-emerald-500/30 text-slate-700 dark:text-slate-300 break-all font-sans text-[11px]">
                                                     <span class="font-bold uppercase text-slate-800 dark:text-slate-100 text-[10px] tracking-wider">{{ $label }}:</span>
-                                                    <span class="text-[#10B981] dark:text-emerald-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
+                                                    <span class="text-emerald-700 dark:text-emerald-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
                                                 </li>
                                             @endforeach
                                         </ul>
