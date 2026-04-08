@@ -20,6 +20,9 @@
             </div>
         </div>
     </div>
+    <div wire:loading wire:target="search,gotoPage,nextPage,previousPage" class="mb-4">
+        <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
+    </div>
 
     <!-- Log Table -->
     <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
@@ -52,7 +55,7 @@
                                 </span>
                                 @php
                                     $modelName = class_basename($log->model_type);
-                                    $displayName = "#" . $log->model_id;
+                                    $displayName = $log->model_id === 0 ? 'Bulk Action' : "#" . $log->model_id;
                                     
                                     // Extract logical name from historical payload directly (safest)
                                     $newVal = (array) $log->new_values;
@@ -67,7 +70,7 @@
                                         $record = $log->model_type::find($log->model_id);
                                         if ($record) {
                                             $displayName = $record->name ?? $record->nama ?? $displayName;
-                                        } else {
+                                        } elseif ($log->model_id !== 0) {
                                             $displayName .= " (Dihapus)";
                                         }
                                     }
@@ -142,6 +145,12 @@
                                                     <span class="text-rose-600 dark:text-rose-400">{{ is_array($v) ? json_encode($v) : $v }}</span>
                                                 </li>
                                             @endforeach
+                                            @if(isset($log->new_values['bulk']) && $log->new_values['bulk'] === true)
+                                                <li class="pl-2 border-l-2 border-amber-500/30 text-slate-700 dark:text-slate-300 break-all font-sans text-[11px]">
+                                                    <span class="font-bold uppercase text-slate-800 dark:text-slate-100 text-[10px] tracking-wider">Catatan:</span>
+                                                    <span class="text-amber-600 dark:text-amber-400">{{ $log->new_values['note'] ?? 'Bulk delete' }}</span>
+                                                </li>
+                                            @endif
                                         </ul>
                                     @endif
                                 </div>

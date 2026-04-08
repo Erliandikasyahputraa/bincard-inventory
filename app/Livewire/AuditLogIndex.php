@@ -23,10 +23,14 @@ class AuditLogIndex extends Component
     public function render()
     {
         $logs = AuditLog::with('user')
-            ->where('model_type', 'like', '%' . (string)$this->search . '%')
-            ->orWhere('action', 'like', '%' . (string)$this->search . '%')
-            ->orWhereHas('user', function ($q) {
-                $q->where('name', 'like', '%' . (string)$this->search . '%');
+            ->when($this->search !== '', function ($query) {
+                $query->where(function ($inner) {
+                    $inner->where('model_type', 'like', '%' . (string) $this->search . '%')
+                        ->orWhere('action', 'like', '%' . (string) $this->search . '%')
+                        ->orWhereHas('user', function ($q) {
+                            $q->where('name', 'like', '%' . (string) $this->search . '%');
+                        });
+                });
             })
             ->latest()
             ->paginate(15);

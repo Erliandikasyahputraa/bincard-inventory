@@ -19,12 +19,24 @@
             </a>
         </div>
     </div>
+    <div wire:loading wire:target="cari,gotoPage,nextPage,previousPage" class="mb-4">
+        <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
+    </div>
+    @if(count($selectedIds) > 0)
+        <div class="mb-4 flex items-center justify-between bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3">
+            <p class="text-sm text-rose-600 dark:text-rose-400 font-medium">{{ count($selectedIds) }} pemasok dipilih</p>
+            <button type="button" wire:click="hapusTerpilih" wire:confirm="Yakin menghapus semua pemasok terpilih?" wire:loading.attr="disabled" wire:target="hapusTerpilih" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg">
+                Hapus Terpilih
+            </button>
+        </div>
+    @endif
     
     <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[600px] transition-colors duration-300 ease-in-out">
                 <thead>
                     <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">
+                        <th class="px-3 py-4 text-center"><input type="checkbox" wire:model.live="selectAll" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"></th>
                         <th class="px-6 py-4 font-semibold whitespace-nowrap">Nama Pemasok</th>
                         <th class="px-6 py-4 font-semibold w-40">Telepon</th>
                         <th class="px-6 py-4 font-semibold">Email</th>
@@ -34,6 +46,7 @@
                 <tbody class="divide-y divide-slate-800">
                     @forelse($pemasok as $s)
                         <tr class="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                            <td class="px-3 py-4 text-center"><input type="checkbox" value="{{ $s->id }}" wire:model.live="selectedIds" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"></td>
                             <td class="px-6 py-4 text-slate-800 dark:text-slate-200 text-sm font-medium transition-colors duration-300 ease-in-out">{{ $s->nama }}</td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm font-mono transition-colors duration-300 ease-in-out"><a href="tel:{{ $s->telepon }}" class="hover:text-blue-500 transition-colors">{{ $s->telepon ?: '-' }}</a></td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-sm transition-colors duration-300 ease-in-out"><a href="mailto:{{ $s->email }}" class="hover:text-blue-500 transition-colors">{{ $s->email ?: '-' }}</a></td>
@@ -43,6 +56,7 @@
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $s->id }})" wire:confirm="Yakin menghapus pemasok ini secara permanen?"
+                                        wire:loading.attr="disabled" wire:target="hapus"
                                         class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Hapus Permanen">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
@@ -51,7 +65,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-16 text-center transition-colors duration-300 ease-in-out">
+                            <td colspan="5" class="py-16 text-center transition-colors duration-300 ease-in-out">
                                 <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out">
                                     <i data-lucide="truck" class="w-8 h-8 text-slate-500 transition-colors duration-300 ease-in-out"></i>
                                 </div>

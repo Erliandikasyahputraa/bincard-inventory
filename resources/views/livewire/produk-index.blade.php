@@ -37,6 +37,22 @@
             </div>
         </div>
     </div>
+    <div wire:loading wire:target="cari,sortBy,gotoPage,nextPage,previousPage" class="mb-4">
+        <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
+    </div>
+    @if(count($selectedIds) > 0)
+        <div class="mb-4 flex items-center justify-between bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3">
+            <p class="text-sm text-rose-600 dark:text-rose-400 font-medium">{{ count($selectedIds) }} produk dipilih</p>
+            <button type="button"
+                wire:click="hapusTerpilih"
+                wire:confirm="Yakin menghapus semua produk yang dipilih?"
+                wire:loading.attr="disabled"
+                wire:target="hapusTerpilih"
+                class="inline-flex items-center px-4 py-2 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-lg">
+                Hapus Terpilih
+            </button>
+        </div>
+    @endif
     <!-- Mobile Card View (visible on small screens) -->
     <div class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 overflow-hidden shadow-sm">
         @forelse($produk as $p)
@@ -78,6 +94,7 @@
                         <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </a>
                     <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"
+                        wire:loading.attr="disabled" wire:target="hapus"
                         class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 transition-colors" title="Hapus">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
@@ -97,6 +114,9 @@
             <table class="w-full text-left border-collapse min-w-[800px] transition-colors duration-300 ease-in-out">
                 <thead>
                     <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">
+                        <th class="px-3 py-4 text-center">
+                            <input type="checkbox" wire:model.live="selectAll" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                        </th>
                         <th class="px-6 py-4 font-semibold whitespace-nowrap">Barcode / SKU</th>
                         <th class="px-6 py-4 font-semibold">Nama Produk</th>
                         <th class="px-6 py-4 font-semibold text-center whitespace-nowrap transition-colors duration-300 ease-in-out">Stok Saat Ini</th>
@@ -114,6 +134,9 @@
                                 : ($dIsKritis ? 'bg-amber-50 dark:bg-amber-900/10' : '');
                         @endphp
                         <tr class="{{ $dRowBg }} border-l-4 {{ $dIsHabis ? 'border-l-rose-400' : ($dIsKritis ? 'border-l-amber-400' : 'border-l-transparent') }} hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors group">
+                            <td class="px-3 py-4 text-center">
+                                <input type="checkbox" value="{{ $p->id }}" wire:model.live="selectedIds" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                            </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
                                     <span class="text-slate-800 dark:text-slate-200 font-mono text-xs transition-colors duration-300 ease-in-out">{{ $p->barcode }}</span>
@@ -146,6 +169,7 @@
                                         <i data-lucide="pencil" class="w-4 h-4"></i>
                                     </a>
                                     <button type="button" wire:click="hapus({{ $p->id }})" wire:confirm="Seluruh riwayat transaksi produk ini (ledger) mungkin akan terpengaruh. Lanjutkan menghapus?"
+                                        wire:loading.attr="disabled" wire:target="hapus"
                                         class="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Hapus Permanen">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
@@ -154,7 +178,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-16 text-center transition-colors duration-300 ease-in-out">
+                            <td colspan="6" class="py-16 text-center transition-colors duration-300 ease-in-out">
                                 <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out">
                                     <i data-lucide="package-search" class="w-8 h-8 text-slate-500 transition-colors duration-300 ease-in-out"></i>
                                 </div>

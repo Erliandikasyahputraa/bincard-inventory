@@ -16,6 +16,17 @@
             </button>
         </div>
     </div>
+    <div wire:loading wire:target="loadUsers,hapusUser,hapusUserTerpilih,simpan" class="mb-4">
+        <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
+    </div>
+    @if(count($selectedIds) > 0)
+        <div class="mb-4 flex items-center justify-between bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3">
+            <p class="text-sm text-rose-600 dark:text-rose-400 font-medium">{{ count($selectedIds) }} pengguna dipilih</p>
+            <button type="button" wire:click="hapusUserTerpilih" wire:confirm="Yakin menghapus semua pengguna terpilih?" wire:loading.attr="disabled" wire:target="hapusUserTerpilih" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg">
+                Hapus Terpilih
+            </button>
+        </div>
+    @endif
 
     <!-- User Table List -->
     <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-colors duration-300 ease-in-out">
@@ -23,6 +34,9 @@
             <table class="w-full text-left border-collapse transition-colors duration-300 ease-in-out">
                 <thead>
                     <tr class="border-b border-slate-200 dark:border-slate-800 transition-colors duration-300 ease-in-out">
+                        <th class="py-3 px-2 text-center">
+                            <input type="checkbox" wire:model.live="selectAll" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                        </th>
                         <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">Nama & Email</th>
                         <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider transition-colors duration-300 ease-in-out">Peran (Role)</th>
                         <th class="py-3 px-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right transition-colors duration-300 ease-in-out">Aksi</th>
@@ -31,6 +45,11 @@
                 <tbody class="divide-y divide-slate-800/50 text-slate-600 dark:text-slate-300 transition-colors duration-300 ease-in-out">
                     @forelse($users as $user)
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+                            <td class="py-4 px-2 text-center">
+                                @if(auth()->id() !== $user->id)
+                                    <input type="checkbox" value="{{ $user->id }}" wire:model.live="selectedIds" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                @endif
+                            </td>
                             <td class="py-4 px-4">
                                 <p class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:text-white transition-colors">{{ $user->name }}
                                     @if(auth()->id() === $user->id)
@@ -48,11 +67,11 @@
                             </td>
                             <td class="py-4 px-4 text-right transition-colors duration-300 ease-in-out">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="openModal({{ $user->id }})" class="p-2 sm:px-3 sm:py-2 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-slate-900 dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
+                                    <button wire:click="openModal({{ $user->id }})" wire:loading.attr="disabled" wire:target="openModal" class="p-2 sm:px-3 sm:py-2 bg-[#10B981] dark:bg-blue-500 hover:bg-[#388BFD] text-slate-900 dark:text-white rounded-lg transition-colors border border-[#1F6FEB] shadow-lg shadow-[#1F6FEB]/20 flex items-center gap-2" title="Edit / Reset Password">
                                         <i data-lucide="pencil" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold transition-colors duration-300 ease-in-out">Edit</span>
                                     </button>
                                     @if(auth()->id() !== $user->id)
-                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" class="p-2 sm:px-3 sm:py-2 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg transition-colors border border-rose-600 shadow-lg shadow-rose-600/20 flex items-center gap-2" title="Hapus Pengguna">
+                                    <button wire:click="hapusUser({{ $user->id }})" wire:confirm="Yakin ingin menghapus pengguna ini secara permanen?" wire:loading.attr="disabled" wire:target="hapusUser" class="p-2 sm:px-3 sm:py-2 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg transition-colors border border-rose-600 shadow-lg shadow-rose-600/20 flex items-center gap-2" title="Hapus Pengguna">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="hidden sm:inline text-xs font-bold transition-colors duration-300 ease-in-out">Hapus</span>
                                     </button>
                                     @endif
@@ -61,7 +80,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-12 text-center text-slate-500 transition-colors duration-300 ease-in-out">
+                            <td colspan="4" class="py-12 text-center text-slate-500 transition-colors duration-300 ease-in-out">
                                 <i data-lucide="users" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
                                 Belum ada data pengguna lainnya.
                             </td>

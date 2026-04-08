@@ -15,6 +15,8 @@ class ProdukIndex extends Component
 
     public string $cari = '';
     public string $sortBy = 'name_asc';
+    public array $selectedIds = [];
+    public bool $selectAll = false;
 
     public function hapus(int $id): void
     {
@@ -31,16 +33,47 @@ class ProdukIndex extends Component
         }
     }
 
+    public function updatedSelectAll(bool $value): void
+    {
+        if (!$value) {
+            $this->selectedIds = [];
+            return;
+        }
+
+        $this->selectedIds = $this->getCurrentQuery()->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
+
+    public function hapusTerpilih(): void
+    {
+        if (count($this->selectedIds) === 0) {
+            return;
+        }
+
+        Product::whereIn('id', $this->selectedIds)->delete();
+        $deleted = count($this->selectedIds);
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->dispatch('sukses', "{$deleted} produk berhasil dihapus.");
+    }
+
+    private function getCurrentQuery()
+    {
+        $query = Product::query();
+
+        $query->when($this->cari !== '', function ($q) {
+            $q->where(function ($subQ) {
+                $subQ->where('name', 'like', '%' . $this->cari . '%')
+                    ->orWhere('barcode', 'like', '%' . $this->cari . '%')
+                    ->orWhere('sku', 'like', '%' . $this->cari . '%');
+            });
+        });
+
+        return $query;
+    }
+
     public function render()
     {
-        $query = Product::with('supplier')
-            ->when($this->cari !== '', function ($q) {
-                $q->where(function($subQ) {
-                    $subQ->where('name', 'like', '%' . $this->cari . '%')
-                         ->orWhere('barcode', 'like', '%' . $this->cari . '%')
-                         ->orWhere('sku', 'like', '%' . $this->cari . '%');
-                });
-            });
+        $query = $this->getCurrentQuery()->with('supplier');
 
         switch ($this->sortBy) {
             case 'rack_asc':
