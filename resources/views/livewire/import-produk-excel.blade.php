@@ -78,11 +78,15 @@
                                 @if(count($d['changes']) > 0)
                                     <div class="space-y-1">
                                         @foreach($d['changes'] as $change)
+                                            @php
+                                                $oldValue = ($change['old'] === null || $change['old'] === '') ? '-' : $change['old'];
+                                                $newValue = ($change['new'] === null || $change['new'] === '') ? '-' : $change['new'];
+                                            @endphp
                                             <div class="text-xs text-slate-600 dark:text-slate-300">
                                                 <span class="font-semibold">{{ $change['label'] }}:</span>
-                                                <span class="line-through text-rose-500">{{ $change['old'] ?? '-' }}</span>
+                                                <span class="line-through text-rose-500">{{ $oldValue }}</span>
                                                 <span class="mx-1">→</span>
-                                                <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $change['new'] ?? '-' }}</span>
+                                                <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $newValue }}</span>
                                             </div>
                                         @endforeach
                                     </div>
