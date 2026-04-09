@@ -53,14 +53,15 @@ class ProdukIndex extends Component
         $this->resetPage();
     }
 
-    public function hapusTerpilih(): void
+    public function hapusTerpilih(array $ids = []): void
     {
-        if (count($this->selectedIds) === 0) {
+        $ids = array_filter(array_map('intval', $ids));
+        if (count($ids) === 0) {
             return;
         }
 
-        Product::whereIn('id', $this->selectedIds)->delete();
-        $deleted = count($this->selectedIds);
+        Product::whereIn('id', $ids)->delete();
+        $deleted = count($ids);
         $this->selectedIds = [];
         $this->selectAll = false;
         $this->dispatch('sukses', "{$deleted} produk berhasil dihapus.");
