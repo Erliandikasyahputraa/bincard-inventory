@@ -43,6 +43,16 @@ class ProdukIndex extends Component
         $this->selectedIds = $this->getCurrentQuery()->pluck('id')->map(fn ($id) => (int) $id)->all();
     }
 
+    public function updatedCari(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSortBy(): void
+    {
+        $this->resetPage();
+    }
+
     public function hapusTerpilih(): void
     {
         if (count($this->selectedIds) === 0) {
@@ -73,7 +83,7 @@ class ProdukIndex extends Component
 
     public function render()
     {
-        $query = $this->getCurrentQuery()->with('supplier');
+        $query = $this->getCurrentQuery();
 
         switch ($this->sortBy) {
             case 'rack_asc':

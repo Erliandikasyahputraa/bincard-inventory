@@ -9,10 +9,15 @@
     <div class="flex flex-col lg:flex-row justify-end lg:items-center gap-4 mb-4 lg:mb-6">
         <div class="flex flex-col sm:flex-row w-full lg:w-auto gap-3 flex-1 lg:flex-none">
             <div class="relative group flex-1 md:w-80 lg:w-96">
-                <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
+                <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-all duration-300 ease-in-out"></i>
                 <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
-                <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.300ms="cari" placeholder="Cari nama, barcode, SKU..."
-                    class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm">
+                <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()" wire:model.live.debounce.500ms="cari" placeholder="Cari nama, barcode, SKU..."
+                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm">
+                {{-- X clear button --}}
+                <button x-show="$wire.cari !== ''" wire:click="$set('cari', '')" type="button"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
             </div>
 
             <div class="relative w-full sm:w-40 flex-shrink-0">
@@ -54,7 +59,8 @@
         </div>
     @endif
     <!-- Mobile Card View (visible on small screens) -->
-    <div class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 overflow-hidden shadow-sm">
+    <div wire:loading.class="opacity-50 pointer-events-none" wire:target="cari,sortBy,gotoPage,nextPage,previousPage,hapusTerpilih,selectAll"
+        class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 rounded-2xl border border-[#D1D5DB] dark:border-slate-800 overflow-hidden shadow-sm transition-all duration-300 ease-in-out">
         @forelse($produk as $p)
             @php
                 $isHabis = $p->current_stock == 0;
@@ -109,7 +115,8 @@
     </div>
 
     <!-- Desktop Table View (hidden on small screens) -->
-    <div class="hidden md:block bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-colors duration-300 ease-in-out">
+    <div wire:loading.class="opacity-50 pointer-events-none" wire:target="cari,sortBy,gotoPage,nextPage,previousPage,hapusTerpilih,selectAll"
+         class="hidden md:block bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 ease-in-out">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse min-w-[800px] transition-colors duration-300 ease-in-out">
                 <thead>
@@ -135,7 +142,7 @@
                         @endphp
                         <tr class="{{ $dRowBg }} border-l-4 {{ $dIsHabis ? 'border-l-rose-400' : ($dIsKritis ? 'border-l-amber-400' : 'border-l-transparent') }} hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors group">
                             <td class="px-3 py-4 text-center">
-                                <input type="checkbox" value="{{ $p->id }}" wire:model.live="selectedIds" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                <input type="checkbox" value="{{ $p->id }}" wire:model="selectedIds" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">

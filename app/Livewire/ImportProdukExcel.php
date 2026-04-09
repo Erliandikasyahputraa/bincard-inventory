@@ -21,8 +21,9 @@ class ImportProdukExcel extends Component
     public array $barisGagal = [];
     public array $duplikatDitemukan = [];
     public bool $menungguKonfirmasi = false;
-    public array $barisSiapImport = [];
     public array $duplikatPreview = [];
+    public int $totalDuplikat = 0;
+    public int $totalGagal = 0;
 
     public function simpan(): void
     {
@@ -31,8 +32,9 @@ class ImportProdukExcel extends Component
         $this->barisGagal = [];
         $this->duplikatDitemukan = [];
         $this->duplikatPreview = [];
+        $this->totalDuplikat = 0;
+        $this->totalGagal = 0;
         $this->menungguKonfirmasi = false;
-        $this->barisSiapImport = [];
 
         $preview = new ProdukImportPreview();
         Excel::import($preview, $this->file->getRealPath());
@@ -45,7 +47,10 @@ class ImportProdukExcel extends Component
             $normalized = ProdukImport::normalizeRow($row, $baris);
 
             if ($normalized['is_invalid']) {
-                $this->barisGagal[] = ['baris' => $baris, 'alasan' => $normalized['error_reason']];
+                $this->totalGagal++;
+                if (count($this->barisGagal) < 50) {
+                    $this->barisGagal[] = ['baris' => $baris, 'alasan' => $normalized['error_reason']];
+                }
                 continue;
             }
 
@@ -59,7 +64,7 @@ class ImportProdukExcel extends Component
         }
 
         $existingByBarcode = Product::whereIn('barcode', array_values(array_unique($validBarcodes)))
-            ->get(['id', 'barcode', 'name'])
+            ->get()
             ->keyBy('barcode');
 
         foreach ($normalizedRows as $row) {
@@ -70,32 +75,39 @@ class ImportProdukExcel extends Component
 
             if ($existing->name === $row['name']) {
                 $changes = $this->buildChangeSet($existing->toArray(), $row['payload']);
-                $this->duplikatDitemukan[] = [
-                    'baris' => $row['baris'],
-                    'barcode' => $row['barcode'],
-                    'name' => $row['name'],
-                ];
-                $this->duplikatPreview[] = [
-                    'baris' => $row['baris'],
-                    'barcode' => $row['barcode'],
-                    'name' => $row['name'],
-                    'status' => count($changes) > 0 ? 'akan_ditimpa' : 'tidak_berubah',
-                    'changes' => $changes,
-                ];
+                $this->totalDuplikat++;
+                
+                if (count($this->duplikatDitemukan) < 50) {
+                    $this->duplikatDitemukan[] = [
+                        'baris' => $row['baris'],
+                        'barcode' => $row['barcode'],
+                        'name' => $row['name'],
+                    ];
+                }
+                if (count($this->duplikatPreview) < 50) {
+                    $this->duplikatPreview[] = [
+                        'baris' => $row['baris'],
+                        'barcode' => $row['barcode'],
+                        'name' => $row['name'],
+                        'status' => count($changes) > 0 ? 'akan_ditimpa' : 'tidak_berubah',
+                        'changes' => $changes,
+                    ];
+                }
                 continue;
             }
 
-            $this->barisGagal[] = [
-                'baris' => $row['baris'],
-                'alasan' => "Barcode '{$row['barcode']}' sudah ada dengan nama berbeda di sistem.",
-            ];
+            $this->totalGagal++;
+            if (count($this->barisGagal) < 50) {
+                $this->barisGagal[] = [
+                    'baris' => $row['baris'],
+                    'alasan' => "Barcode '{$row['barcode']}' sudah ada dengan nama berbeda di sistem.",
+                ];
+            }
         }
 
-        $this->barisSiapImport = $preview->rows->values()->all();
-
-        if (count($this->duplikatDitemukan) > 0) {
+        if ($this->totalDuplikat > 0) {
             $this->menungguKonfirmasi = true;
-            $this->dispatch('transaksi-gagal', message: 'Ditemukan data duplikat. Pilih tindakan: lewati atau timpa data duplikat.');
+            $this->dispatch('transaksi-gagal', message: "Ditemukan {$this->totalDuplikat} data duplikat. Pilih tindakan: lewati atau timpa data duplikat.");
             return;
         }
 
@@ -118,12 +130,14 @@ class ImportProdukExcel extends Component
     private function prosesImport(string $duplicateMode): void
     {
         $import = new ProdukImport($duplicateMode);
-        $import->importRows($this->barisSiapImport);
+        
+        // Baca dan import ulang dari file Excel secara langsung untuk menghemat memory
+        Excel::import($import, $this->file->getRealPath());
 
         $this->barisSukses = $import->barisSukses;
-        $this->barisGagal = array_merge($this->barisGagal, $import->barisGagal);
+        $this->totalGagal += count($import->barisGagal);
+        $this->barisGagal = array_merge($this->barisGagal, array_slice($import->barisGagal, 0, 50));
         $this->menungguKonfirmasi = false;
-        $this->barisSiapImport = [];
         $this->duplikatDitemukan = [];
         $this->duplikatPreview = [];
 
