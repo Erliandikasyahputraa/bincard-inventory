@@ -65,7 +65,10 @@
         <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center shrink-0">
-                    <i data-lucide="triangle-alert" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+                    {{-- Inline SVG sebagai fallback jika lucide belum init --}}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
                 </div>
                 <div>
                     <p class="font-bold text-slate-900 dark:text-white text-sm">Ditemukan {{ $totalDuplikat }} data duplikat</p>
@@ -83,7 +86,8 @@
                 @php $isAkanDitimpa = $d['status'] === 'akan_ditimpa'; @endphp
                 <div class="px-6 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors duration-150">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-[11px] font-mono font-semibold text-slate-500 dark:text-slate-400">Baris {{ $d['baris'] }}</span>
+                        <span class="text-[11px] font-mono font-semibold text-slate-400 dark:text-slate-500 tabular-nums">Baris {{ $d['baris'] }}</span>
+                        <span class="w-px h-3 bg-slate-200 dark:bg-slate-700"></span>
                         <span class="font-mono font-semibold text-sm text-slate-800 dark:text-slate-200">{{ $d['barcode'] }}</span>
                         <span class="text-slate-300 dark:text-slate-600">—</span>
                         <span class="text-sm text-slate-700 dark:text-slate-300 flex-1 min-w-0 truncate">{{ $d['name'] }}</span>
@@ -134,7 +138,7 @@
                 wire:loading.attr="disabled"
                 wire:target="pilihTindakanDuplikat"
                 class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] text-white shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                <i data-lucide="save" class="w-4 h-4"></i> Timpa Data Lama
+                Timpa Data Lama
             </button>
         </div>
     </div>

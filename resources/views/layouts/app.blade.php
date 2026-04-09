@@ -290,9 +290,12 @@
     @stack('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
-            // Re-apply on DOM morphs (for Modals/Dynamic loading)
-            Livewire.hook('morph.updated', ({ el, component }) => {
-                lucide.createIcons();
+            // Re-run createIcons after every Livewire DOM update (Livewire v3 compatible)
+            Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+                succeed(({ snapshot, effect }) => {
+                    // After each successful Livewire response, re-initialize icons
+                    requestAnimationFrame(() => lucide.createIcons());
+                });
             });
 
             window.addEventListener('transaksi-sukses', (event) => {
