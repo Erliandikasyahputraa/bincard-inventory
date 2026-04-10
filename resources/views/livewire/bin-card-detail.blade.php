@@ -107,10 +107,10 @@
                         class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
                         <i data-lucide="pencil" class="w-3 h-3"></i> Edit
                     </a>
-                    <button onclick="printQR()" type="button"
-                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+                    <a href="{{ route('qr.print.single', $product->id) }}" target="_blank"
+                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors">
                         <i data-lucide="printer" class="w-3 h-3"></i> Cetak QR
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

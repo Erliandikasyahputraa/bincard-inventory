@@ -75,8 +75,13 @@
                                     <span class="inline-block px-3 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-600 dark:text-slate-300 font-bold font-mono transition-colors duration-300 ease-in-out">{{ $d->stok_sistem }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-center bg-[#10B981] dark:bg-emerald-500/5 transition-colors duration-300 ease-in-out">
-                                    <input type="number" wire:model.live="stokFisik.{{ $d->product_id }}"
-                                        class="w-24 text-center bg-white dark:bg-slate-950 border-transparent dark:border-slate-800 focus:border-white focus:ring-2 focus:ring-white dark:focus:ring-blue-500 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white placeholder-slate-400 outline-none transition-colors border-2" min="0" placeholder="0">
+                                    {{-- Alpine local — server dipanggil hanya saat blur atau 600ms setelah ketik --}}
+                                    <div x-data="{ val: '{{ $stokFisik[$d->product_id] ?? $d->stok_fisik ?? '' }}' }">
+                                        <input type="number" x-model="val"
+                                            x-on:input.debounce.600ms="$wire.setStokFisik({{ $d->product_id }}, val)"
+                                            x-on:blur="$wire.setStokFisik({{ $d->product_id }}, val)"
+                                            class="w-24 text-center bg-white dark:bg-slate-950 border-transparent dark:border-slate-800 focus:border-white focus:ring-2 focus:ring-white dark:focus:ring-blue-500 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white placeholder-slate-400 outline-none transition-colors border-2" min="0" placeholder="0">
+                                    </div>
                                 </td>
                                 @php $fisik = (int) ($stokFisik[$d->product_id] ?? $d->stok_fisik ?? 0); $sel = $fisik - $d->stok_sistem; @endphp
                                 <td class="px-6 py-4 text-center transition-colors duration-300 ease-in-out">
