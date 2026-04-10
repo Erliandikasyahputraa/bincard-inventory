@@ -105,9 +105,11 @@ class BarangKeluarForm extends Component
 
     public function render()
     {
-        $daftarProduk = Product::orderBy('name')->get();
-        $pelanggan = Customer::orderBy('nama')->get();
-        return view('livewire.barang-keluar-form', ['daftarProduk' => $daftarProduk, 'pelanggan' => $pelanggan])
-            ->layout('layouts.app', ['title' => 'Barang Keluar']);
+        $produkDipilih = $this->product_id ? Product::find($this->product_id) : null;
+        $pelanggan = Customer::orderBy('nama')->select('id', 'nama')->get();
+        return view('livewire.barang-keluar-form', [
+            'produkDipilih' => $produkDipilih,
+            'pelanggan'     => $pelanggan,
+        ])->layout('layouts.app', ['title' => 'Barang Keluar']);
     }
 }

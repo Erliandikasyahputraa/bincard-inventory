@@ -84,8 +84,8 @@ class BarangMasukForm extends Component
 
     public function render()
     {
-        $produk = Product::orderBy('name')->get();
-        return view('livewire.barang-masuk-form', ['daftarProduk' => $produk])
+        $produkDipilih = $this->product_id ? Product::find($this->product_id) : null;
+        return view('livewire.barang-masuk-form', ['produkDipilih' => $produkDipilih])
             ->layout('layouts.app', ['title' => 'Barang Masuk']);
     }
 }

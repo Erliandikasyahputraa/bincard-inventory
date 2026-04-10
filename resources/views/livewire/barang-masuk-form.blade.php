@@ -52,18 +52,23 @@
                 <!-- Kolom Kiri -->
                 <div class="space-y-6">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Pilih Produk <span class="text-rose-600 dark:text-rose-500 transition-colors duration-300 ease-in-out">*</span></label>
-                        <div class="relative">
-                            <select wire:model="product_id" 
-                                class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all px-4 py-2.5 appearance-none text-sm">
-                                <option value="">-- Pilih Produk Data Master --</option>
-                                @foreach($daftarProduk as $p)
-                                    <option value="{{ $p->id }}">{{ $p->name }} ({{ $p->barcode }}) - Stok: {{ $p->current_stock }}</option>
-                                @endforeach
-                            </select>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-300 ease-in-out"></i>
-                        </div>
-                        @error('product_id') <span class="text-rose-600 dark:text-rose-500 text-xs mt-1 block font-medium flex items-center gap-1 transition-colors duration-300 ease-in-out"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
+                        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 transition-colors duration-300 ease-in-out">Produk Dipilih <span class="text-rose-600 dark:text-rose-500">*</span></label>
+                        @if($produkDipilih)
+                            <div class="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">{{ $produkDipilih->name }}</p>
+                                    <p class="text-xs font-mono text-slate-500">{{ $produkDipilih->barcode }} · Stok: <strong class="text-emerald-600">{{ $produkDipilih->current_stock }}</strong></p>
+                                </div>
+                                <button type="button" wire:click="$set('product_id', null)" class="text-slate-400 hover:text-rose-500 transition-colors">
+                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        @else
+                            <div class="p-3 bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center">
+                                <p class="text-xs text-slate-400">Gunakan pencarian barcode di atas untuk memilih produk</p>
+                            </div>
+                        @endif
+                        @error('product_id') <span class="text-rose-600 dark:text-rose-500 text-xs mt-1 block font-medium flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> {{ $message }}</span> @enderror
                     </div>
 
                     <div>
