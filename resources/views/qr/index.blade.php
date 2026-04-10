@@ -17,7 +17,7 @@
         <button onclick="window.print()"
             class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-md">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            Cetak Semua
+            Cetak Halaman Ini
         </button>
     </div>
 </div>
@@ -42,19 +42,25 @@
 {{-- Search & filter bar --}}
 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 mb-4 print:hidden shadow-sm">
     <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-        <div class="relative flex-1 max-w-md">
+        <form method="GET" action="{{ route('qr.print') }}" class="relative flex-1 w-full max-w-md">
             <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-            <input type="text" id="searchInput" placeholder="Cari nama produk, SKU, atau barcode..."
-                class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500"
-                oninput="filterCards()">
-        </div>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk, SKU, atau barcode..."
+                class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500">
+            @if(request('search'))
+                <a href="{{ route('qr.print') }}" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                </a>
+            @endif
+        </form>
         <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 shrink-0">
             <label class="flex items-center gap-2 cursor-pointer select-none">
                 <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
                 <span class="text-xs font-medium">Pilih semua</span>
             </label>
             <span class="text-slate-300 dark:text-slate-700">|</span>
-            <span id="visibleCount" class="text-xs">{{ count($products) }} produk</span>
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ $products->total() }} produk</span>
+            </div>
         </div>
     </div>
 </div>
@@ -107,11 +113,16 @@
             </div>
         </div>
     @empty
-        <div class="col-span-full py-16 flex flex-col items-center gap-3 text-center">
+        <div class="col-span-full py-16 flex flex-col items-center gap-3 text-center print:hidden">
             <i data-lucide="package-search" class="w-12 h-12 text-slate-300"></i>
             <p class="text-slate-400">Belum ada data produk untuk dicetak.</p>
         </div>
     @endforelse
+</div>
+
+{{-- Pagination --}}
+<div class="mt-6 print:hidden">
+    {{ $products->links() }}
 </div>
 
 @push('scripts')
@@ -210,29 +221,6 @@
         setTimeout(() => {
             document.querySelectorAll('.qr-card.not-selected').forEach(c => c.classList.remove('not-selected'));
         }, 1000);
-    }
-
-    // ── Search filter ──
-    let visibleTotal = {{ count($products) }};
-    function filterCards() {
-        const q = document.getElementById('searchInput').value.toLowerCase().trim();
-        let visible = 0;
-        document.querySelectorAll('.qr-card').forEach(card => {
-            const match = !q ||
-                card.dataset.name.includes(q) ||
-                card.dataset.sku.includes(q) ||
-                card.dataset.barcode.includes(q);
-            card.style.display = match ? '' : 'none';
-            if (match) visible++;
-        });
-        document.getElementById('visibleCount').textContent = visible + ' produk';
-        // Trigger lazy load for newly visible
-        document.querySelectorAll('.qr-img[data-src]').forEach(img => {
-            const card = img.closest('.qr-card');
-            if (card && card.style.display !== 'none') {
-                qrObserver.observe(img);
-            }
-        });
     }
 </script>
 @endpush

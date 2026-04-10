@@ -19,7 +19,8 @@
             @page { margin: 0; }
             body  { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .no-print { display: none !important; }
-            .print-label { box-shadow: none !important; border-radius: 0 !important; }
+            .print-label { box-shadow: none !important; border-radius: 0 !important; transform: none !important; margin: 0 !important; }
+            .print-wrapper { transform: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
         }
 
         /* barcode striped lines (purely CSS decorative) */
@@ -78,81 +79,83 @@
     </div>
 
     {{-- ───── PRINTABLE LABEL ───── --}}
-    @php
-        $company = \App\Models\CompanySetting::first();
-        $companyName = $company?->nama_perusahaan ?? config('app.name', 'BINGO');
-    @endphp
+    <div class="print-wrapper w-full flex justify-center transition-transform origin-top" id="printWrapper">
+        @php
+            $company = \App\Models\CompanySetting::first();
+            $companyName = $company?->nama_perusahaan ?? config('app.name', 'BINGO');
+        @endphp
 
-    {{-- A4 layout --}}
-    <div id="label-a4" class="print-label label-a4 bg-white shadow-2xl rounded-xl flex flex-col items-center justify-center p-12 text-center">
-        {{-- Company name --}}
-        <p class="mono text-xs font-bold uppercase tracking-[4px] text-slate-400 mb-6">{{ strtoupper($companyName) }}</p>
+        {{-- A4 layout --}}
+        <div id="label-a4" class="print-label label-a4 bg-white shadow-2xl rounded-xl flex flex-col items-center justify-center p-12 text-center">
+            {{-- Company name --}}
+            <p class="mono text-xs font-bold uppercase tracking-[4px] text-slate-400 mb-6">{{ strtoupper($companyName) }}</p>
 
-        {{-- QR Code --}}
-        <div class="bg-white p-3 border-4 border-slate-900 rounded-xl mb-6 shadow-sm">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                 alt="QR Code" class="w-[320px] h-[320px] object-contain" />
+            {{-- QR Code --}}
+            <div class="bg-white p-3 border-4 border-slate-900 rounded-xl mb-6 shadow-sm">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                     alt="QR Code" class="w-[320px] h-[320px] object-contain" />
+            </div>
+
+            {{-- Product name --}}
+            <h1 class="text-5xl font-black text-gray-900 leading-tight uppercase tracking-tight max-w-lg mb-2">
+                {{ $product->name }}
+            </h1>
+
+            {{-- SKU --}}
+            <p class="mono text-2xl text-slate-600 tracking-widest font-semibold mb-4">{{ $product->sku }}</p>
+
+            {{-- Barcode visual + text --}}
+            <div class="flex flex-col items-center mt-2 mb-4">
+                <div class="barcode-lines" id="barcodeA4"></div>
+                <p class="mono text-lg font-bold tracking-[6px] text-slate-800 mt-2">{{ $product->barcode }}</p>
+            </div>
+
+            {{-- Info row --}}
+            <div class="flex items-center gap-6 mt-4 border-t border-slate-200 pt-4 text-sm text-slate-500">
+                @if($product->location)
+                <span class="inline-flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Rak: <strong class="text-slate-800">{{ $product->location }}</strong>
+                </span>
+                @endif
+                <span class="inline-flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>
+                    Stok: <strong class="text-slate-800">{{ $product->current_stock }}</strong>
+                </span>
+            </div>
         </div>
 
-        {{-- Product name --}}
-        <h1 class="text-5xl font-black text-gray-900 leading-tight uppercase tracking-tight max-w-lg mb-2">
-            {{ $product->name }}
-        </h1>
-
-        {{-- SKU --}}
-        <p class="mono text-2xl text-slate-600 tracking-widest font-semibold mb-4">{{ $product->sku }}</p>
-
-        {{-- Barcode visual + text --}}
-        <div class="flex flex-col items-center mt-2 mb-4">
-            <div class="barcode-lines" id="barcodeA4"></div>
-            <p class="mono text-lg font-bold tracking-[6px] text-slate-800 mt-2">{{ $product->barcode }}</p>
+        {{-- 10×7 cm layout --}}
+        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-3 p-3 overflow-hidden" style="min-height:7cm;">
+            <div class="shrink-0">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                     alt="QR" class="w-[5.5cm] h-[5.5cm] object-contain" />
+            </div>
+            <div class="flex flex-col justify-center overflow-hidden flex-1">
+                <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($companyName) }}</p>
+                <h1 class="text-[11px] font-black uppercase text-gray-900 leading-snug mb-1 break-words">{{ $product->name }}</h1>
+                <p class="mono text-[9px] font-bold text-slate-500 tracking-widest mb-2">{{ $product->sku }}</p>
+                <div class="barcode-lines scale-75 origin-left" id="barcode10x7"></div>
+                <p class="mono text-[8px] font-bold tracking-[3px] text-slate-800 mt-1">{{ $product->barcode }}</p>
+                @if($product->location)
+                <p class="text-[8px] text-slate-400 mt-1">Rak: <strong class="text-slate-700">{{ $product->location }}</strong></p>
+                @endif
+            </div>
         </div>
 
-        {{-- Info row --}}
-        <div class="flex items-center gap-6 mt-4 border-t border-slate-200 pt-4 text-sm text-slate-500">
-            @if($product->location)
-            <span class="inline-flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Rak: <strong class="text-slate-800">{{ $product->location }}</strong>
-            </span>
-            @endif
-            <span class="inline-flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>
-                Stok: <strong class="text-slate-800">{{ $product->current_stock }}</strong>
-            </span>
-        </div>
-    </div>
-
-    {{-- 10×7 cm layout --}}
-    <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-3 p-3 overflow-hidden" style="min-height:7cm;">
-        <div class="shrink-0">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                 alt="QR" class="w-[5.5cm] h-[5.5cm] object-contain" />
-        </div>
-        <div class="flex flex-col justify-center overflow-hidden flex-1">
-            <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($companyName) }}</p>
-            <h1 class="text-[11px] font-black uppercase text-gray-900 leading-snug mb-1 break-words">{{ $product->name }}</h1>
-            <p class="mono text-[9px] font-bold text-slate-500 tracking-widest mb-2">{{ $product->sku }}</p>
-            <div class="barcode-lines scale-75 origin-left" id="barcode10x7"></div>
-            <p class="mono text-[8px] font-bold tracking-[3px] text-slate-800 mt-1">{{ $product->barcode }}</p>
-            @if($product->location)
-            <p class="text-[8px] text-slate-400 mt-1">Rak: <strong class="text-slate-700">{{ $product->location }}</strong></p>
-            @endif
-        </div>
-    </div>
-
-    {{-- 5×5 cm layout --}}
-    <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden" style="min-height:5cm;">
-        <p class="mono text-[6px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($companyName) }}</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-             alt="QR" class="w-[3cm] h-[3cm] object-contain" />
-        <div>
-            <p class="text-[7px] font-black uppercase text-gray-900 leading-snug break-words">{{ $product->name }}</p>
-            <div class="barcode-lines justify-center mt-1" style="height:18px;gap:1px;" id="barcode5x5"></div>
-            <p class="mono text-[6px] font-bold tracking-[2px] text-slate-800 mt-0.5">{{ $product->barcode }}</p>
-            @if($product->location)
-            <p class="text-[6px] text-slate-400">Rak: <strong>{{ $product->location }}</strong></p>
-            @endif
+        {{-- 5×5 cm layout --}}
+        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden" style="min-height:5cm;">
+            <p class="mono text-[6px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($companyName) }}</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                 alt="QR" class="w-[3cm] h-[3cm] object-contain" />
+            <div>
+                <p class="text-[7px] font-black uppercase text-gray-900 leading-snug break-words">{{ $product->name }}</p>
+                <div class="barcode-lines justify-center mt-1" style="height:18px;gap:1px;" id="barcode5x5"></div>
+                <p class="mono text-[6px] font-bold tracking-[2px] text-slate-800 mt-0.5">{{ $product->barcode }}</p>
+                @if($product->location)
+                <p class="text-[6px] text-slate-400">Rak: <strong>{{ $product->location }}</strong></p>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -184,7 +187,34 @@
             active.classList.remove('border-slate-200', 'text-slate-600');
             active.classList.add('border-blue-500', 'bg-blue-50', 'text-blue-700', 'active');
         }
+
+        // Apply scale on screen
+        applyScale();
     }
+
+    function applyScale() {
+        const wrapper = document.getElementById('printWrapper');
+        const activeLabel = document.querySelector('.print-label:not(.hidden)');
+        if (!wrapper || !activeLabel) return;
+        
+        // Reset scale first
+        wrapper.style.transform = 'none';
+        wrapper.style.marginBottom = '0';
+        
+        const winHeight = window.innerHeight;
+        // Available height is window height minus top controls (~200px)
+        const availableHeight = winHeight - 200;
+        const rect = activeLabel.getBoundingClientRect();
+        
+        if (rect.height > availableHeight) {
+            const scale = availableHeight / rect.height;
+            wrapper.style.transform = `scale(${scale})`;
+            // Fix margin bottom so the document doesn't scroll unnecessarily
+            wrapper.style.marginBottom = `${-(rect.height * (1 - scale))}px`;
+        }
+    }
+    
+    window.addEventListener('resize', applyScale);
 
     // Generate decorative barcode bars (CSS only, not real barcode)
     function makeBarcode(containerId, count, maxH) {
