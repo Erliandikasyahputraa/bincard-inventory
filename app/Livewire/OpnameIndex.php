@@ -30,16 +30,28 @@ class OpnameIndex extends Component
             'status' => StockOpname::STATUS_DRAFT,
             'created_by' => auth()->id(),
         ]);
-        $produk = Product::orderBy('name')->get();
+        
+        $produk = Product::select('id', 'current_stock')->get();
+        $now = now();
+        $details = [];
+        
         foreach ($produk as $p) {
-            StockOpnameDetail::create([
+            $details[] = [
                 'stock_opname_id' => $opname->id,
-                'product_id' => $p->id,
-                'stok_sistem' => $p->current_stock,
-                'stok_fisik' => null,
-                'selisih' => 0,
-            ]);
+                'product_id'      => $p->id,
+                'stok_sistem'     => $p->current_stock,
+                'stok_fisik'      => null,
+                'selisih'         => 0,
+                'created_at'      => $now,
+                'updated_at'      => $now,
+            ];
         }
+        
+        // Chunk insert to avoid hitting max query parameters limit
+        foreach (array_chunk($details, 500) as $chunk) {
+            StockOpnameDetail::insert($chunk);
+        }
+
         $this->dispatch('transaksi-sukses', ['message' => 'Sesi opname dibuat.']);
         $this->opnameId = $opname->id;
         $this->tanggalBaru = '';

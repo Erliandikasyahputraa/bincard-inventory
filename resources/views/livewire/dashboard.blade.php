@@ -295,7 +295,7 @@
                 <span class="text-lg font-extrabold {{ $kritis > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-slate-400' }}">{{ $kritis }}</span>
             </a>
 
-            <a href="{{ route('barang-masuk.index') }}" wire:navigate
+            <a href="{{ route('produk.index') }}?filter=habis" wire:navigate
                 class="flex items-center gap-3 p-3 rounded-xl border {{ $habis > 0 ? 'border-red-100 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 hover:shadow-md hover:-translate-y-0.5' : 'border-slate-100 dark:border-slate-800 bg-[#F0FDF4] dark:bg-slate-800/50 border-b border-[#D1D5DB]' }} transition-all group">
                 <div class="w-8 h-8 rounded-lg {{ $habis > 0 ? 'bg-red-500/10 dark:bg-red-500/20' : 'bg-slate-100 dark:bg-slate-800' }} flex items-center justify-center flex-shrink-0">
                     <i data-lucide="x-circle" class="w-4 h-4 {{ $habis > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400' }}"></i>

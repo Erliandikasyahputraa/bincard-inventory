@@ -43,24 +43,30 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
                 $existing = Product::where('barcode', $normalized['barcode'])->first();
 
                 if ($existing) {
-                    if ($existing->name !== $normalized['name']) {
-                        $this->barisGagal[] = [
-                            'baris' => $baris,
-                            'alasan' => "Barcode '{$normalized['barcode']}' sudah ada dengan nama berbeda di sistem.",
-                        ];
-                        continue;
-                    }
-
+                    // Timpani nama beda atau tanpa nama, anggap sebagai UPDATE
+                    $incomingName = $normalized['name'] === '' ? $existing->name : $normalized['name'];
+                    
                     if ($this->duplicateMode === self::DUPLICATE_SKIP) {
                         $this->barisGagal[] = [
                             'baris' => $baris,
-                            'alasan' => "Produk dengan Barcode '{$normalized['barcode']}' dan nama yang sama sudah ada (dilewati).",
+                            'alasan' => "Produk dengan Barcode '{$normalized['barcode']}' sudah ada di sistem (dilewati).",
                         ];
                         continue;
                     }
 
-                    $existing->update($normalized['payload']);
+                    $payload = $normalized['payload'];
+                    if ($normalized['name'] === '') {
+                        $payload['name'] = $existing->name;
+                    }
+                    $existing->update($payload);
                 } else {
+                    if ($normalized['name'] === '') {
+                        $this->barisGagal[] = [
+                            'baris' => $baris,
+                            'alasan' => "Barcode '{$normalized['barcode']}' adalah produk baru. Nama (Material Description) wajib diisi.",
+                        ];
+                        continue;
+                    }
                     Product::create($normalized['payload']);
                 }
 
@@ -92,10 +98,10 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
         $barcode = trim((string) ($data['komat'] ?? $data['barcode'] ?? $data['material'] ?? ''));
         $name = trim((string) ($data['material_description'] ?? $data['name'] ?? $data['nama'] ?? ''));
 
-        if ($barcode === '' || $name === '') {
+        if ($barcode === '') {
             return [
                 'is_invalid' => true,
-                'error_reason' => 'KOMAT/Material (Barcode) dan Material Description (Nama) wajib diisi',
+                'error_reason' => 'KOMAT/Material (Barcode) wajib diisi',
             ];
         }
 

@@ -14,7 +14,7 @@ class ProdukIndex extends Component
     use WithPagination;
 
     public string $cari = '';
-    public string $sortBy = 'name_asc';
+    public string $sortBy = 'newest';
     public array $selectedIds = [];
     public bool $selectAll = false;
 
@@ -27,9 +27,10 @@ class ProdukIndex extends Component
 
     public function mount(): void
     {
-        // Auto-filter when coming from dashboard "Stok Kritis" card
         if (request()->query('filter') === 'kritis') {
-            $this->sortBy = 'stock_critical';
+            $this->sortBy = 'filter_kritis';
+        } elseif (request()->query('filter') === 'habis') {
+            $this->sortBy = 'filter_habis';
         }
     }
 
@@ -52,6 +53,8 @@ class ProdukIndex extends Component
     {
         $this->resetPage();
     }
+
+
 
     public function hapusTerpilih(array $ids = []): void
     {
@@ -79,6 +82,13 @@ class ProdukIndex extends Component
             });
         });
 
+        if ($this->sortBy === 'filter_habis') {
+            $query->where('current_stock', '=', 0);
+        } elseif ($this->sortBy === 'filter_kritis') {
+            $query->whereColumn('current_stock', '<=', 'min_stock')
+                  ->where('current_stock', '>', 0);
+        }
+
         return $query;
     }
 
@@ -87,19 +97,23 @@ class ProdukIndex extends Component
         $query = $this->getCurrentQuery();
 
         switch ($this->sortBy) {
+            case 'newest':
+                $query->orderBy('id', 'desc');
+                break;
             case 'rack_asc':
                 $query->orderBy('location', 'asc');
                 break;
             case 'stock_highest':
                 $query->orderBy('current_stock', 'desc');
                 break;
-            case 'stock_critical':
-                $query->orderByRaw('current_stock <= min_stock DESC')
-                      ->orderBy('current_stock', 'asc');
+            case 'stock_lowest':
+                $query->orderBy('current_stock', 'asc');
                 break;
             case 'name_desc':
                 $query->orderBy('name', 'desc');
                 break;
+            case 'filter_habis':
+            case 'filter_kritis':
             case 'name_asc':
             default:
                 $query->orderBy('name', 'asc');

@@ -73,34 +73,29 @@ class ImportProdukExcel extends Component
                 continue;
             }
 
-            if ($existing->name === $row['name']) {
-                $changes = $this->buildChangeSet($existing->toArray(), $row['payload']);
-                $this->totalDuplikat++;
-                
-                if (count($this->duplikatDitemukan) < 50) {
-                    $this->duplikatDitemukan[] = [
-                        'baris' => $row['baris'],
-                        'barcode' => $row['barcode'],
-                        'name' => $row['name'],
-                    ];
-                }
-                if (count($this->duplikatPreview) < 50) {
-                    $this->duplikatPreview[] = [
-                        'baris' => $row['baris'],
-                        'barcode' => $row['barcode'],
-                        'name' => $row['name'],
-                        'status' => count($changes) > 0 ? 'akan_ditimpa' : 'tidak_berubah',
-                        'changes' => $changes,
-                    ];
-                }
-                continue;
+            $incomingName = $row['name'] === '' ? $existing->name : $row['name'];
+            $payload = $row['payload'];
+            if ($row['name'] === '') {
+                $payload['name'] = $existing->name;
             }
 
-            $this->totalGagal++;
-            if (count($this->barisGagal) < 50) {
-                $this->barisGagal[] = [
+            $changes = $this->buildChangeSet($existing->toArray(), $payload);
+            $this->totalDuplikat++;
+            
+            if (count($this->duplikatDitemukan) < 50) {
+                $this->duplikatDitemukan[] = [
                     'baris' => $row['baris'],
-                    'alasan' => "Barcode '{$row['barcode']}' sudah ada dengan nama berbeda di sistem.",
+                    'barcode' => $row['barcode'],
+                    'name' => $incomingName,
+                ];
+            }
+            if (count($this->duplikatPreview) < 50) {
+                $this->duplikatPreview[] = [
+                    'baris' => $row['baris'],
+                    'barcode' => $row['barcode'],
+                    'name' => $incomingName,
+                    'status' => count($changes) > 0 ? 'akan_ditimpa' : 'tidak_berubah',
+                    'changes' => $changes,
                 ];
             }
         }

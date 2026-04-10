@@ -46,13 +46,16 @@
                 </button>
             </div>
 
-            <div class="relative w-full sm:w-40 flex-shrink-0">
-                <i data-lucide="arrow-up-down" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
+            <div class="relative w-full sm:w-48 flex-shrink-0">
+                <i data-lucide="filter" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
                 <select wire:model.live="sortBy" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
+                    <option value="newest">Terbaru</option>
+                    <option value="filter_kritis">Hanya Stok Kritis</option>
+                    <option value="filter_habis">Hanya Stok Habis</option>
                     <option value="name_asc">Nama (A-Z)</option>
                     <option value="name_desc">Nama (Z-A)</option>
-                    <option value="stock_critical">Stok Kritis</option>
                     <option value="stock_highest">Stok Terbanyak</option>
+                    <option value="stock_lowest">Stok Terendah</option>
                     <option value="rack_asc">Lokasi / Rak</option>
                 </select>
                 <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
