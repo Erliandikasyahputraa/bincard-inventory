@@ -11,13 +11,14 @@
         .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
 
         /* ── Label Size Targets ── */
-        .label-a4      { width: 21cm;   min-height: 29.7cm; }
-        .label-10x7    { width: 10cm;   min-height: 7cm; }
-        .label-5x5     { width: 5cm;    min-height: 5cm; }
+        .label-a4      { width: 21cm;   height: 29.7cm; }
+        .label-10x7    { width: 10cm;   height: 7cm; }
+        .label-5x5     { width: 5cm;    height: 5cm; }
 
         @media print {
             @page { margin: 0; }
-            body  { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body  { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; background: transparent !important; }
+            body > *:not(#printWrapper) { display: none !important; }
             .no-print { display: none !important; }
             .print-label { box-shadow: none !important; border-radius: 0 !important; transform: none !important; margin: 0 !important; }
             .print-wrapper { transform: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
@@ -127,7 +128,7 @@
         </div>
 
         {{-- 10×7 cm layout --}}
-        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-3 p-3 overflow-hidden" style="min-height:7cm;">
+        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-3 p-3 overflow-hidden">
             <div class="shrink-0">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
                      alt="QR" class="w-[5.5cm] h-[5.5cm] object-contain" />
@@ -149,16 +150,16 @@
         </div>
 
         {{-- 5×5 cm layout --}}
-        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden" style="min-height:5cm;">
-            <p class="mono text-[6px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($systemName) }}</p>
+        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden">
+            <p class="mono text-[5px] font-bold uppercase tracking-[1px] text-slate-400">{{ strtoupper($systemName) }}</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                 alt="QR" class="w-[3cm] h-[3cm] object-contain" />
-            <div>
-                <p class="text-[7px] font-black uppercase text-gray-900 leading-snug break-words">{{ $product->name }}</p>
-                <div class="barcode-lines justify-center mt-1" style="height:18px;gap:1px;" id="barcode5x5"></div>
-                <p class="mono text-[6px] font-bold tracking-[2px] text-slate-800 mt-0.5">{{ $product->barcode }}</p>
+                 alt="QR" class="w-[2.4cm] h-[2.4cm] object-contain shrink-0" />
+            <div class="flex flex-col items-center justify-center -mt-1 w-full">
+                <p class="text-[6px] font-black uppercase text-gray-900 leading-tight break-words line-clamp-2 w-full">{{ $product->name }}</p>
+                <div class="barcode-lines justify-center mt-[1px]" style="height:10px;gap:1px;" id="barcode5x5"></div>
+                <p class="mono text-[5px] font-bold tracking-[1px] text-slate-800 mt-[1px]">{{ $product->barcode }}</p>
                 @if($product->location || $product->uom)
-                <p class="text-[6px] text-slate-400 mt-0.5">
+                <p class="text-[5px] text-slate-400 mt-[1px] truncate w-full">
                     @if($product->location) Rak: <strong class="text-slate-700">{{ $product->location }}</strong> @endif
                     @if($product->location && $product->uom) • @endif
                     @if($product->uom) <strong class="text-slate-700">{{ $product->uom }}</strong> @endif
