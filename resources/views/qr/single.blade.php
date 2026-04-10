@@ -118,10 +118,12 @@
                     Rak: <strong class="text-slate-800">{{ $product->location }}</strong>
                 </span>
                 @endif
+                @if($product->uom)
                 <span class="inline-flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>
-                    Stok: <strong class="text-slate-800">{{ $product->current_stock }}</strong>
+                    Satuan: <strong class="text-slate-800">{{ $product->uom }}</strong>
                 </span>
+                @endif
             </div>
         </div>
 
@@ -137,8 +139,12 @@
                 <p class="mono text-[9px] font-bold text-slate-500 tracking-widest mb-2">{{ $product->sku }}</p>
                 <div class="barcode-lines scale-75 origin-left" id="barcode10x7"></div>
                 <p class="mono text-[8px] font-bold tracking-[3px] text-slate-800 mt-1">{{ $product->barcode }}</p>
-                @if($product->location)
-                <p class="text-[8px] text-slate-400 mt-1">Rak: <strong class="text-slate-700">{{ $product->location }}</strong></p>
+                @if($product->location || $product->uom)
+                <p class="text-[8px] text-slate-400 mt-1">
+                    @if($product->location) Rak: <strong class="text-slate-700">{{ $product->location }}</strong> @endif
+                    @if($product->location && $product->uom) | @endif
+                    @if($product->uom) Satuan: <strong class="text-slate-700">{{ $product->uom }}</strong> @endif
+                </p>
                 @endif
             </div>
         </div>
@@ -152,8 +158,12 @@
                 <p class="text-[7px] font-black uppercase text-gray-900 leading-snug break-words">{{ $product->name }}</p>
                 <div class="barcode-lines justify-center mt-1" style="height:18px;gap:1px;" id="barcode5x5"></div>
                 <p class="mono text-[6px] font-bold tracking-[2px] text-slate-800 mt-0.5">{{ $product->barcode }}</p>
-                @if($product->location)
-                <p class="text-[6px] text-slate-400">Rak: <strong>{{ $product->location }}</strong></p>
+                @if($product->location || $product->uom)
+                <p class="text-[6px] text-slate-400 mt-0.5">
+                    @if($product->location) Rak: <strong class="text-slate-700">{{ $product->location }}</strong> @endif
+                    @if($product->location && $product->uom) • @endif
+                    @if($product->uom) <strong class="text-slate-700">{{ $product->uom }}</strong> @endif
+                </p>
                 @endif
             </div>
         </div>

@@ -84,12 +84,10 @@
             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 mb-2 truncate w-full">{{ $product->sku }}</span>
 
             {{-- QR — lazy loaded via IntersectionObserver --}}
-            <div class="bg-white p-1.5 border border-slate-100 rounded-lg mb-2.5 shadow-sm w-full flex items-center justify-center">
-                <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
-                     alt="QR {{ $product->sku }}"
-                     class="w-20 h-20 object-contain qr-img" />
-            </div>
+            <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
+                 alt="QR {{ $product->sku }}"
+                 class="w-[5.5rem] h-[5.5rem] mb-3 object-contain qr-img mix-blend-multiply dark:mix-blend-normal" />
 
             {{-- Product name --}}
             <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-2 leading-snug mb-1.5 w-full">{{ $product->name }}</h3>
