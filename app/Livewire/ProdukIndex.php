@@ -106,9 +106,6 @@ class ProdukIndex extends Component
             case 'stock_highest':
                 $query->orderBy('current_stock', 'desc');
                 break;
-            case 'stock_lowest':
-                $query->orderBy('current_stock', 'asc');
-                break;
             case 'name_desc':
                 $query->orderBy('name', 'desc');
                 break;

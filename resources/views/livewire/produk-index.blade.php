@@ -55,7 +55,6 @@
                     <option value="name_asc">Nama (A-Z)</option>
                     <option value="name_desc">Nama (Z-A)</option>
                     <option value="stock_highest">Stok Terbanyak</option>
-                    <option value="stock_lowest">Stok Terendah</option>
                     <option value="rack_asc">Lokasi / Rak</option>
                 </select>
                 <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
