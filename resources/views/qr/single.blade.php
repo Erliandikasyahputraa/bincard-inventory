@@ -81,14 +81,13 @@
     {{-- ───── PRINTABLE LABEL ───── --}}
     <div class="print-wrapper w-full flex justify-center transition-transform origin-top" id="printWrapper">
         @php
-            $company = \App\Models\CompanySetting::first();
-            $companyName = $company?->nama_perusahaan ?? config('app.name', 'BINGO');
+            $systemName = config('app.name', 'BINGO');
         @endphp
 
         {{-- A4 layout --}}
         <div id="label-a4" class="print-label label-a4 bg-white shadow-2xl rounded-xl flex flex-col items-center justify-center p-12 text-center">
-            {{-- Company name --}}
-            <p class="mono text-xs font-bold uppercase tracking-[4px] text-slate-400 mb-6">{{ strtoupper($companyName) }}</p>
+            {{-- System name --}}
+            <p class="mono text-xs font-bold uppercase tracking-[4px] text-slate-400 mb-6">{{ strtoupper($systemName) }}</p>
 
             {{-- QR Code --}}
             <div class="bg-white p-3 border-4 border-slate-900 rounded-xl mb-6 shadow-sm">
@@ -134,7 +133,7 @@
                      alt="QR" class="w-[5.5cm] h-[5.5cm] object-contain" />
             </div>
             <div class="flex flex-col justify-center overflow-hidden flex-1">
-                <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($companyName) }}</p>
+                <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($systemName) }}</p>
                 <h1 class="text-[11px] font-black uppercase text-gray-900 leading-snug mb-1 break-words">{{ $product->name }}</h1>
                 <p class="mono text-[9px] font-bold text-slate-500 tracking-widest mb-2">{{ $product->sku }}</p>
                 <div class="barcode-lines scale-75 origin-left" id="barcode10x7"></div>
@@ -151,7 +150,7 @@
 
         {{-- 5×5 cm layout --}}
         <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden" style="min-height:5cm;">
-            <p class="mono text-[6px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($companyName) }}</p>
+            <p class="mono text-[6px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($systemName) }}</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
                  alt="QR" class="w-[3cm] h-[3cm] object-contain" />
             <div>
