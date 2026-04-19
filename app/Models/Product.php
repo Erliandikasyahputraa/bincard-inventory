@@ -22,6 +22,7 @@ class Product extends Model
         'location',
         'current_stock',
         'supplier_id',
+        'image_path',
     ];
 
     protected $casts = [

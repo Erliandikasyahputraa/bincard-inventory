@@ -5,11 +5,18 @@ namespace App\Livewire;
 use App\Models\Product;
 use App\Models\Supplier;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
+use Illuminate\Support\Facades\Storage;
 
 #[Title('Edit Produk')]
 class ProdukForm extends Component
 {
+    use WithFileUploads;
+
     public ?int $produkId = null;
     public string $barcode = '';
     public string $sku = '';
@@ -19,6 +26,9 @@ class ProdukForm extends Component
     public ?int $max_stock = null;
     public string $location = '';
     public ?int $supplier_id = null;
+    
+    public $image;
+    public ?string $existingImagePath = null;
 
     /** Daftar UoM yang tersedia — tidak perlu migration jika ada tambahan */
     public static function daftarUom(): array
@@ -57,6 +67,7 @@ class ProdukForm extends Component
             $this->max_stock   = $p->max_stock;
             $this->location    = $p->location ?? '';
             $this->supplier_id = $p->supplier_id;
+            $this->existingImagePath = $p->image_path;
         }
     }
 
@@ -68,6 +79,7 @@ class ProdukForm extends Component
             'uom'       => ['required', 'string', 'max:10', \Illuminate\Validation\Rule::in(array_keys(self::daftarUom()))],
             'min_stock' => 'required|integer|min:0',
             'max_stock' => 'nullable|integer|min:0',
+            'image'     => 'nullable|image|max:5120',
         ]);
 
         $data = [
@@ -80,6 +92,26 @@ class ProdukForm extends Component
             'location'    => $this->location ?: null,
             'supplier_id' => $this->supplier_id ?: null,
         ];
+
+        if ($this->image) {
+            $manager = new ImageManager(new Driver());
+            $img = $manager->decodePath($this->image->getRealPath());
+            $img->scaleDown(width: 400);
+
+            $encoded = $img->encode(new WebpEncoder(quality: 80));
+
+            $filename = 'products/' . uniqid() . '.webp';
+            Storage::disk('public')->makeDirectory('products');
+            Storage::disk('public')->put($filename, (string) $encoded);
+
+            $data['image_path'] = $filename;
+
+            // Hapus file lama jika ada
+            if ($this->existingImagePath) {
+                Storage::disk('public')->delete($this->existingImagePath);
+            }
+        }
+
         if ($this->produkId !== null) {
             Product::findOrFail($this->produkId)->update($data);
             session()->flash('sukses', 'Produk diperbarui.');

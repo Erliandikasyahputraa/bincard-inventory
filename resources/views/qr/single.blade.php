@@ -90,10 +90,21 @@
             {{-- System name --}}
             <p class="mono text-xs font-bold uppercase tracking-[4px] text-slate-400 mb-6">{{ strtoupper($systemName) }}</p>
 
-            {{-- QR Code --}}
-            <div class="bg-white p-3 border-4 border-slate-900 rounded-xl mb-6 shadow-sm">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR Code" class="w-[320px] h-[320px] object-contain" />
+            {{-- Images: QR & Photo --}}
+            <div class="flex items-center gap-6 mb-6">
+                @if($product->image_path)
+                    <div class="bg-white p-2 border-4 border-slate-200 rounded-xl shadow-sm">
+                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto" class="w-[280px] h-[280px] object-cover rounded-lg" />
+                    </div>
+                @else
+                    <div class="bg-white p-2 border-4 border-slate-200 rounded-xl shadow-sm flex items-center justify-center w-[304px] h-[304px]">
+                        <svg class="text-slate-300 w-24 h-24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                    </div>
+                @endif
+                <div class="bg-white p-3 border-4 border-slate-900 rounded-xl shadow-sm">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                         alt="QR Code" class="w-[280px] h-[280px] object-contain" />
+                </div>
             </div>
 
             {{-- Product name --}}
@@ -128,10 +139,17 @@
         </div>
 
         {{-- 10×7 cm layout --}}
-        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-3 p-3 overflow-hidden">
-            <div class="shrink-0">
+        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-2 p-3 overflow-hidden">
+            <div class="shrink-0 flex flex-col items-center gap-1">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR" class="w-[5.5cm] h-[5.5cm] object-contain" />
+                     alt="QR" class="w-[4.8cm] h-[4.8cm] object-contain" />
+                @if($product->image_path)
+                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto" class="w-12 h-12 object-cover rounded-md border border-slate-200" />
+                @else
+                    <div class="w-12 h-12 rounded-md border border-slate-200 flex items-center justify-center bg-slate-50">
+                        <svg class="text-slate-300 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                    </div>
+                @endif
             </div>
             <div class="flex flex-col justify-center overflow-hidden flex-1">
                 <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($systemName) }}</p>
@@ -152,8 +170,17 @@
         {{-- 5×5 cm layout --}}
         <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-2 text-center overflow-hidden">
             <p class="mono text-[5px] font-bold uppercase tracking-[1px] text-slate-400">{{ strtoupper($systemName) }}</p>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                 alt="QR" class="w-[2.4cm] h-[2.4cm] object-contain shrink-0" />
+            <div class="flex items-center gap-1 mt-0.5 justify-center">
+                @if($product->image_path)
+                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto" class="w-[1.8cm] h-[1.8cm] object-cover rounded border border-slate-200" />
+                @else
+                    <div class="w-[1.8cm] h-[1.8cm] rounded border border-slate-200 flex items-center justify-center bg-slate-50">
+                        <svg class="text-slate-300 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                    </div>
+                @endif
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                     alt="QR" class="w-[2.1cm] h-[2.1cm] object-contain shrink-0" />
+            </div>
             <div class="flex flex-col items-center justify-center -mt-1 w-full">
                 <p class="text-[6px] font-black uppercase text-gray-900 leading-tight break-words line-clamp-2 w-full">{{ $product->name }}</p>
                 <div class="barcode-lines justify-center mt-[1px]" style="height:10px;gap:1px;" id="barcode5x5"></div>

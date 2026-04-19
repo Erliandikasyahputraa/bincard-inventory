@@ -52,14 +52,47 @@
                 </a>
             @endif
         </form>
-        <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 shrink-0">
+        </form>
+        
+        <form method="GET" action="{{ route('qr.print') }}" class="flex items-center gap-2">
+            <input type="hidden" name="search" value="{{ request('search') }}">
+            
+            <div class="relative w-full sm:w-48 flex-shrink-0">
+                <i data-lucide="filter" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
+                <select name="sort" onchange="this.form.submit()" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
+                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama (A-Z)</option>
+                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama (Z-A)</option>
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="filter_kritis" {{ request('sort') == 'filter_kritis' ? 'selected' : '' }}>Hanya Stok Kritis</option>
+                    <option value="filter_habis" {{ request('sort') == 'filter_habis' ? 'selected' : '' }}>Hanya Stok Habis</option>
+                    <option value="stock_highest" {{ request('sort') == 'stock_highest' ? 'selected' : '' }}>Stok Terbanyak</option>
+                    <option value="rack_asc" {{ request('sort') == 'rack_asc' ? 'selected' : '' }}>Urut Lokasi / Rak</option>
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
+            </div>
+            
+            @if(count($locations) > 0)
+            <div class="relative w-full sm:w-48 flex-shrink-0">
+                <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
+                <select name="location" onchange="this.form.submit()" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
+                    <option value="">Semua Lokasi</option>
+                    @foreach($locations as $loc)
+                        <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
+                    @endforeach
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
+            </div>
+            @endif
+        </form>
+
+        <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 shrink-0 ml-auto">
             <label class="flex items-center gap-2 cursor-pointer select-none">
                 <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                <span class="text-xs font-medium">Pilih semua</span>
+                <span class="text-xs font-medium whitespace-nowrap">Pilih semua</span>
             </label>
             <span class="text-slate-300 dark:text-slate-700">|</span>
             <div class="flex flex-col">
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ $products->total() }} produk</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">{{ $products->total() }} produk</span>
             </div>
         </div>
     </div>
@@ -83,11 +116,26 @@
             {{-- SKU badge --}}
             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 mb-2 truncate w-full">{{ $product->sku }}</span>
 
-            {{-- QR — lazy loaded via IntersectionObserver --}}
-            <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
-                 alt="QR {{ $product->sku }}"
-                 class="w-[5.5rem] h-[5.5rem] mb-3 object-contain qr-img mix-blend-multiply dark:mix-blend-normal" />
+            <div class="relative w-[5.5rem] h-[5.5rem] mb-3 shrink-0 mx-auto transition-transform duration-300">
+                {{-- Product Photo (Default View) --}}
+                <div class="absolute inset-0 transition-opacity duration-300 opacity-100 group-hover:opacity-0 print:hidden flex items-center justify-center bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                    @if($product->image_path)
+                        <img data-src="{{ asset('storage/' . $product->image_path) }}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Foto" class="w-full h-full object-cover photo-img">
+                    @else
+                        <div class="w-full h-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center">
+                            <i data-lucide="package" class="w-6 h-6 text-slate-300"></i>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- QR Code (Shown on Hover & Print) --}}
+                <div class="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 print:!opacity-100 print:!relative flex items-center justify-center bg-white">
+                    <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
+                         alt="QR {{ $product->sku }}"
+                         class="w-[5.5rem] h-[5.5rem] object-contain qr-img mix-blend-multiply dark:mix-blend-normal" />
+                </div>
+            </div>
 
             {{-- Product name --}}
             <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-2 leading-snug mb-1.5 w-full">{{ $product->name }}</h3>
@@ -138,11 +186,11 @@
         });
     }, { rootMargin: '200px' });
 
-    document.querySelectorAll('.qr-img[data-src]').forEach(img => qrObserver.observe(img));
+    document.querySelectorAll('.qr-img[data-src], .photo-img[data-src]').forEach(img => qrObserver.observe(img));
 
     // Ensure all QR loaded before print
     window.addEventListener('beforeprint', () => {
-        document.querySelectorAll('.qr-img[data-src]').forEach(img => {
+        document.querySelectorAll('.qr-img[data-src], .photo-img[data-src]').forEach(img => {
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
         });

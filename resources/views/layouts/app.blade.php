@@ -136,6 +136,12 @@
                 <div>
                     <ul class="space-y-1">
                         <li>
+                            <a href="{{ route('panduan') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('panduan') ? 'bg-[#D1FAE5] text-[#064E3B] border-l-4 border-[#10B981] dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-400 font-semibold' : 'text-[#064E3B] dark:text-slate-400 hover:text-[#064E3B] dark:hover:text-slate-200 hover:bg-[#F0FDF4] dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
+                                <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="help-circle" class="w-5 h-5"></i></span>
+                                <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Panduan Web</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('laporan.index') }}" class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('laporan.*') ? 'bg-[#D1FAE5] text-[#064E3B] border-l-4 border-[#10B981] dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-400 font-semibold' : 'text-[#064E3B] dark:text-slate-400 hover:text-[#064E3B] dark:hover:text-slate-200 hover:bg-[#F0FDF4] dark:hover:bg-slate-800 border-l-4 border-transparent' }}">
                                 <span :class="sidebarOpen ? 'mr-4' : 'mx-auto'"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></span>
                                 <span x-show="sidebarOpen" class="text-sm transition-colors duration-300 ease-in-out">Laporan</span>
