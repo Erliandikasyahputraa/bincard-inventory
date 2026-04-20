@@ -30,12 +30,15 @@
         #printable-area {
             position: absolute; left: 0; top: 0; width: 100%;
             display: grid !important;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 0 !important;
             background: white !important;
         }
-        .qr-card { page-break-inside: avoid; break-inside: avoid; border: 1px solid #e5e7eb !important; }
+        .qr-card { page-break-inside: avoid; break-inside: avoid; border: 1px solid #d1d5db !important; padding: 8px !important; }
         .qr-card.not-selected { display: none !important; }
+        /* Sembunyikan foto saat print, tampilkan QR */
+        .photo-layer { display: none !important; }
+        .qr-layer { opacity: 1 !important; position: relative !important; }
     }
 </style>
 
@@ -116,24 +119,25 @@
             {{-- SKU badge --}}
             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 mb-2 truncate w-full">{{ $product->sku }}</span>
 
-            <div class="relative w-[5.5rem] h-[5.5rem] mb-3 shrink-0 mx-auto transition-transform duration-300">
-                {{-- Product Photo (Default View) --}}
-                <div class="absolute inset-0 transition-opacity duration-300 opacity-100 group-hover:opacity-0 print:hidden flex items-center justify-center bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+            {{-- Image wrapper: foto default, QR saat hover/print --}}
+            <div class="relative w-[7rem] h-[7rem] mb-2 shrink-0 mx-auto">
+                {{-- Product Photo (Default View, hidden on print) --}}
+                <div class="photo-layer absolute inset-0 transition-opacity duration-300 opacity-100 group-hover:opacity-0 flex items-center justify-center bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                     @if($product->image_path)
                         <img data-src="{{ asset('storage/' . $product->image_path) }}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Foto" class="w-full h-full object-cover photo-img">
                     @else
                         <div class="w-full h-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center">
-                            <i data-lucide="package" class="w-6 h-6 text-slate-300"></i>
+                            <i data-lucide="package" class="w-8 h-8 text-slate-300"></i>
                         </div>
                     @endif
                 </div>
 
-                {{-- QR Code (Shown on Hover & Print) --}}
-                <div class="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 print:!opacity-100 print:!relative flex items-center justify-center bg-white">
-                    <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                {{-- QR Code (Shown on Hover & always on Print) --}}
+                <div class="qr-layer absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex items-center justify-center bg-white rounded-xl">
+                    <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
                          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
                          alt="QR {{ $product->sku }}"
-                         class="w-[5.5rem] h-[5.5rem] object-contain qr-img mix-blend-multiply dark:mix-blend-normal" />
+                         class="w-[7rem] h-[7rem] object-contain qr-img" />
                 </div>
             </div>
 
@@ -254,16 +258,42 @@
     }
 
     function printSelected() {
-        // Mark non-selected as not-selected for print CSS
+        // Force-load semua QR images pada kartu terpilih sebelum print
+        const toLoad = [];
         document.querySelectorAll('.qr-card').forEach(card => {
-            if (!selectedIds.has(card.dataset.id)) {
+            const isSelected = selectedIds.has(card.dataset.id);
+            if (!isSelected) {
                 card.classList.add('not-selected');
             } else {
                 card.classList.remove('not-selected');
+                // Queue lazy images to load
+                card.querySelectorAll('.qr-img[data-src]').forEach(img => toLoad.push(img));
             }
         });
-        window.print();
-        // Restore after print
+
+        if (toLoad.length === 0) {
+            window.print();
+            restoreAfterPrint();
+            return;
+        }
+
+        // Load semua gambar, tunggu selesai baru print
+        let loaded = 0;
+        toLoad.forEach(img => {
+            const src = img.dataset.src;
+            img.removeAttribute('data-src');
+            img.onload = img.onerror = () => {
+                loaded++;
+                if (loaded >= toLoad.length) {
+                    window.print();
+                    restoreAfterPrint();
+                }
+            };
+            img.src = src;
+        });
+    }
+
+    function restoreAfterPrint() {
         setTimeout(() => {
             document.querySelectorAll('.qr-card.not-selected').forEach(c => c.classList.remove('not-selected'));
         }, 1000);

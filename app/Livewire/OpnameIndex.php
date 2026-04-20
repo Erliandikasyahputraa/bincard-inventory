@@ -9,7 +9,6 @@ use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-
 use Livewire\Attributes\Title;
 
 #[Title('Stock Opname')]
@@ -19,22 +18,28 @@ class OpnameIndex extends Component
 
     public string $cari = '';
     public ?int $opnameId = null;
-    public array $stokFisik = [];
     public string $tanggalBaru = '';
     public string $cariBarang = '';
+
+    // B2: pagination untuk detail opname
+    public int $detailPage = 1;
+    public int $perPage = 50;
+
+    public string $historySearch = '';
+    public string $historyDate = '';
 
     public function buatOpname(): void
     {
         $opname = StockOpname::create([
             'tanggal_opname' => $this->tanggalBaru ?: now()->toDateString(),
-            'status' => StockOpname::STATUS_DRAFT,
-            'created_by' => auth()->id(),
+            'status'         => StockOpname::STATUS_DRAFT,
+            'created_by'     => auth()->id(),
         ]);
-        
+
         $produk = Product::select('id', 'current_stock')->get();
-        $now = now();
+        $now    = now();
         $details = [];
-        
+
         foreach ($produk as $p) {
             $details[] = [
                 'stock_opname_id' => $opname->id,
@@ -46,28 +51,32 @@ class OpnameIndex extends Component
                 'updated_at'      => $now,
             ];
         }
-        
-        // Chunk insert to avoid hitting max query parameters limit
+
         foreach (array_chunk($details, 500) as $chunk) {
             StockOpnameDetail::insert($chunk);
         }
 
         $this->dispatch('transaksi-sukses', ['message' => 'Sesi opname dibuat.']);
-        $this->opnameId = $opname->id;
+        $this->opnameId   = $opname->id;
         $this->tanggalBaru = '';
-        $this->riwayatFilter = '';
-        // No redirect needed, Livewire will re-render natively without breaking Sweetalert DOM
+        $this->detailPage  = 1;
     }
 
+    /**
+     * B1: Tidak lagi menyimpan stokFisik[] di Livewire state.
+     * Simpan langsung ke DB, Alpine.js menangani nilai lokal.
+     */
     public function setStokFisik(int $productId, $value): void
     {
-        $val = is_numeric($value) ? (int) $value : null;
-        $this->stokFisik[$productId] = $val;
-        $detail = StockOpnameDetail::where('stock_opname_id', $this->opnameId)->where('product_id', $productId)->first();
+        $val    = is_numeric($value) ? (int) $value : null;
+        $detail = StockOpnameDetail::where('stock_opname_id', $this->opnameId)
+                    ->where('product_id', $productId)
+                    ->first();
+
         if ($detail) {
             $detail->update([
                 'stok_fisik' => $val,
-                'selisih' => $val !== null ? $val - $detail->stok_sistem : 0,
+                'selisih'    => $val !== null ? $val - $detail->stok_sistem : 0,
             ]);
         }
     }
@@ -75,16 +84,14 @@ class OpnameIndex extends Component
     public function rekonsiliasi(): void
     {
         $opname = StockOpname::with('details.product')->findOrFail($this->opnameId);
+
         if ($opname->status === StockOpname::STATUS_SELESAI) {
             $this->dispatch('transaksi-gagal', ['message' => 'Opname ini sudah direkonsiliasi.']);
             return;
         }
-        foreach ($opname->details as $d) {
-            $fisik = isset($this->stokFisik[$d->product_id]) && $this->stokFisik[$d->product_id] !== '' ? (int) $this->stokFisik[$d->product_id] : null;
-            $d->update(['stok_fisik' => $fisik, 'selisih' => $fisik !== null ? $fisik - $d->stok_sistem : 0]);
-        }
-        $opname->refresh();
+
         $service = app(StockService::class);
+
         DB::transaction(function () use ($opname, $service) {
             foreach ($opname->details as $d) {
                 if ($d->selisih != 0 && $d->stok_fisik !== null) {
@@ -99,6 +106,7 @@ class OpnameIndex extends Component
             }
             $opname->update(['status' => StockOpname::STATUS_SELESAI, 'closed_at' => now()]);
         });
+
         $this->dispatch('transaksi-sukses', ['message' => 'Rekonsiliasi selesai.']);
         $this->opnameId = null;
         $this->redirect(route('opname.index'), navigate: true);
@@ -106,7 +114,7 @@ class OpnameIndex extends Component
 
     public function batalRekonsiliasi(int $id): void
     {
-        $opname = StockOpname::with('details')->findOrFail($id);
+        $opname  = StockOpname::with('details')->findOrFail($id);
         if ($opname->status !== StockOpname::STATUS_SELESAI) return;
 
         $service = app(StockService::class);
@@ -136,84 +144,74 @@ class OpnameIndex extends Component
             $this->dispatch('transaksi-gagal', ['message' => 'Sesi yang sudah direkonsiliasi tidak dapat dihapus. Batalkan rekonsiliasi terlebih dahulu.']);
             return;
         }
-        
+
         $opname->details()->delete();
         $opname->delete();
-        
+
         $this->dispatch('transaksi-sukses', ['message' => 'Sesi opname berhasil dihapus.']);
     }
 
     public function mount(): void
     {
         $this->tanggalBaru = now()->toDateString();
-        $this->opnameId = request()->query('opname') ? (int) request()->query('opname') : null;
-        
-        // Sesi 17: Auto-Create integration dari halaman Scanner Barcode
+        $this->opnameId    = request()->query('opname') ? (int) request()->query('opname') : null;
+
         if (request()->query('auto_create') == 1 && !$this->opnameId) {
             $this->buatOpname();
             if (request()->query('cari_barcode')) {
                 $this->cariBarang = request()->query('cari_barcode');
             }
         }
-        
-        if ($this->opnameId) {
-            $opname = StockOpname::with('details')->find($this->opnameId);
-            if ($opname) {
-                foreach ($opname->details as $d) {
-                    $this->stokFisik[$d->product_id] = $d->stok_fisik ?? '';
-                }
-            }
-        }
+        // B1: mount tidak lagi load 5000 item ke $stokFisik[]
     }
 
-    public string $historySearch = '';
-    public string $historyDate = '';
-
-    public function updatedHistorySearch()
+    public function updatedCariBarang(): void
     {
-        $this->resetPage();
+        $this->detailPage = 1;
     }
 
-    public function updatedHistoryDate()
-    {
-        $this->resetPage();
-    }
+    public function updatedHistorySearch(): void { $this->resetPage(); }
+    public function updatedHistoryDate(): void    { $this->resetPage(); }
 
     public function render()
     {
-        $opname = $this->opnameId ? StockOpname::find($this->opnameId) : null;
-        
-        $details = [];
+        $opname  = $this->opnameId ? StockOpname::find($this->opnameId) : null;
+        $details = collect();
+
         if ($opname) {
-            $query = StockOpnameDetail::with('product')->where('stock_opname_id', $this->opnameId);
+            // B2: Paginate 50 per halaman, hindari load semua 5000 sekaligus
+            $query = StockOpnameDetail::with('product')
+                ->where('stock_opname_id', $this->opnameId);
+
             if ($this->cariBarang !== '') {
-                $query->whereHas('product', function($q) {
+                $query->whereHas('product', function ($q) {
                     $q->where('name', 'like', '%' . $this->cariBarang . '%')
                       ->orWhere('barcode', 'like', '%' . $this->cariBarang . '%');
                 });
             }
-            $details = $query->get();
+
+            $details = $query->paginate($this->perPage, ['*'], 'detail_page');
         }
-        
+
         $queryHistory = StockOpname::with('createdBy')->orderByDesc('tanggal_opname')->orderByDesc('id');
-        
+
         if ($this->historyDate !== '') {
             $queryHistory->whereDate('tanggal_opname', $this->historyDate);
         }
-        
+
         if ($this->historySearch !== '') {
-            $queryHistory->where(function($q) {
-                $q->whereHas('createdBy', function($subQ) {
+            $queryHistory->where(function ($q) {
+                $q->whereHas('createdBy', function ($subQ) {
                     $subQ->where('name', 'like', '%' . $this->historySearch . '%');
                 })->orWhere('id', 'like', '%' . $this->historySearch . '%');
             });
         }
 
         $daftarOpname = $queryHistory->paginate(10);
-        
+
         return view('livewire.opname-index', [
-            'opname' => $opname,
-            'details' => $details,
+            'opname'       => $opname,
+            'details'      => $details,
             'daftarOpname' => $daftarOpname,
         ])->layout('layouts.app', ['title' => 'Stock Opname']);
     }
