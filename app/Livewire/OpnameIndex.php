@@ -235,26 +235,25 @@ class OpnameIndex extends Component
 
             // Sort detail berdasarkan field + dir
             $dir = $this->detailSortDir;
+
+            $query->reorder(); // Clear previous orders to ensure our custom logic wins
+
+            $query->leftJoin('products as p', 'stock_opname_details.product_id', '=', 'p.id')
+                  ->select('stock_opname_details.*');
+
             match ($this->detailSortField) {
-                'barcode'  => $query->join('products as pb', 'stock_opname_details.product_id', '=', 'pb.id')
-                                     ->orderBy('pb.barcode', $dir)->select('stock_opname_details.*'),
-                'location' => $query->join('products as pl', 'stock_opname_details.product_id', '=', 'pl.id')
-                                     ->orderByRaw("pl.loc_aisle = '---' ASC")
-                                     ->orderByRaw("IF(pl.loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                     ->orderBy('pl.loc_aisle', $dir)
-                                     ->orderByRaw("IF(pl.loc_floor REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                     ->orderByRaw("LENGTH(pl.loc_floor) " . $dir)
-                                     ->orderBy('pl.loc_floor', $dir)
-                                     ->orderByRaw("IF(pl.loc_row REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                     ->orderByRaw("LENGTH(pl.loc_row) " . $dir)
-                                     ->orderBy('pl.loc_row', $dir)
-                                     ->orderByRaw("IF(pl.loc_col REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                     ->orderByRaw("LENGTH(pl.loc_col) " . $dir)
-                                     ->orderBy('pl.loc_col', $dir)
-                                     ->select('stock_opname_details.*'),
+                'barcode'  => $query->orderBy('p.barcode', $dir),
+                'location' => $query->orderByRaw("p.loc_aisle = '---' ASC")
+                                     ->orderByRaw("IF(p.loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                                     ->orderBy('p.loc_aisle', $dir)
+                                     ->orderByRaw("CAST(IFNULL(p.loc_floor, 0) AS UNSIGNED) " . $dir)
+                                     ->orderBy('p.loc_floor', $dir)
+                                     ->orderByRaw("CAST(IFNULL(p.loc_row, 0) AS UNSIGNED) " . $dir)
+                                     ->orderBy('p.loc_row', $dir)
+                                     ->orderByRaw("CAST(IFNULL(p.loc_col, 0) AS UNSIGNED) " . $dir)
+                                     ->orderBy('p.loc_col', $dir),
                 'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
-                default    => $query->join('products as pn', 'stock_opname_details.product_id', '=', 'pn.id')
-                                     ->orderBy('pn.name', $dir)->select('stock_opname_details.*'),
+                default    => $query->orderBy('p.name', $dir),
             };
 
             $details = $query->paginate($this->perPage, ['*'], 'detail_page');

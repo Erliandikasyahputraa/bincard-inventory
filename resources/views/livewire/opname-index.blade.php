@@ -220,7 +220,7 @@
 
     @else
     {{-- ═══════════════════════════════ HALAMAN UTAMA / RIWAYAT ═══════════════════════════════ --}}
-    <div x-data="{ showImg: false, imgUrl: '' }" class="space-y-4">
+    <div class="space-y-4">
         {{-- Modal Image Popup - Moved outside for global overlay --}}
         <div x-show="showImg" 
              x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"

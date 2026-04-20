@@ -109,23 +109,22 @@ class ProdukIndex extends Component
     public function render()
     {
         $query = $this->getCurrentQuery();
+        $dir = $this->sortDir;
 
+        $query->reorder();
         match ($this->sortField) {
-            'name'     => $query->orderBy('name', $this->sortDir),
+            'name'     => $query->orderBy('name', $dir),
             'location' => $query->orderByRaw("loc_aisle = '---' ASC")
                                 ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                ->orderBy('loc_aisle', $this->sortDir)
-                                ->orderByRaw("IF(loc_floor REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                ->orderByRaw("LENGTH(loc_floor) " . $this->sortDir)
-                                ->orderBy('loc_floor', $this->sortDir)
-                                ->orderByRaw("IF(loc_row REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                ->orderByRaw("LENGTH(loc_row) " . $this->sortDir)
-                                ->orderBy('loc_row', $this->sortDir)
-                                ->orderByRaw("IF(loc_col REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                ->orderByRaw("LENGTH(loc_col) " . $this->sortDir)
-                                ->orderBy('loc_col', $this->sortDir),
-            'stock'    => $query->orderBy('current_stock', $this->sortDir),
-            'newest'   => $query->orderBy('id', $this->sortDir),
+                                ->orderBy('loc_aisle', $dir)
+                                ->orderByRaw("CAST(IFNULL(loc_floor, 0) AS UNSIGNED) " . $dir)
+                                ->orderBy('loc_floor', $dir)
+                                ->orderByRaw("CAST(IFNULL(loc_row, 0) AS UNSIGNED) " . $dir)
+                                ->orderBy('loc_row', $dir)
+                                ->orderByRaw("CAST(IFNULL(loc_col, 0) AS UNSIGNED) " . $dir)
+                                ->orderBy('loc_col', $dir),
+            'stock'    => $query->orderBy('current_stock', $dir),
+            'newest'   => $query->orderBy('id', $dir),
             default    => $query->orderBy('id', 'desc'),
         };
 

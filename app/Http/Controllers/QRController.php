@@ -73,14 +73,21 @@ class QRController extends Controller
                 $query->orderBy('current_stock', $sortDir);
                 break;
             case 'location':
-                // Complex natural sort for multi-part location
+                // Complex natural sort for multi-part location: Letters first, then numeric sequence
                 $query->orderByRaw("loc_aisle = '---' ASC")
+                      ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
                       ->orderBy('loc_aisle', $sortDir)
-                      ->orderByRaw("LENGTH(loc_floor) " . $sortDir)
+
+                      ->orderByRaw("IF(loc_floor REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                      ->orderByRaw("CAST(loc_floor AS UNSIGNED) " . $sortDir)
                       ->orderBy('loc_floor', $sortDir)
-                      ->orderByRaw("LENGTH(loc_row) " . $sortDir)
+
+                      ->orderByRaw("IF(loc_row REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                      ->orderByRaw("CAST(loc_row AS UNSIGNED) " . $sortDir)
                       ->orderBy('loc_row', $sortDir)
-                      ->orderByRaw("LENGTH(loc_col) " . $sortDir)
+
+                      ->orderByRaw("IF(loc_col REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                      ->orderByRaw("CAST(loc_col AS UNSIGNED) " . $sortDir)
                       ->orderBy('loc_col', $sortDir);
                 break;
             case 'status_kritis':
