@@ -218,7 +218,7 @@ class OpnameIndex extends Component
     public function render()
     {
         $opname  = $this->opnameId ? StockOpname::find($this->opnameId) : null;
-        $details = collect();
+        $details = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 20);
 
         if ($opname) {
             $query = StockOpnameDetail::with('product')

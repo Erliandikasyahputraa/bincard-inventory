@@ -5,7 +5,7 @@
     </div>
 </x-slot:header>
 
-<div class="w-full" x-data="{ showImg: false, imgUrl: '' }">
+<div class="w-full" x-data="{ showImg: false, imgUrl: '' }" wire:key="opname-root-container">
     {{-- 1. Modal Image Popup - Single Root-Level Source of Truth --}}
     <div x-show="showImg" 
          x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -24,6 +24,8 @@
 
     {{-- ═══════════════════════════════ TAMPILAN SESI AKTIF ═══════════════════════════════ --}}
     @if($opname)
+        {{-- WRAPPER SESI AKTIF - Untuk stabilitas morphing Livewire --}}
+        <div wire:key="active-session-wrapper-{{ $opname->id }}" class="w-full">
 
         {{-- Info sesi --}}
         <div class="mb-6 p-5 sm:p-6 bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl shadow-xl flex flex-col gap-4">
@@ -217,10 +219,11 @@
                 @endif
             </div>
         </div>
-
+        </div> {{-- End active-session-wrapper --}}
     @else
     {{-- ═══════════════════════════════ HALAMAN UTAMA / RIWAYAT ═══════════════════════════════ --}}
-    <div wire:key="inventory-history-container" class="space-y-4">
+    {{-- WRAPPER RIWAYAT - Untuk stabilitas morphing Livewire --}}
+    <div wire:key="history-list-wrapper" class="space-y-4">
         {{-- Tombol buat sesi baru --}}
         <div class="mb-6 flex items-center justify-end gap-3">
             <span class="text-sm text-slate-500 dark:text-slate-400">Tanggal sesi:</span>
