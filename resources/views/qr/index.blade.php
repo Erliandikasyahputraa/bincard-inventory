@@ -162,21 +162,86 @@
             {{ is_object($products) && method_exists($products, 'total') ? $products->total() : $products->count() }} produk
         </span>
 
-        {{-- Aksi cetak --}}
-        <div class="flex items-center gap-2 ml-auto">
-            <label class="flex items-center gap-1.5 cursor-pointer select-none text-xs text-slate-500">
-                <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                <span class="font-medium whitespace-nowrap">Pilih semua</span>
-            </label>
-            <button onclick="printSelected()" id="btnPrintSelected"
+        {{-- ═══ Aksi Pilih & Cetak (Alpine modal untuk ukuran label) ══════ --}}
+        <div class="flex items-center gap-2 ml-auto"
+             x-data="{
+                selectMode: 'page',
+                printSize: '10x7',
+                showModal: false,
+                pendingAction: null,
+                openPrint(action) {
+                    this.pendingAction = action;
+                    this.showModal = true;
+                },
+                confirmPrint() {
+                    this.showModal = false;
+                    if (this.pendingAction === 'selected') {
+                        printSelected();
+                    } else if (this.pendingAction === 'all') {
+                        let url = '{{ route('qr.print.all', request()->except('page')) }}';
+                        url += (url.includes('?') ? '&' : '?') + 'size=' + this.printSize;
+                        window.location.href = url;
+                    }
+                }
+            }">
+
+            {{-- Pilih Halaman / Semua --}}
+            <div class="flex items-center gap-1.5">
+                <label class="flex items-center gap-1.5 cursor-pointer select-none text-xs text-slate-500">
+                    <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    <span class="font-medium whitespace-nowrap">Pilih halaman</span>
+                </label>
+                <span id="selectedCount" class="hidden text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold"></span>
+            </div>
+
+            {{-- Tombol Cetak Terpilih (muncul saat ada yang dipilih) --}}
+            <button id="btnPrintSelected"
+                onclick="Alpine.store && false; $el.closest('[x-data]').__x.$data.openPrint('selected')"
                 class="hidden items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Terpilih
             </button>
-            <a href="{{ route('qr.print.all', request()->except('page')) }}"
-               onclick="return confirm('Ini akan memuat SEMUA {{ $totalProdukSistem }} produk. Proses bisa memakan waktu. Lanjutkan?')"
-               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition-colors">
-                <i data-lucide="layers" class="w-3.5 h-3.5"></i> Cetak Semua ({{ $totalProdukSistem }})
-            </a>
+
+            {{-- Cetak Semua dari DB --}}
+            <button type="button" @click="openPrint('all')"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition-colors">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                Cetak Semua ({{ $totalProdukSistem }})
+            </button>
+
+            {{-- Modal Pilih Ukuran --}}
+            <div x-show="showModal" x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                 class="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
+                 style="display:none;">
+                <div @click.stop x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                     class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 w-full max-w-xs">
+                    <h3 class="text-base font-bold text-slate-800 dark:text-white mb-1">Pilih Ukuran Label</h3>
+                    <p class="text-xs text-slate-400 mb-4">Ukuran label yang akan dicetak untuk setiap produk.</p>
+                    <div class="grid grid-cols-3 gap-2 mb-5">
+                        @foreach(['10x7' => '10×7 cm', '5x5' => '5×5 cm', 'card' => 'Kartu Grid'] as $sz => $szLabel)
+                            <button type="button" @click="printSize = '{{ $sz }}'"
+                                :class="printSize === '{{ $sz }}'
+                                    ? 'border-blue-500 ring-2 ring-blue-500/30 text-blue-600 bg-blue-50 dark:bg-blue-900/20'
+                                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-300'"
+                                class="flex flex-col items-center gap-1 p-3 border-2 rounded-xl transition-all text-center">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                                <span class="text-[11px] font-semibold">{{ $szLabel }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" @click="showModal = false"
+                            class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            Batal
+                        </button>
+                        <button type="button" @click="confirmPrint()"
+                            class="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors">
+                            Cetak
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -327,12 +392,14 @@
         if (count > 0) {
             btn.classList.remove('hidden');
             btn.classList.add('inline-flex');
-            btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg> Cetak ${count} Terpilih`;
-            countEl.classList.remove('hidden');
+            if (countEl) {
+                countEl.textContent = count + ' dipilih';
+                countEl.classList.remove('hidden');
+            }
         } else {
             btn.classList.add('hidden');
             btn.classList.remove('inline-flex');
-            countEl.classList.add('hidden');
+            if (countEl) countEl.classList.add('hidden');
         }
     }
 

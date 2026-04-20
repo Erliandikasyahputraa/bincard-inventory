@@ -38,8 +38,8 @@
 
         {{-- Search Bar --}}
         <div class="relative flex-1 min-w-[200px]">
-            <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4"></i>
-            <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
+            <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 pointer-events-none"></i>
+            <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin pointer-events-none"></i>
             <input type="text" enterkeyhint="search" x-on:keydown.enter="$el.blur()"
                 wire:model.live.debounce.500ms="cari"
                 placeholder="Cari nama, barcode, SKU..."
@@ -50,34 +50,47 @@
             </button>
         </div>
 
-        {{-- Sort Dropdown (Alpine toggle) --}}
+        {{-- Combined Sort + Filter Dropdown (Alpine) --}}
         @php
-            $sortLabels = ['newest' => 'Terbaru', 'name' => 'Nama', 'stock' => 'Stok', 'location' => 'Rak'];
+            $sortLabels  = ['newest' => 'Terbaru', 'name' => 'Nama', 'stock' => 'Stok', 'location' => 'Rak'];
             $activeSortLabel = $sortLabels[$sortField] ?? 'Urut';
             $dirIcon = $sortDir === 'asc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7';
         @endphp
         <div x-data="{ open: false }" class="relative shrink-0">
+            {{-- Trigger button: tampilkan label aktif + indikator filter status --}}
             <button @click="open = !open" type="button"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 transition-all whitespace-nowrap">
-                <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-slate-400"></i>
-                {{ $activeSortLabel }}
-                <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $dirIcon }}"/>
-                </svg>
+                class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white dark:bg-slate-900 border
+                    {{ $filterStatus ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300' }}
+                    rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 transition-all whitespace-nowrap">
+                <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-slate-400"></i>
+                @if($filterStatus === 'kritis')
+                    <span class="text-amber-600">⚠ Kritis</span>
+                @elseif($filterStatus === 'habis')
+                    <span class="text-rose-600">✕ Habis</span>
+                @else
+                    {{ $activeSortLabel }}
+                    <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ $dirIcon }}"/>
+                    </svg>
+                @endif
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
             </button>
 
             {{-- Dropdown panel --}}
             <div x-show="open" x-transition:enter="transition ease-out duration-100"
                  x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                  @click.away="open = false"
-                 class="absolute top-full left-0 mt-1.5 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 py-1 overflow-hidden"
+                 class="absolute top-full left-0 mt-1.5 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 py-1.5 overflow-hidden"
                  style="display:none;">
+
+                {{-- Sort section --}}
+                <p class="px-3 pt-1 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Urut</p>
                 @foreach($sortLabels as $field => $label)
                     <button type="button" wire:click="toggleSort('{{ $field }}')" @click="open = false"
-                        class="w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors
-                            {{ $sortField === $field ? 'text-blue-600 font-semibold' : 'text-slate-700 dark:text-slate-300' }}">
+                        class="w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors
+                            {{ ($sortField === $field && !$filterStatus) ? 'text-blue-600 font-semibold' : 'text-slate-700 dark:text-slate-300' }}">
                         {{ $label }}
-                        @if($sortField === $field)
+                        @if($sortField === $field && !$filterStatus)
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="{{ $dirIcon }}"/>
                             </svg>
@@ -88,26 +101,28 @@
                         @endif
                     </button>
                 @endforeach
+
+                {{-- Divider --}}
+                <div class="my-1.5 border-t border-slate-100 dark:border-slate-800"></div>
+
+                {{-- Filter status section --}}
+                <p class="px-3 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Stok</p>
+                <button type="button" wire:click="setFilter('kritis')" @click="open = false"
+                    class="w-full flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors
+                        {{ $filterStatus === 'kritis' ? 'text-amber-600 font-semibold' : 'text-slate-700 dark:text-slate-300' }}">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 {{ $filterStatus === 'kritis' ? 'text-amber-500' : 'text-slate-400' }}"></i>
+                    Stok Kritis
+                    @if($filterStatus === 'kritis')<span class="ml-auto text-[10px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded-full font-bold">aktif</span>@endif
+                </button>
+                <button type="button" wire:click="setFilter('habis')" @click="open = false"
+                    class="w-full flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors
+                        {{ $filterStatus === 'habis' ? 'text-rose-600 font-semibold' : 'text-slate-700 dark:text-slate-300' }}">
+                    <i data-lucide="package-x" class="w-3.5 h-3.5 {{ $filterStatus === 'habis' ? 'text-rose-500' : 'text-slate-400' }}"></i>
+                    Stok Habis
+                    @if($filterStatus === 'habis')<span class="ml-auto text-[10px] bg-rose-100 text-rose-600 px-1.5 py-0.5 rounded-full font-bold">aktif</span>@endif
+                </button>
             </div>
         </div>
-
-        {{-- Filter Status Chips --}}
-        <button type="button" wire:click="setFilter('kritis')"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold border transition-all whitespace-nowrap
-                {{ $filterStatus === 'kritis'
-                    ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600' }}">
-            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
-            Kritis
-        </button>
-        <button type="button" wire:click="setFilter('habis')"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold border transition-all whitespace-nowrap
-                {{ $filterStatus === 'habis'
-                    ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-600' }}">
-            <i data-lucide="package-x" class="w-3.5 h-3.5"></i>
-            Habis
-        </button>
 
         {{-- Separator --}}
         <span class="hidden sm:block h-7 w-px bg-slate-200 dark:bg-slate-700"></span>
