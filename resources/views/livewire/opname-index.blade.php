@@ -208,31 +208,43 @@
                     <div class="flex items-center gap-2 flex-wrap justify-end">
                         {{-- Search --}}
                         <div class="relative">
-                            <i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 w-3 h-3"></i>
+                            <i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
                             <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
                                 wire:model.live.debounce.300ms="historySearch"
-                                placeholder="Cari..."
-                                class="pl-7 pr-3 py-1.5 w-36 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white">
+                                placeholder="Cari sesi..."
+                                class="pl-8 pr-3 py-1.5 w-36 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder-slate-400">
                         </div>
                         {{-- Filter tanggal --}}
                         <input type="date" wire:model.live="historyDate"
                             class="px-2 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white w-32" style="color-scheme:dark">
-                        {{-- Status pill toggle --}}
-                        <div class="flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                            @foreach(['' => 'Semua', 'draft' => 'Draft', 'selesai' => 'Selesai'] as $val => $lbl)
-                                <button type="button" wire:click="$set('historyStatus', '{{ $val }}')"
-                                    class="px-2.5 py-1.5 text-[11px] font-semibold transition-colors
-                                        {{ $historyStatus === $val
-                                            ? ($val === 'selesai' ? 'bg-emerald-500 text-white' : ($val === 'draft' ? 'bg-amber-400 text-white' : 'bg-slate-700 text-white'))
-                                            : 'bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800' }}">
-                                    {{ $lbl }}
-                                </button>
-                            @endforeach
+                        {{-- Status pill toggle: Semua|Draft|Selesai dengan warna jelas --}}
+                        <div class="flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden text-[11px] font-semibold">
+                            <button type="button" wire:click="$set('historyStatus', '')"
+                                class="px-3 py-1.5 transition-colors
+                                    {{ $historyStatus === ''
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                                Semua
+                            </button>
+                            <button type="button" wire:click="$set('historyStatus', 'draft')"
+                                class="px-3 py-1.5 border-x border-slate-200 dark:border-slate-700 transition-colors
+                                    {{ $historyStatus === 'draft'
+                                        ? 'bg-amber-500 text-white'
+                                        : 'bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                                Draft
+                            </button>
+                            <button type="button" wire:click="$set('historyStatus', 'selesai')"
+                                class="px-3 py-1.5 transition-colors
+                                    {{ $historyStatus === 'selesai'
+                                        ? 'bg-teal-600 text-white'
+                                        : 'bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                                Selesai
+                            </button>
                         </div>
                         {{-- Urutan toggle --}}
                         <button type="button" wire:click="toggleHistoryDir"
-                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all whitespace-nowrap">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 @if($historySortDir === 'desc')
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
                                 @else

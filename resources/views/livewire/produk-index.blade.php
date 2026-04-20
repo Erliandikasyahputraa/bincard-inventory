@@ -33,74 +33,94 @@
             await $wire.hapusTerpilih(ids);
         }
     }">
-    <div class="flex flex-col lg:flex-row justify-end lg:items-start gap-3 mb-4 lg:mb-6">
-        {{-- Row 1: Search + Tombol aksi --}}
-        <div class="flex flex-col sm:flex-row w-full gap-3 flex-1">
-            <div class="relative group flex-1 md:w-80 lg:w-96">
-                <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4"></i>
-                <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
-                <input type="text" enterkeyhint="search" x-on:keydown.enter="$el.blur()" wire:model.live.debounce.500ms="cari"
-                    placeholder="Cari nama, barcode, SKU..."
-                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all text-sm">
-                <button x-show="$wire.cari !== ''" wire:click="$set('cari', '')" type="button"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                </button>
-            </div>
+    {{-- Filter & Action Bar: satu baris rapi --}}
+    <div class="flex items-center gap-2 mb-4 lg:mb-6 flex-wrap">
 
-            <div class="flex gap-2 shrink-0">
-                <a href="{{ route('produk.import') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-slate-500"></i> Import
-                </a>
-                <a href="{{ route('produk.tambah') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-[#10B981] hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 text-sm whitespace-nowrap">
-                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah
-                </a>
+        {{-- Search Bar --}}
+        <div class="relative flex-1 min-w-[200px]">
+            <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4"></i>
+            <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
+            <input type="text" enterkeyhint="search" x-on:keydown.enter="$el.blur()"
+                wire:model.live.debounce.500ms="cari"
+                placeholder="Cari nama, barcode, SKU..."
+                class="w-full pl-10 pr-9 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-sm transition-all">
+            <button x-show="$wire.cari !== ''" wire:click="$set('cari', '')" type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+        </div>
+
+        {{-- Sort Dropdown (Alpine toggle) --}}
+        @php
+            $sortLabels = ['newest' => 'Terbaru', 'name' => 'Nama', 'stock' => 'Stok', 'location' => 'Rak'];
+            $activeSortLabel = $sortLabels[$sortField] ?? 'Urut';
+            $dirIcon = $sortDir === 'asc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7';
+        @endphp
+        <div x-data="{ open: false }" class="relative shrink-0">
+            <button @click="open = !open" type="button"
+                class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 transition-all whitespace-nowrap">
+                <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-slate-400"></i>
+                {{ $activeSortLabel }}
+                <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $dirIcon }}"/>
+                </svg>
+            </button>
+
+            {{-- Dropdown panel --}}
+            <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                 x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                 @click.away="open = false"
+                 class="absolute top-full left-0 mt-1.5 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 py-1 overflow-hidden"
+                 style="display:none;">
+                @foreach($sortLabels as $field => $label)
+                    <button type="button" wire:click="toggleSort('{{ $field }}')" @click="open = false"
+                        class="w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors
+                            {{ $sortField === $field ? 'text-blue-600 font-semibold' : 'text-slate-700 dark:text-slate-300' }}">
+                        {{ $label }}
+                        @if($sortField === $field)
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $dirIcon }}"/>
+                            </svg>
+                        @else
+                            <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                            </svg>
+                        @endif
+                    </button>
+                @endforeach
             </div>
         </div>
 
-        {{-- Row 2: Sort toggle pills + filter status --}}
-        <div class="flex flex-wrap items-center gap-2">
-            <span class="text-xs text-slate-400 font-medium shrink-0">Urut:</span>
+        {{-- Filter Status Chips --}}
+        <button type="button" wire:click="setFilter('kritis')"
+            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold border transition-all whitespace-nowrap
+                {{ $filterStatus === 'kritis'
+                    ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600' }}">
+            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+            Kritis
+        </button>
+        <button type="button" wire:click="setFilter('habis')"
+            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold border transition-all whitespace-nowrap
+                {{ $filterStatus === 'habis'
+                    ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-600' }}">
+            <i data-lucide="package-x" class="w-3.5 h-3.5"></i>
+            Habis
+        </button>
 
-            @php
-                $sortPills = ['newest' => 'Terbaru', 'name' => 'Nama', 'stock' => 'Stok', 'location' => 'Rak'];
-            @endphp
-            @foreach($sortPills as $field => $label)
-                <button type="button" wire:click="toggleSort('{{ $field }}')"
-                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
-                        {{ $sortField === $field
-                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
-                    {{ $label }}
-                    @if($sortField === $field)
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            @if($sortDir === 'asc')
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
-                            @else
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            @endif
-                        </svg>
-                    @else
-                        <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
-                        </svg>
-                    @endif
-                </button>
-            @endforeach
+        {{-- Separator --}}
+        <span class="hidden sm:block h-7 w-px bg-slate-200 dark:bg-slate-700"></span>
 
-            {{-- Filter status chips --}}
-            <span class="text-slate-200 dark:text-slate-700">|</span>
-            <button type="button" wire:click="setFilter('kritis')"
-                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
-                    {{ $filterStatus === 'kritis' ? 'bg-amber-400 text-white border-amber-400' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-amber-300 hover:text-amber-600' }}">
-                ⚠ Kritis
-            </button>
-            <button type="button" wire:click="setFilter('habis')"
-                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
-                    {{ $filterStatus === 'habis' ? 'bg-rose-500 text-white border-rose-500' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-rose-300 hover:text-rose-600' }}">
-                ✕ Habis
-            </button>
-        </div>
+        {{-- Action Buttons --}}
+        <a href="{{ route('produk.import') }}"
+            class="inline-flex justify-center items-center px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-1.5 text-slate-400"></i> Import
+        </a>
+        <a href="{{ route('produk.tambah') }}"
+            class="inline-flex justify-center items-center px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-md shadow-emerald-500/30 text-sm whitespace-nowrap">
+            <i data-lucide="plus" class="w-4 h-4 mr-1.5"></i> Tambah
+        </a>
     </div>
     <div wire:loading wire:target="cari,sortField,sortDir,filterStatus,gotoPage,nextPage,previousPage" class="mb-4">
         <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
