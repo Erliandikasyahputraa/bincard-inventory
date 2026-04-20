@@ -87,6 +87,7 @@
                     @foreach($aisles as $a)
                         <option value="{{ $a }}">Lorong {{ $a }}</option>
                     @endforeach
+                    <option value="UNKNOWN">Tanpa Lorong (---)</option>
                 </select>
                 <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 w-3 h-3 pointer-events-none"></i>
             </div>

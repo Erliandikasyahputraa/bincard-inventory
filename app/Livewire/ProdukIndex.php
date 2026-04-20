@@ -100,7 +100,11 @@ class ProdukIndex extends Component
         }
 
         if ($this->filterAisle !== '') {
-            $query->where('loc_aisle', $this->filterAisle);
+            if ($this->filterAisle === 'UNKNOWN') {
+                $query->where(fn($q) => $q->whereNull('loc_aisle')->orWhere('loc_aisle', '---')->orWhere('loc_aisle', ''));
+            } else {
+                $query->where('loc_aisle', $this->filterAisle);
+            }
         }
 
         return $query;

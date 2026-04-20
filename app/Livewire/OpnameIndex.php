@@ -233,7 +233,11 @@ class OpnameIndex extends Component
             }
 
             if ($this->filterAisle !== '') {
-                $query->whereHas('product', fn($q) => $q->where('loc_aisle', $this->filterAisle));
+                if ($this->filterAisle === 'UNKNOWN') {
+                    $query->whereHas('product', fn($q) => $q->whereNull('loc_aisle')->orWhere('loc_aisle', '---')->orWhere('loc_aisle', ''));
+                } else {
+                    $query->whereHas('product', fn($q) => $q->where('loc_aisle', $this->filterAisle));
+                }
             }
 
             // FINAL STABLE QUERY - No Joins to avoid ID collisions
@@ -243,9 +247,9 @@ class OpnameIndex extends Component
             match ($this->detailSortField) {
                 'barcode'  => $query->orderBy(Product::select('barcode')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
                 'location' => $query->orderBy(Product::select('loc_aisle')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
-                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_floor, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
-                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_row, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
-                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_col, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_floor, 0) AS INTEGER)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_row, 0) AS INTEGER)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_col, 0) AS INTEGER)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
                 'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
                 default    => $query->orderBy(Product::select('name')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
             };
@@ -274,18 +278,15 @@ class OpnameIndex extends Component
 
         $daftarOpname = $queryHistory->paginate(10);
 
-        // List Lorong for filters within the session
-        $aisles = collect();
-        if($opname) {
+            // List Lorong for filters within the session
             $aisles = Product::whereNotNull('loc_aisle')
                 ->where('loc_aisle', '!=', '---')
                 ->where('loc_aisle', '!=', '')
                 ->distinct()
                 // Sort aisles: letters first
-                ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_aisle, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
                 ->orderBy('loc_aisle')
                 ->pluck('loc_aisle');
-        }
 
         return view('livewire.opname-index', [
             'opname'       => $opname,

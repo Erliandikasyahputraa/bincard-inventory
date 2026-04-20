@@ -143,6 +143,7 @@
                 @foreach($aisles as $a)
                     <option value="{{ $a }}" {{ request('aisle') == $a ? 'selected' : '' }}>Lorong {{ $a }}</option>
                 @endforeach
+                <option value="UNKNOWN" {{ request('aisle') == 'UNKNOWN' ? 'selected' : '' }}>Tanpa Lorong (---)</option>
             </select>
             <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 w-4 h-4 pointer-events-none"></i>
         </div>

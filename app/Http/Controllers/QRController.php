@@ -57,7 +57,11 @@ class QRController extends Controller
         }
 
         if ($aisle = $request->input('aisle')) {
-            $query->where('loc_aisle', $aisle);
+            if ($aisle === 'UNKNOWN') {
+                $query->where(fn($q) => $q->whereNull('loc_aisle')->orWhere('loc_aisle', '---')->orWhere('loc_aisle', ''));
+            } else {
+                $query->where('loc_aisle', $aisle);
+            }
         }
 
         // Toggle sort: sort=field, dir=asc|desc
