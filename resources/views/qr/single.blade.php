@@ -138,66 +138,80 @@
             </div>
         </div>
 
-        {{-- 10×7 cm layout: foto & QR sama besar, sejajar, teks di bawah --}}
-        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-col items-center p-2 overflow-hidden gap-1.5">
-            {{-- Dua gambar sejajar --}}
-            <div class="flex items-center justify-center gap-2 w-full">
-                {{-- Foto produk --}}
-                @if($product->image_path)
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
-                         class="w-[3.2cm] h-[3.2cm] object-cover rounded-lg border-2 border-slate-200" />
-                @else
-                    <div class="w-[3.2cm] h-[3.2cm] rounded-lg border-2 border-slate-200 flex items-center justify-center bg-slate-50">
-                        <svg class="text-slate-300 w-8 h-8" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+        {{-- 10×7 cm layout: foto kiri | QR + info kanan --}}
+        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden overflow-hidden" style="display:none;">
+            <div class="flex h-full">
+                {{-- Kiri: Foto produk --}}
+                <div class="shrink-0 flex items-center justify-center border-r border-slate-200" style="width:3.3cm;">
+                    @if($product->image_path)
+                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
+                             style="width:3.3cm;height:7cm;object-fit:cover;" />
+                    @else
+                        <div style="width:3.3cm;height:7cm;background:#f8fafc;display:flex;align-items:center;justify-content:center;">
+                            <svg style="width:36px;height:36px;color:#cbd5e1" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Kanan: QR besar + info teks --}}
+                <div class="flex flex-col items-center justify-between flex-1 p-2">
+                    {{-- QR besar di atas --}}
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                         alt="QR" style="width:4.9cm;height:4.9cm;object-fit:contain;" />
+
+                    {{-- Info di bawah QR --}}
+                    <div style="width:100%;text-align:center;overflow:hidden;">
+                        <p style="font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;">{{ strtoupper($systemName) }}</p>
+                        <p style="font-size:8px;font-weight:900;color:#111;text-transform:uppercase;line-height:1.2;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin:1px 0;">{{ $product->name }}</p>
+                        <div class="barcode-lines" id="barcode10x7" style="height:12px;gap:1px;justify-content:center;"></div>
+                        <p style="font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:#334155;letter-spacing:1px;">{{ $product->barcode }}</p>
+                        @if($product->location || $product->uom)
+                        <p style="font-size:6px;color:#94a3b8;margin-top:1px;">
+                            @if($product->location)<strong style="color:#475569;">{{ $product->location }}</strong>@endif
+                            @if($product->location && $product->uom) &middot; @endif
+                            @if($product->uom)<strong style="color:#475569;">{{ $product->uom }}</strong>@endif
+                        </p>
+                        @endif
                     </div>
-                @endif
-                {{-- QR Code --}}
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR" class="w-[3.2cm] h-[3.2cm] object-contain border-2 border-slate-800 rounded-lg" />
-            </div>
-            {{-- Info teks di bawah kedua gambar --}}
-            <div class="w-full text-center">
-                <p class="text-[7px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($systemName) }}</p>
-                <h1 class="text-[9px] font-black uppercase text-gray-900 leading-tight break-words line-clamp-2 mt-0.5">{{ $product->name }}</h1>
-                <p class="mono text-[7px] font-bold text-slate-500 tracking-wide">{{ $product->sku }}</p>
-                <div class="barcode-lines justify-center mt-0.5" style="height: 14px; gap: 1px;" id="barcode10x7"></div>
-                <p class="mono text-[7px] font-bold tracking-[2px] text-slate-800">{{ $product->barcode }}</p>
-                @if($product->location || $product->uom)
-                <p class="text-[6px] text-slate-400 mt-0.5">
-                    @if($product->location)Rak: <strong class="text-slate-700">{{ $product->location }}</strong>@endif
-                    @if($product->location && $product->uom) &middot; @endif
-                    @if($product->uom)<strong class="text-slate-700">{{ $product->uom }}</strong>@endif
-                </p>
-                @endif
+                </div>
             </div>
         </div>
 
-        {{-- 5×5 cm layout: foto & QR sejajar, teks di bawah --}}
-        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center p-1.5 text-center overflow-hidden gap-0.5">
-            <p class="mono text-[5px] font-bold uppercase tracking-[1px] text-slate-400">{{ strtoupper($systemName) }}</p>
-            {{-- Foto + QR sejajar --}}
-            <div class="flex items-center justify-center gap-1 w-full">
-                @if($product->image_path)
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
-                         class="w-[1.8cm] h-[1.8cm] object-cover rounded border border-slate-200 shrink-0" />
-                @else
-                    <div class="w-[1.8cm] h-[1.8cm] rounded border border-slate-200 flex items-center justify-center bg-slate-50 shrink-0">
-                        <svg class="text-slate-300 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
-                    </div>
-                @endif
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR" class="w-[1.8cm] h-[1.8cm] object-contain border border-slate-800 rounded shrink-0" />
-            </div>
-            {{-- Teks di bawah kedua gambar --}}
-            <div class="w-full">
-                <p class="text-[6px] font-black uppercase text-gray-900 leading-tight line-clamp-2">{{ $product->name }}</p>
-                <div class="barcode-lines justify-center" style="height:9px;gap:1px;" id="barcode5x5"></div>
-                <p class="mono text-[5px] font-bold tracking-[1px] text-slate-800">{{ $product->barcode }}</p>
+        {{-- 5×5 cm layout: QR besar dominan + info kompak --}}
+        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden overflow-hidden" style="display:none;">
+            <div style="width:5cm;height:5cm;display:flex;flex-direction:column;align-items:center;padding:4px;box-sizing:border-box;overflow:hidden;">
+                {{-- Brand --}}
+                <p style="font-size:5px;font-weight:700;letter-spacing:2px;color:#94a3b8;text-transform:uppercase;font-family:'JetBrains Mono',monospace;">{{ strtoupper($systemName) }}</p>
+
+                {{-- QR besar + foto mini berdampingan --}}
+                <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:2px;">
+                    {{-- Foto mini --}}
+                    @if($product->image_path)
+                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
+                             style="width:1.3cm;height:1.3cm;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;flex-shrink:0;" />
+                    @else
+                        <div style="width:1.3cm;height:1.3cm;border-radius:4px;border:1px solid #e2e8f0;background:#f8fafc;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <svg style="width:14px;height:14px;color:#cbd5e1" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                        </div>
+                    @endif
+                    {{-- QR dominan --}}
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                         alt="QR" style="width:2.8cm;height:2.8cm;object-fit:contain;border:1.5px solid #111;border-radius:4px;flex-shrink:0;" />
+                </div>
+
+                {{-- Nama produk --}}
+                <p style="font-size:6.5px;font-weight:900;color:#111;text-transform:uppercase;line-height:1.2;text-align:center;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;width:100%;margin-top:3px;">{{ $product->name }}</p>
+
+                {{-- Barcode visual --}}
+                <div class="barcode-lines" id="barcode5x5" style="height:10px;gap:1px;justify-content:center;width:100%;"></div>
+
+                {{-- Barcode text + info --}}
+                <p style="font-family:'JetBrains Mono',monospace;font-size:5px;font-weight:700;letter-spacing:1px;color:#334155;text-align:center;">{{ $product->barcode }}</p>
                 @if($product->location || $product->uom)
-                <p class="text-[5px] text-slate-400 truncate">
-                    @if($product->location)<strong class="text-slate-700">{{ $product->location }}</strong>@endif
+                <p style="font-size:5px;color:#94a3b8;text-align:center;overflow:hidden;white-space:nowrap;max-width:100%;">
+                    @if($product->location)<strong style="color:#475569;">{{ $product->location }}</strong>@endif
                     @if($product->location && $product->uom) &middot; @endif
-                    @if($product->uom)<strong class="text-slate-700">{{ $product->uom }}</strong>@endif
+                    @if($product->uom)<strong style="color:#475569;">{{ $product->uom }}</strong>@endif
                 </p>
                 @endif
             </div>

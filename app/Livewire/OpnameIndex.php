@@ -24,14 +24,15 @@ class OpnameIndex extends Component
     // Pagination detail
     public int $perPage = 50;
 
-    // Filter & sort detail dalam sesi
-    public string $detailSort = 'name_asc'; // name_asc|name_desc|barcode|location
+    // Sort detail dalam sesi (field + dir toggle)
+    public string $detailSortField = 'name';  // name|barcode|location|selisih
+    public string $detailSortDir   = 'asc';    // asc|desc
 
     // Filter & sort riwayat
     public string $historySearch = '';
     public string $historyDate   = '';
-    public string $historySort   = 'terbaru';  // terbaru|terlama
-    public string $historyStatus = '';          // ''|draft|selesai
+    public string $historyStatus = '';      // ''|draft|selesai
+    public string $historySortDir = 'desc'; // asc|desc (terbaru/terlama)
 
     public function buatOpname(): void
     {
@@ -175,12 +176,29 @@ class OpnameIndex extends Component
         }
     }
 
-    public function updatedCariBarang(): void   { $this->resetPage(); }
-    public function updatedDetailSort(): void    { $this->resetPage(); }
-    public function updatedHistorySearch(): void { $this->resetPage(); }
-    public function updatedHistoryDate(): void   { $this->resetPage(); }
-    public function updatedHistorySort(): void   { $this->resetPage(); }
-    public function updatedHistoryStatus(): void { $this->resetPage(); }
+    /** Toggle sort field di tabel detail — klik field sama = balik arah; klik field baru = asc */
+    public function toggleDetailSort(string $field): void
+    {
+        if ($this->detailSortField === $field) {
+            $this->detailSortDir = $this->detailSortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->detailSortField = $field;
+            $this->detailSortDir   = 'asc';
+        }
+        $this->resetPage();
+    }
+
+    /** Toggle sort riwayat */
+    public function toggleHistoryDir(): void
+    {
+        $this->historySortDir = $this->historySortDir === 'desc' ? 'asc' : 'desc';
+        $this->resetPage();
+    }
+
+    public function updatedCariBarang(): void    { $this->resetPage(); }
+    public function updatedHistorySearch(): void  { $this->resetPage(); }
+    public function updatedHistoryDate(): void    { $this->resetPage(); }
+    public function updatedHistoryStatus(): void  { $this->resetPage(); }
 
     public function render()
     {
@@ -199,17 +217,16 @@ class OpnameIndex extends Component
                 });
             }
 
-            // Sort detail
-            match ($this->detailSort) {
-                'name_desc' => $query->join('products', 'stock_opname_details.product_id', '=', 'products.id')
-                                     ->orderByDesc('products.name')->select('stock_opname_details.*'),
-                'barcode'   => $query->join('products as p2', 'stock_opname_details.product_id', '=', 'p2.id')
-                                     ->orderBy('p2.barcode')->select('stock_opname_details.*'),
-                'location'  => $query->join('products as p3', 'stock_opname_details.product_id', '=', 'p3.id')
-                                     ->orderBy('p3.location')->select('stock_opname_details.*'),
-                'selisih_besar' => $query->orderByRaw('ABS(selisih) DESC'),
-                default     => $query->join('products as p0', 'stock_opname_details.product_id', '=', 'p0.id')
-                                     ->orderBy('p0.name')->select('stock_opname_details.*'),
+            // Sort detail berdasarkan field + dir
+            $dir = $this->detailSortDir;
+            match ($this->detailSortField) {
+                'barcode'  => $query->join('products as pb', 'stock_opname_details.product_id', '=', 'pb.id')
+                                     ->orderBy('pb.barcode', $dir)->select('stock_opname_details.*'),
+                'location' => $query->join('products as pl', 'stock_opname_details.product_id', '=', 'pl.id')
+                                     ->orderBy('pl.location', $dir)->select('stock_opname_details.*'),
+                'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
+                default    => $query->join('products as pn', 'stock_opname_details.product_id', '=', 'pn.id')
+                                     ->orderBy('pn.name', $dir)->select('stock_opname_details.*'),
             };
 
             $details = $query->paginate($this->perPage, ['*'], 'detail_page');
@@ -231,8 +248,8 @@ class OpnameIndex extends Component
             });
         }
 
-        $queryHistory->orderBy('tanggal_opname', $this->historySort === 'terlama' ? 'asc' : 'desc')
-                     ->orderBy('id', $this->historySort === 'terlama' ? 'asc' : 'desc');
+        $queryHistory->orderBy('tanggal_opname', $this->historySortDir)
+                     ->orderBy('id', $this->historySortDir);
 
         $daftarOpname = $queryHistory->paginate(10);
 

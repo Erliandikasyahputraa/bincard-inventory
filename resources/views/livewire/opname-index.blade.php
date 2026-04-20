@@ -62,28 +62,45 @@
             </div>
         </div>
 
-        {{-- Filter & search dalam sesi --}}
-        <div class="flex flex-col sm:flex-row gap-3 mb-4">
-            <div class="relative flex-1 max-w-md">
+        {{-- Filter & search dalam sesi - compact 1 baris --}}
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+            {{-- Search --}}
+            <div class="relative flex-1 min-w-[160px]">
                 <i data-lucide="search" wire:loading.remove wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
                 <i data-lucide="loader-2" wire:loading wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
                 <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
                     wire:model.live.debounce.300ms="cariBarang"
                     placeholder="Cari nama, barcode, atau rak..."
-                    class="pl-9 pr-4 py-2.5 w-full bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
+                    class="pl-9 pr-3 py-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
             </div>
-            <div class="relative w-full sm:w-52 shrink-0">
-                <i data-lucide="arrow-up-down" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-                <select wire:model.live="detailSort"
-                    class="pl-9 pr-8 py-2.5 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-800 dark:text-slate-200 appearance-none">
-                    <option value="name_asc">Nama (A–Z)</option>
-                    <option value="name_desc">Nama (Z–A)</option>
-                    <option value="barcode">Barcode</option>
-                    <option value="location">Lokasi / Rak</option>
-                    <option value="selisih_besar">Selisih Terbesar</option>
-                </select>
-                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
-            </div>
+
+            {{-- Sort pills (toggle): klik = aktifkan, klik lagi = balik arah --}}
+            @php
+                $sortPills = ['name' => 'Nama', 'barcode' => 'Barcode', 'location' => 'Rak'];
+                if($opname->status === 'selesai') $sortPills['selisih'] = 'Selisih';
+            @endphp
+            @foreach($sortPills as $field => $label)
+                <button type="button" wire:click="toggleDetailSort('{{ $field }}')"
+                    class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold border transition-all
+                        {{ $detailSortField === $field
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
+                    {{ $label }}
+                    @if($detailSortField === $field)
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            @if($detailSortDir === 'asc')
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+                            @else
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                            @endif
+                        </svg>
+                    @else
+                        <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                        </svg>
+                    @endif
+                </button>
+            @endforeach
         </div>
 
         {{-- Tabel detail sesi --}}
@@ -184,45 +201,46 @@
         {{-- Riwayat sesi --}}
         <div class="bg-white dark:bg-slate-900 card-shadow border border-[#D1D5DB] dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl">
             <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-col gap-3">
-                <h2 class="text-base font-bold text-slate-800 dark:text-slate-200">Riwayat Sesi Audit / Opname</h2>
+                <div class="flex items-center justify-between gap-2">
+                    <h2 class="text-base font-bold text-slate-800 dark:text-slate-200 shrink-0">Riwayat Sesi</h2>
 
-                {{-- Filter riwayat --}}
-                <div class="flex flex-col sm:flex-row gap-2 flex-wrap">
-                    {{-- Search --}}
-                    <div class="relative flex-1 min-w-[180px]">
-                        <i data-lucide="search" wire:loading.remove wire:target="historySearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                        <i data-lucide="loader-2" wire:loading wire:target="historySearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-3.5 h-3.5 animate-spin"></i>
-                        <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
-                            wire:model.live.debounce.300ms="historySearch"
-                            placeholder="Cari ID atau nama validator..."
-                            class="pl-8 pr-4 py-2 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white dark:placeholder-slate-500">
-                    </div>
-                    {{-- Filter tanggal --}}
-                    <div class="relative w-full sm:w-36 shrink-0">
-                        <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                    {{-- Filter compact row --}}
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                        {{-- Search --}}
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 w-3 h-3"></i>
+                            <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
+                                wire:model.live.debounce.300ms="historySearch"
+                                placeholder="Cari..."
+                                class="pl-7 pr-3 py-1.5 w-36 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white">
+                        </div>
+                        {{-- Filter tanggal --}}
                         <input type="date" wire:model.live="historyDate"
-                            class="pl-8 pr-3 py-2 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white" style="color-scheme: dark;">
-                    </div>
-                    {{-- Filter Status --}}
-                    <div class="relative w-full sm:w-36 shrink-0">
-                        <i data-lucide="tag" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                        <select wire:model.live="historyStatus"
-                            class="pl-8 pr-7 py-2 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 dark:text-slate-200 appearance-none">
-                            <option value="">Semua Status</option>
-                            <option value="draft">Draft</option>
-                            <option value="selesai">Selesai</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                    </div>
-                    {{-- Sort urutan --}}
-                    <div class="relative w-full sm:w-36 shrink-0">
-                        <i data-lucide="arrow-up-down" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                        <select wire:model.live="historySort"
-                            class="pl-8 pr-7 py-2 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 dark:text-slate-200 appearance-none">
-                            <option value="terbaru">Terbaru</option>
-                            <option value="terlama">Terlama</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                            class="px-2 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white w-32" style="color-scheme:dark">
+                        {{-- Status pill toggle --}}
+                        <div class="flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                            @foreach(['' => 'Semua', 'draft' => 'Draft', 'selesai' => 'Selesai'] as $val => $lbl)
+                                <button type="button" wire:click="$set('historyStatus', '{{ $val }}')"
+                                    class="px-2.5 py-1.5 text-[11px] font-semibold transition-colors
+                                        {{ $historyStatus === $val
+                                            ? ($val === 'selesai' ? 'bg-emerald-500 text-white' : ($val === 'draft' ? 'bg-amber-400 text-white' : 'bg-slate-700 text-white'))
+                                            : 'bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800' }}">
+                                    {{ $lbl }}
+                                </button>
+                            @endforeach
+                        </div>
+                        {{-- Urutan toggle --}}
+                        <button type="button" wire:click="toggleHistoryDir"
+                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                @if($historySortDir === 'desc')
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
+                                @else
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l-4 4m4-4H7"/>
+                                @endif
+                            </svg>
+                            {{ $historySortDir === 'desc' ? 'Terbaru' : 'Terlama' }}
+                        </button>
                     </div>
                 </div>
             </div>
