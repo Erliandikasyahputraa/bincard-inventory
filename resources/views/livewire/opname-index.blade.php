@@ -346,7 +346,9 @@
             @endif
         </div>
 
-    {{-- 1. Modal Image Popup - RELOCATED TO BOTTOM (INSIDE SCOPE) FOR STACKING STABILITY --}}
+    @endif
+
+    {{-- 1. Modal Image Popup - NEUTRAL POSITION (AVAILABLE FOR ACTIVE & HISTORY) --}}
     <div x-show="showImg" 
          x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
          x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
@@ -361,5 +363,4 @@
             <img :src="imgUrl" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-4 border-white/10" />
         </div>
     </div>
-    @endif
 </div>
