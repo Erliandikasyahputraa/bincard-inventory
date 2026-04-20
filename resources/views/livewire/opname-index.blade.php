@@ -5,7 +5,22 @@
     </div>
 </x-slot:header>
 
-<div class="w-full">
+<div class="w-full" x-data="{ showImg: false, imgUrl: '' }">
+    {{-- Modal Image Popup - Moved to root for global overlay --}}
+    <div x-show="showImg" 
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+         style="display: none;" @keydown.escape.window="showImg = false">
+        
+        <button @click="showImg = false" class="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-all group z-[1000]">
+            <i data-lucide="x" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+        </button>
+
+        <div class="relative max-w-4xl w-full flex items-center justify-center" @click.away="showImg = false">
+            <img :src="imgUrl" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-4 border-white/10" />
+        </div>
+    </div>
 
     {{-- ═══════════════════════════════ TAMPILAN SESI AKTIF ═══════════════════════════════ --}}
     @if($opname)
@@ -89,18 +104,7 @@
             </div>
             @endif
 
-            {{-- Rak Filter --}}
-            <div class="relative shrink-0 min-w-[120px]">
-                <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                <select wire:model.live="filterRak"
-                    class="pl-8 pr-7 py-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none appearance-none text-slate-700 dark:text-slate-200 transition-all cursor-pointer shadow-sm">
-                    <option value="">Semua Rak</option>
-                    @foreach($raks as $rak)
-                        <option value="{{ $rak }}">{{ $rak }}</option>
-                    @endforeach
-                </select>
-                <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 w-3 h-3 pointer-events-none"></i>
-            </div>
+
 
             {{-- Sort pills --}}
             @php

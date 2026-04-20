@@ -48,7 +48,20 @@
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
+        {{-- Lorong Filter --}}
+        @if($aisles->count() > 0)
+        <div class="relative shrink-0">
+            <i data-lucide="split" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+            <select wire:model.live="filterAisle"
+                class="pl-8 pr-8 py-2.5 bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/30 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none appearance-none text-emerald-700 dark:text-emerald-400 font-bold transition-all cursor-pointer shadow-sm">
+                <option value="">Lorong</option>
+                @foreach($aisles as $a)
+                    <option value="{{ $a }}">Lorong {{ $a }}</option>
+                @endforeach
+            </select>
+            <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 w-3 h-3 pointer-events-none"></i>
         </div>
+        @endif
 
         {{-- Combined Sort + Filter Dropdown (Alpine) --}}
         @php

@@ -13,14 +13,14 @@ class QRController extends Controller
         $products = $query->paginate(48)->withQueryString();
 
         $totalProdukSistem = Product::count();
-        $locations = Product::whereNotNull('location')
-            ->where('location', '!=', '')
-            ->when($request->input('aisle'), fn($q, $a) => $q->where('loc_aisle', $a))
+        $aisles = Product::whereNotNull('loc_aisle')
+            ->where('loc_aisle', '!=', '---')
+            ->where('loc_aisle', '!=', '')
             ->distinct()
-            ->orderBy('location')
-            ->pluck('location');
+            ->orderBy('loc_aisle')
+            ->pluck('loc_aisle');
 
-        return view('qr.index', compact('products', 'totalProdukSistem', 'locations'));
+        return view('qr.index', compact('products', 'totalProdukSistem', 'aisles'));
     }
 
     /** Cetak semua produk tanpa pagination (gunakan paginate besar agar view kompatibel) */
@@ -52,10 +52,6 @@ class QRController extends Controller
                   ->orWhere('sku', 'like', "%{$search}%")
                   ->orWhere('barcode', 'like', "%{$search}%")
             );
-        }
-
-        if ($location = $request->input('location')) {
-            $query->where('location', $location);
         }
 
         if ($aisle = $request->input('aisle')) {

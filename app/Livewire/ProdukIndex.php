@@ -17,7 +17,7 @@ class ProdukIndex extends Component
     public string $sortDir    = 'desc';   // asc|desc
     public string $filterStatus = '';     // ''|kritis|habis
     public string $filterAisle  = '';     // ''|A|B|C...
-    public string $filterRak    = '';     // specific location string
+    // Removed filterRak for simplification per user request
 
     public array $selectedIds = [];
     public bool  $selectAll   = false;
@@ -66,13 +66,9 @@ class ProdukIndex extends Component
     public function updatedCari(): void    { $this->resetPage(); }
     
     public function updatedFilterAisle(): void {
-        $this->filterRak = '';
         $this->resetPage();
     }
-
-    public function updatedFilterRak(): void {
-        $this->resetPage();
-    }
+    // Removed updatedFilterRak for simplification
 
     public function hapusTerpilih(array $ids = []): void
     {
@@ -107,10 +103,6 @@ class ProdukIndex extends Component
             $query->where('loc_aisle', $this->filterAisle);
         }
 
-        if ($this->filterRak !== '') {
-            $query->where('location', $this->filterRak);
-        }
-
         return $query;
     }
 
@@ -135,24 +127,17 @@ class ProdukIndex extends Component
 
         $produk = $query->paginate(15);
 
-        // List Lorong & Rak for filters
+        // List Lorong for filters
         $aisles = Product::whereNotNull('loc_aisle')
             ->where('loc_aisle', '!=', '---')
+            ->where('loc_aisle', '!=', '')
             ->distinct()
             ->orderBy('loc_aisle')
             ->pluck('loc_aisle');
 
-        $raks = Product::whereNotNull('location')
-            ->where('location', '!=', '---')
-            ->when($this->filterAisle !== '', fn($q) => $q->where('loc_aisle', $this->filterAisle))
-            ->distinct()
-            ->orderBy('location')
-            ->pluck('location');
-
         return view('livewire.produk-index', [
                 'produk' => $produk,
-                'aisles' => $aisles,
-                'raks'   => $raks
+                'aisles' => $aisles
             ])
             ->layout('layouts.app', ['title' => 'Data Produk']);
     }
