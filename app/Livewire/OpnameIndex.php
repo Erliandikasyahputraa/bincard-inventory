@@ -28,7 +28,7 @@ class OpnameIndex extends Component
     // Removed filterRak per user request
 
     // Pagination detail
-    public int $perPage = 50;
+    public int $perPage = 20;
 
     // Sort detail dalam sesi (field + dir toggle)
     public string $detailSortField = 'name';  // name|barcode|location|selisih
@@ -167,8 +167,10 @@ class OpnameIndex extends Component
 
     public function tutupSesi(): void
     {
-        $this->opnameId   = null;
-        $this->cariBarang = '';
+        $this->opnameId    = null;
+        $this->cariBarang  = '';
+        $this->filterAisle = '';
+        $this->resetPage();
     }
 
     public function mount(): void
@@ -233,30 +235,18 @@ class OpnameIndex extends Component
                 $query->whereHas('product', fn($q) => $q->where('loc_aisle', $this->filterAisle));
             }
 
-            // Sort detail berdasarkan field + dir
+            // FINAL STABLE QUERY - No Joins to avoid ID collisions
             $dir = $this->detailSortDir;
-
-            $query->reorder(); // Clear previous orders to ensure our custom logic wins
-
-            $query->leftJoin('products as p', 'stock_opname_details.product_id', '=', 'p.id')
-                  ->select('stock_opname_details.*');
-
+            $query->reorder();
+            
             match ($this->detailSortField) {
-                'barcode'  => $query->orderBy('p.barcode', $dir),
-                'location' => $query->orderByRaw("p.loc_aisle = '---' ASC")
-                                     ->orderByRaw("IF(p.loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                                     ->orderBy('p.loc_aisle', $dir)
-                                     ->orderByRaw("CAST(IFNULL(p.loc_floor, 0) AS UNSIGNED) " . $dir)
-                                     ->orderBy('p.loc_floor', $dir)
-                                     ->orderByRaw("CAST(IFNULL(p.loc_row, 0) AS UNSIGNED) " . $dir)
-                                     ->orderBy('p.loc_row', $dir)
-                                     ->orderByRaw("CAST(IFNULL(p.loc_col, 0) AS UNSIGNED) " . $dir)
-                                     ->orderBy('p.loc_col', $dir),
+                'barcode'  => $query->orderBy(Product::select('barcode')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
+                'location' => $query->orderBy(Product::select('location')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
                 'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
-                default    => $query->orderBy('p.name', $dir),
+                default    => $query->orderBy(Product::select('name')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
             };
 
-            $details = $query->paginate($this->perPage, ['*'], 'detail_page');
+            $details = $query->paginate(20, ['*'], 'detail_page');
         }
 
         // Riwayat
