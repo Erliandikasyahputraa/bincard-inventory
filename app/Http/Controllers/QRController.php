@@ -13,7 +13,12 @@ class QRController extends Controller
         $products = $query->paginate(48)->withQueryString();
 
         $totalProdukSistem = Product::count();
-        $locations = Product::whereNotNull('location')->where('location', '!=', '')->distinct()->orderBy('location')->pluck('location');
+        $locations = Product::whereNotNull('location')
+            ->where('location', '!=', '')
+            ->when($request->input('aisle'), fn($q, $a) => $q->where('loc_aisle', $a))
+            ->distinct()
+            ->orderBy('location')
+            ->pluck('location');
 
         return view('qr.index', compact('products', 'totalProdukSistem', 'locations'));
     }

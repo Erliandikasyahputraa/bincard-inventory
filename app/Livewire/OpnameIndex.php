@@ -20,6 +20,8 @@ class OpnameIndex extends Component
     public ?int $opnameId     = null;
     public string $tanggalBaru = '';
     public string $cariBarang  = '';
+    public string $filterAisle = '';
+    public string $filterRak   = '';
 
     // Pagination detail
     public int $perPage = 50;
@@ -199,6 +201,15 @@ class OpnameIndex extends Component
     public function updatedHistorySearch(): void  { $this->resetPage(); }
     public function updatedHistoryDate(): void    { $this->resetPage(); }
     public function updatedHistoryStatus(): void  { $this->resetPage(); }
+    
+    public function updatedFilterAisle(): void {
+        $this->filterRak = '';
+        $this->resetPage();
+    }
+
+    public function updatedFilterRak(): void {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -215,6 +226,14 @@ class OpnameIndex extends Component
                       ->orWhere('barcode', 'like', '%' . $this->cariBarang . '%')
                       ->orWhere('location', 'like', '%' . $this->cariBarang . '%');
                 });
+            }
+
+            if ($this->filterAisle !== '') {
+                $query->whereHas('product', fn($q) => $q->where('loc_aisle', $this->filterAisle));
+            }
+
+            if ($this->filterRak !== '') {
+                $query->whereHas('product', fn($q) => $q->where('location', $this->filterRak));
             }
 
             // Sort detail berdasarkan field + dir
@@ -261,10 +280,30 @@ class OpnameIndex extends Component
 
         $daftarOpname = $queryHistory->paginate(10);
 
+        // List Lorong & Rak for filters within the session
+        $aisles = collect();
+        $raks   = collect();
+        if($opname) {
+            $aisles = Product::whereNotNull('loc_aisle')
+                ->where('loc_aisle', '!=', '---')
+                ->distinct()
+                ->orderBy('loc_aisle')
+                ->pluck('loc_aisle');
+
+            $raks = Product::whereNotNull('location')
+                ->where('location', '!=', '---')
+                ->when($this->filterAisle !== '', fn($q) => $q->where('loc_aisle', $this->filterAisle))
+                ->distinct()
+                ->orderBy('location')
+                ->pluck('location');
+        }
+
         return view('livewire.opname-index', [
             'opname'       => $opname,
             'details'      => $details,
             'daftarOpname' => $daftarOpname,
+            'aisles'       => $aisles,
+            'raks'         => $raks,
         ])->layout('layouts.app', ['title' => 'Stock Opname']);
     }
 }

@@ -155,8 +155,9 @@
         @if($aisles->count() > 0)
         <div class="relative shrink-0">
             <i data-lucide="split" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
-            <select name="aisle" onchange="this.form.submit()"
-                class="pl-9 pr-8 py-2.5 bg-white dark:bg-slate-950 border border-emerald-200 dark:border-emerald-900/30 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none text-emerald-700 dark:text-emerald-400 font-bold transition-all cursor-pointer">
+            <select name="aisle" 
+                onchange="this.form.location.value=''; this.form.submit()"
+                class="pl-9 pr-8 py-2.5 bg-white dark:bg-slate-950 border border-emerald-200 dark:border-emerald-900/30 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none text-emerald-700 dark:text-emerald-400 font-bold transition-all cursor-pointer shadow-sm">
                 <option value="">Semua Lorong</option>
                 @foreach($aisles as $a)
                     <option value="{{ $a }}" {{ request('aisle') == $a ? 'selected' : '' }}>Lorong {{ $a }}</option>

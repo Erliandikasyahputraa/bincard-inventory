@@ -16,6 +16,8 @@ class ProdukIndex extends Component
     public string $sortField  = 'newest'; // newest|name|location|stock|status
     public string $sortDir    = 'desc';   // asc|desc
     public string $filterStatus = '';     // ''|kritis|habis
+    public string $filterAisle  = '';     // ''|A|B|C...
+    public string $filterRak    = '';     // specific location string
 
     public array $selectedIds = [];
     public bool  $selectAll   = false;
@@ -62,6 +64,15 @@ class ProdukIndex extends Component
     }
 
     public function updatedCari(): void    { $this->resetPage(); }
+    
+    public function updatedFilterAisle(): void {
+        $this->filterRak = '';
+        $this->resetPage();
+    }
+
+    public function updatedFilterRak(): void {
+        $this->resetPage();
+    }
 
     public function hapusTerpilih(array $ids = []): void
     {
@@ -92,6 +103,14 @@ class ProdukIndex extends Component
             $query->whereColumn('current_stock', '<=', 'min_stock')->where('current_stock', '>', 0);
         }
 
+        if ($this->filterAisle !== '') {
+            $query->where('loc_aisle', $this->filterAisle);
+        }
+
+        if ($this->filterRak !== '') {
+            $query->where('location', $this->filterRak);
+        }
+
         return $query;
     }
 
@@ -115,7 +134,26 @@ class ProdukIndex extends Component
         };
 
         $produk = $query->paginate(15);
-        return view('livewire.produk-index', ['produk' => $produk])
+
+        // List Lorong & Rak for filters
+        $aisles = Product::whereNotNull('loc_aisle')
+            ->where('loc_aisle', '!=', '---')
+            ->distinct()
+            ->orderBy('loc_aisle')
+            ->pluck('loc_aisle');
+
+        $raks = Product::whereNotNull('location')
+            ->where('location', '!=', '---')
+            ->when($this->filterAisle !== '', fn($q) => $q->where('loc_aisle', $this->filterAisle))
+            ->distinct()
+            ->orderBy('location')
+            ->pluck('location');
+
+        return view('livewire.produk-index', [
+                'produk' => $produk,
+                'aisles' => $aisles,
+                'raks'   => $raks
+            ])
             ->layout('layouts.app', ['title' => 'Data Produk']);
     }
 }

@@ -70,11 +70,39 @@
                 <i data-lucide="loader-2" wire:loading wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
                 <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
                     wire:model.live.debounce.300ms="cariBarang"
-                    placeholder="Cari nama, barcode, atau rak..."
-                    class="pl-9 pr-3 py-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm">
+                    placeholder="Cari produk..."
+                    class="pl-9 pr-3 py-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white dark:placeholder-slate-500 shadow-sm transition-all">
             </div>
 
-            {{-- Sort pills (toggle): klik = aktifkan, klik lagi = balik arah --}}
+            {{-- Lorong Filter --}}
+            @if($aisles->count() > 0)
+            <div class="relative shrink-0 min-w-[110px]">
+                <i data-lucide="split" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                <select wire:model.live="filterAisle"
+                    class="pl-8 pr-7 py-2 w-full bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/30 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none appearance-none text-emerald-700 dark:text-emerald-400 font-bold transition-all cursor-pointer shadow-sm">
+                    <option value="">Lorong</option>
+                    @foreach($aisles as $a)
+                        <option value="{{ $a }}">Lorong {{ $a }}</option>
+                    @endforeach
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 w-3 h-3 pointer-events-none"></i>
+            </div>
+            @endif
+
+            {{-- Rak Filter --}}
+            <div class="relative shrink-0 min-w-[120px]">
+                <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                <select wire:model.live="filterRak"
+                    class="pl-8 pr-7 py-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none appearance-none text-slate-700 dark:text-slate-200 transition-all cursor-pointer shadow-sm">
+                    <option value="">Semua Rak</option>
+                    @foreach($raks as $rak)
+                        <option value="{{ $rak }}">{{ $rak }}</option>
+                    @endforeach
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 w-3 h-3 pointer-events-none"></i>
+            </div>
+
+            {{-- Sort pills --}}
             @php
                 $sortPills = ['name' => 'Nama', 'barcode' => 'Barcode', 'location' => 'Rak'];
                 if($opname->status === 'selesai') $sortPills['selisih'] = 'Selisih';
@@ -114,21 +142,7 @@
                             @endif
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800" x-data="{ showImg: false, imgUrl: '' }">
-                        {{-- Modal Image Popup --}}
-                        <div x-show="showImg" @click.away="showImg = false" 
-                             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
-                             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                             style="display: none;">
-                            <div class="relative bg-white dark:bg-slate-900 p-2 rounded-3xl shadow-2xl max-w-lg w-full">
-                                <button @click="showImg = false" class="absolute -top-4 -right-4 w-10 h-10 bg-rose-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-rose-700 transition-colors">
-                                    <i data-lucide="x" class="w-6 h-6"></i>
-                                </button>
-                                <img :src="imgUrl" class="w-full h-auto rounded-2xl object-contain max-h-[70vh]" />
-                            </div>
-                        </div>
-
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                         @forelse($details as $d)
                             <tr wire:key="detail-{{ $d->id }}" class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                                 <td class="px-5 py-3">
@@ -202,6 +216,22 @@
 
     @else
     {{-- ═══════════════════════════════ HALAMAN UTAMA / RIWAYAT ═══════════════════════════════ --}}
+    <div x-data="{ showImg: false, imgUrl: '' }" class="space-y-4">
+        {{-- Modal Image Popup - Moved outside for global overlay --}}
+        <div x-show="showImg" 
+             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+             style="display: none;" @keydown.escape.window="showImg = false">
+            
+            <button @click="showImg = false" class="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-all group z-[1000]">
+                <i data-lucide="x" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+            </button>
+
+            <div class="relative max-w-4xl w-full flex items-center justify-center" @click.away="showImg = false">
+                <img :src="imgUrl" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-4 border-white/10" />
+            </div>
+        </div>
 
         {{-- Tombol buat sesi baru --}}
         <div class="mb-6 flex items-center justify-end gap-3">
