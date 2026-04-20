@@ -18,7 +18,7 @@ class QRController extends Controller
             ->where('loc_aisle', '!=', '')
             ->distinct()
             // Alphabetical Priority: Letters first, then numbers
-            ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
+            ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_aisle, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
             ->orderBy('loc_aisle')
             ->pluck('loc_aisle');
 
@@ -75,19 +75,19 @@ class QRController extends Controller
             case 'location':
                 // Complex natural sort for multi-part location: Letters first, then numeric sequence
                 $query->orderByRaw("loc_aisle = '---' ASC")
-                      ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
+                      ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_aisle, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
                       ->orderBy('loc_aisle', $sortDir)
 
-                      ->orderByRaw("IF(loc_floor REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                      ->orderByRaw("CAST(loc_floor AS UNSIGNED) " . $sortDir)
+                      ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_floor, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
+                      ->orderByRaw("CAST(loc_floor AS INTEGER) " . $sortDir)
                       ->orderBy('loc_floor', $sortDir)
 
-                      ->orderByRaw("IF(loc_row REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                      ->orderByRaw("CAST(loc_row AS UNSIGNED) " . $sortDir)
+                      ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_row, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
+                      ->orderByRaw("CAST(loc_row AS INTEGER) " . $sortDir)
                       ->orderBy('loc_row', $sortDir)
 
-                      ->orderByRaw("IF(loc_col REGEXP '^[a-zA-Z]', 0, 1) ASC")
-                      ->orderByRaw("CAST(loc_col AS UNSIGNED) " . $sortDir)
+                      ->orderByRaw("CASE WHEN LOWER(SUBSTR(loc_col, 1, 1)) BETWEEN 'a' AND 'z' THEN 0 ELSE 1 END ASC")
+                      ->orderByRaw("CAST(loc_col AS INTEGER) " . $sortDir)
                       ->orderBy('loc_col', $sortDir);
                 break;
             case 'status_kritis':
