@@ -34,11 +34,19 @@
             gap: 0 !important;
             background: white !important;
         }
-        .qr-card { page-break-inside: avoid; break-inside: avoid; border: 1px solid #d1d5db !important; padding: 8px !important; }
+        .qr-card {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            border: 1px solid #d1d5db !important;
+            padding: 6px !important;
+        }
         .qr-card.not-selected { display: none !important; }
-        /* Sembunyikan foto saat print, tampilkan QR */
-        .photo-layer { display: none !important; }
-        .qr-layer { opacity: 1 !important; position: relative !important; }
+        /* Saat print: foto dan QR berdampingan di dalam card */
+        .photo-layer { position: relative !important; opacity: 1 !important; width: 3rem !important; height: 3rem !important; }
+        .qr-layer   { position: relative !important; opacity: 1 !important; width: 5rem !important; height: 5rem !important; }
+        .card-images { display: flex !important; gap: 4px !important; align-items: center !important; justify-content: center !important; }
+        /* parent container dari kedua layer — jadikan flex row saat print */
+        .image-wrap  { position: static !important; display: flex !important; flex-direction: row !important; gap: 4px !important; align-items: center !important; justify-content: center !important; height: auto !important; width: auto !important; }
     }
 </style>
 
@@ -119,9 +127,9 @@
             {{-- SKU badge --}}
             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 mb-2 truncate w-full">{{ $product->sku }}</span>
 
-            {{-- Image wrapper: foto default, QR saat hover/print --}}
-            <div class="relative w-[7rem] h-[7rem] mb-2 shrink-0 mx-auto">
-                {{-- Product Photo (Default View, hidden on print) --}}
+            {{-- Image wrapper: foto + QR berdampingan (flex di print) --}}
+            <div class="image-wrap relative w-[7rem] h-[7rem] mb-2 shrink-0 mx-auto">
+                {{-- Foto produk (tampil di layar, disandingkan saat print) --}}
                 <div class="photo-layer absolute inset-0 transition-opacity duration-300 opacity-100 group-hover:opacity-0 flex items-center justify-center bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                     @if($product->image_path)
                         <img data-src="{{ asset('storage/' . $product->image_path) }}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Foto" class="w-full h-full object-cover photo-img">
@@ -132,12 +140,11 @@
                     @endif
                 </div>
 
-                {{-- QR Code (Shown on Hover & always on Print) --}}
+                {{-- QR Code: tampil saat hover di layar, DAN saat print (berdampingan dengan foto) --}}
                 <div class="qr-layer absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex items-center justify-center bg-white rounded-xl">
                     <img data-src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3Crect x='20' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='50' y='20' width='10' height='10' fill='%23cbd5e1'/%3E%3Crect x='20' y='50' width='10' height='10' fill='%23cbd5e1'/%3E%3C/svg%3E"
-                         alt="QR {{ $product->sku }}"
-                         class="w-[7rem] h-[7rem] object-contain qr-img" />
+                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23f1f5f9'/%3E%3C/svg%3E"
+                         alt="QR" class="w-[7rem] h-[7rem] object-contain qr-img" />
                 </div>
             </div>
 

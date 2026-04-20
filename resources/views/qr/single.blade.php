@@ -138,58 +138,66 @@
             </div>
         </div>
 
-        {{-- 10×7 cm layout --}}
-        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-row items-center gap-2 p-2 overflow-hidden">
-            <div class="shrink-0 flex flex-col items-center gap-1.5">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR" class="w-[5.3cm] h-[5.3cm] object-contain" />
+        {{-- 10×7 cm layout: foto & QR sama besar, sejajar, teks di bawah --}}
+        <div id="label-10x7" class="print-label label-10x7 bg-white shadow-2xl rounded-lg hidden flex-col items-center p-2 overflow-hidden gap-1.5">
+            {{-- Dua gambar sejajar --}}
+            <div class="flex items-center justify-center gap-2 w-full">
+                {{-- Foto produk --}}
                 @if($product->image_path)
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto" class="w-14 h-14 object-cover rounded-md border border-slate-200" />
+                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
+                         class="w-[3.2cm] h-[3.2cm] object-cover rounded-lg border-2 border-slate-200" />
                 @else
-                    <div class="w-14 h-14 rounded-md border border-slate-200 flex items-center justify-center bg-slate-50">
-                        <svg class="text-slate-300 w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                    <div class="w-[3.2cm] h-[3.2cm] rounded-lg border-2 border-slate-200 flex items-center justify-center bg-slate-50">
+                        <svg class="text-slate-300 w-8 h-8" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
                     </div>
                 @endif
+                {{-- QR Code --}}
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
+                     alt="QR" class="w-[3.2cm] h-[3.2cm] object-contain border-2 border-slate-800 rounded-lg" />
             </div>
-            <div class="flex flex-col justify-center overflow-hidden flex-1">
-                <p class="mono text-[7px] font-bold uppercase tracking-[3px] text-slate-400 mb-1">{{ strtoupper($systemName) }}</p>
-                <h1 class="text-[10px] font-black uppercase text-gray-900 leading-snug mb-1 break-words">{{ $product->name }}</h1>
-                <p class="mono text-[8px] font-bold text-slate-500 tracking-widest mb-1.5">{{ $product->sku }}</p>
-                <div class="barcode-lines scale-75 origin-left" id="barcode10x7"></div>
-                <p class="mono text-[8px] font-bold tracking-[3px] text-slate-800 mt-1">{{ $product->barcode }}</p>
+            {{-- Info teks di bawah kedua gambar --}}
+            <div class="w-full text-center">
+                <p class="text-[7px] font-bold uppercase tracking-[2px] text-slate-400">{{ strtoupper($systemName) }}</p>
+                <h1 class="text-[9px] font-black uppercase text-gray-900 leading-tight break-words line-clamp-2 mt-0.5">{{ $product->name }}</h1>
+                <p class="mono text-[7px] font-bold text-slate-500 tracking-wide">{{ $product->sku }}</p>
+                <div class="barcode-lines justify-center mt-0.5" style="height: 14px; gap: 1px;" id="barcode10x7"></div>
+                <p class="mono text-[7px] font-bold tracking-[2px] text-slate-800">{{ $product->barcode }}</p>
                 @if($product->location || $product->uom)
-                <p class="text-[8px] text-slate-400 mt-1">
-                    @if($product->location) Rak: <strong class="text-slate-700">{{ $product->location }}</strong> @endif
-                    @if($product->location && $product->uom) | @endif
-                    @if($product->uom) Satuan: <strong class="text-slate-700">{{ $product->uom }}</strong> @endif
+                <p class="text-[6px] text-slate-400 mt-0.5">
+                    @if($product->location)Rak: <strong class="text-slate-700">{{ $product->location }}</strong>@endif
+                    @if($product->location && $product->uom) &middot; @endif
+                    @if($product->uom)<strong class="text-slate-700">{{ $product->uom }}</strong>@endif
                 </p>
                 @endif
             </div>
         </div>
 
-        {{-- 5×5 cm layout --}}
-        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center justify-between p-1.5 text-center overflow-hidden">
+        {{-- 5×5 cm layout: foto & QR sejajar, teks di bawah --}}
+        <div id="label-5x5" class="print-label label-5x5 bg-white shadow-2xl rounded-lg hidden flex-col items-center p-1.5 text-center overflow-hidden gap-0.5">
             <p class="mono text-[5px] font-bold uppercase tracking-[1px] text-slate-400">{{ strtoupper($systemName) }}</p>
-            <div class="flex items-center gap-1 mt-0.5 justify-center">
+            {{-- Foto + QR sejajar --}}
+            <div class="flex items-center justify-center gap-1 w-full">
                 @if($product->image_path)
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto" class="w-[2cm] h-[2cm] object-cover rounded border border-slate-200" />
+                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Foto"
+                         class="w-[1.8cm] h-[1.8cm] object-cover rounded border border-slate-200 shrink-0" />
                 @else
-                    <div class="w-[2cm] h-[2cm] rounded border border-slate-200 flex items-center justify-center bg-slate-50">
-                        <svg class="text-slate-300 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+                    <div class="w-[1.8cm] h-[1.8cm] rounded border border-slate-200 flex items-center justify-center bg-slate-50 shrink-0">
+                        <svg class="text-slate-300 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
                     </div>
                 @endif
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0"
-                     alt="QR" class="w-[2.4cm] h-[2.4cm] object-contain shrink-0" />
+                     alt="QR" class="w-[1.8cm] h-[1.8cm] object-contain border border-slate-800 rounded shrink-0" />
             </div>
-            <div class="flex flex-col items-center justify-center -mt-0.5 w-full">
-                <p class="text-[6px] font-black uppercase text-gray-900 leading-tight break-words line-clamp-2 w-full">{{ $product->name }}</p>
-                <div class="barcode-lines justify-center mt-[1px]" style="height:10px;gap:1px;" id="barcode5x5"></div>
-                <p class="mono text-[5px] font-bold tracking-[1px] text-slate-800 mt-[1px]">{{ $product->barcode }}</p>
+            {{-- Teks di bawah kedua gambar --}}
+            <div class="w-full">
+                <p class="text-[6px] font-black uppercase text-gray-900 leading-tight line-clamp-2">{{ $product->name }}</p>
+                <div class="barcode-lines justify-center" style="height:9px;gap:1px;" id="barcode5x5"></div>
+                <p class="mono text-[5px] font-bold tracking-[1px] text-slate-800">{{ $product->barcode }}</p>
                 @if($product->location || $product->uom)
-                <p class="text-[5px] text-slate-400 mt-[1px] truncate w-full">
-                    @if($product->location) Rak: <strong class="text-slate-700">{{ $product->location }}</strong> @endif
-                    @if($product->location && $product->uom) • @endif
-                    @if($product->uom) <strong class="text-slate-700">{{ $product->uom }}</strong> @endif
+                <p class="text-[5px] text-slate-400 truncate">
+                    @if($product->location)<strong class="text-slate-700">{{ $product->location }}</strong>@endif
+                    @if($product->location && $product->uom) &middot; @endif
+                    @if($product->uom)<strong class="text-slate-700">{{ $product->uom }}</strong>@endif
                 </p>
                 @endif
             </div>
