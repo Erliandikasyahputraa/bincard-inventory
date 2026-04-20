@@ -40,10 +40,10 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                 </span>
             </div>
 
-            {{-- Full Navigation (Numbers) - Enabled for all screen sizes --}}
-            <div class="flex-1 flex flex-col sm:flex-row items-center justify-between gap-4 py-2">
-                <div>
-                    <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
+            {{-- Full Navigation (Numbers) - Optimized for all screen sizes --}}
+            <div class="flex-1 flex flex-col sm:flex-row items-center justify-between gap-4 py-3">
+                <div class="hidden sm:block">
+                    <p class="text-xs sm:text-sm text-gray-700 leading-5 dark:text-gray-400">
                         <span>{!! __('Showing') !!}</span>
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>
                         <span>{!! __('to') !!}</span>
@@ -54,21 +54,21 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                     </p>
                 </div>
 
-                <div>
-                    <span class="relative z-0 inline-flex rtl:flex-row-reverse rounded-md shadow-sm">
+                <div class="w-full sm:w-auto flex justify-center">
+                    <span class="relative z-0 inline-flex rtl:flex-row-reverse rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                         <span>
                             {{-- Previous Page Link --}}
                             @if ($paginator->onFirstPage())
                                 <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
-                                    <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <span class="relative inline-flex items-center px-2 sm:px-3 py-2 text-sm font-medium text-gray-400 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 cursor-default leading-5" aria-hidden="true">
+                                        <svg class="w-4 h-4 sm:w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                         </svg>
                                     </span>
                                 </span>
                             @else
-                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring ring-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('pagination.previous') }}">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 sm:px-3 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 leading-5 hover:bg-slate-50 dark:hover:bg-slate-800 focus:z-10 focus:outline-none transition ease-in-out duration-150" aria-label="{{ __('pagination.previous') }}">
+                                    <svg class="w-4 h-4 sm:w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                     </svg>
                                 </button>
@@ -79,21 +79,21 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                         @foreach ($elements as $element)
                             {{-- "Three Dots" Separator --}}
                             @if (is_string($element))
-                                <span aria-disabled="true">
-                                    <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 cursor-default leading-5 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300">{{ $element }}</span>
+                                <span aria-disabled="true" class="hidden xs:inline-flex">
+                                    <span class="relative inline-flex items-center px-2 sm:px-4 py-2 -ml-px text-xs sm:text-sm font-medium text-gray-700 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 cursor-default leading-5 dark:text-gray-300">{{ $element }}</span>
                                 </span>
                             @endif
 
                             {{-- Array Of Links --}}
                             @if (is_array($element))
                                 @foreach ($element as $page => $url)
-                                    <span wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}">
+                                    <span wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}" class="{{ ($page == $paginator->currentPage() || $page == 1 || $page == $paginator->lastPage()) ? 'inline-flex' : 'hidden md:inline-flex' }}">
                                         @if ($page == $paginator->currentPage())
                                             <span aria-current="page">
-                                                <span class="relative z-10 inline-flex items-center px-4 py-2 -ml-px text-sm font-bold text-blue-600 bg-blue-50 border border-blue-300 cursor-default leading-5 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-700 ring-1 ring-blue-300 shadow-sm">{{ $page }}</span>
+                                                <span class="relative z-10 inline-flex items-center px-3 sm:px-4 py-2 -ml-px text-xs sm:text-sm font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/40 dark:text-blue-400 border-r border-slate-200 dark:border-slate-800 cursor-default leading-5">{{ $page }}</span>
                                             </span>
                                         @else
-                                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:bg-slate-100 hover:text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring ring-blue-300 active:bg-gray-100 active:text-gray-700 transform hover:-translate-y-0.5 hover:z-20 transition-all duration-200 shadow-sm hover:shadow dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center px-3 sm:px-4 py-2 -ml-px text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 leading-5 hover:bg-slate-50 dark:hover:bg-slate-800 transition duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                                 {{ $page }}
                                             </button>
                                         @endif
