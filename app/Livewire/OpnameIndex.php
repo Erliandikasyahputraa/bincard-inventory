@@ -161,8 +161,9 @@ class OpnameIndex extends Component
 
     public function lihatSesi(int $id): void
     {
-        $this->opnameId   = $id;
-        $this->cariBarang = '';
+        $this->opnameId    = $id;
+        $this->cariBarang  = '';
+        $this->filterAisle = '';
     }
 
     public function tutupSesi(): void
@@ -241,7 +242,10 @@ class OpnameIndex extends Component
             
             match ($this->detailSortField) {
                 'barcode'  => $query->orderBy(Product::select('barcode')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
-                'location' => $query->orderBy(Product::select('location')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
+                'location' => $query->orderBy(Product::select('loc_aisle')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_floor, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_row, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir)
+                                    ->orderBy(Product::selectRaw('CAST(IFNULL(loc_col, 0) AS UNSIGNED)')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
                 'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
                 default    => $query->orderBy(Product::select('name')->whereColumn('products.id', 'stock_opname_details.product_id'), $dir),
             };
