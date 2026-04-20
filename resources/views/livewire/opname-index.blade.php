@@ -5,7 +5,7 @@
     </div>
 </x-slot:header>
 
-<div class="w-full" x-data="{ showImg: false, imgUrl: '' }" x-init="Lucide.init()">
+<div class="w-full" x-data="{ showImg: false, imgUrl: '' }">
     {{-- 1. Modal Image Popup - Single Root-Level Source of Truth --}}
     <div x-show="showImg" 
          x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
