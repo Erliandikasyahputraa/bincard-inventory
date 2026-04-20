@@ -14,22 +14,35 @@
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#10B981] dark:bg-emerald-500/10 rounded-full blur-3xl transition-colors duration-300 ease-in-out"></div>
             
             <div class="relative z-10">
-                <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 pb-6 border-b border-slate-700/50">
-                    <div>
-                        <div class="flex items-center gap-2 mb-2 text-[#3FB950] font-bold text-xs uppercase tracking-widest transition-colors duration-300 ease-in-out">
-                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Produk Dikenali
-                        </div>
-                        <h2 class="text-2xl font-black text-white leading-tight mb-2 transition-colors duration-300 ease-in-out">{{ $produkDitemukan['name'] }}</h2>
-                        <div class="flex gap-4 text-xs font-mono text-slate-400 transition-colors duration-300 ease-in-out">
-                            <span>SKU/Barcode: <span class="text-white transition-colors duration-300 ease-in-out">{{ $produkDitemukan['barcode'] }}</span></span>
-                            <span>&bull;</span>
-                            <span>Stok Valid: <span class="{{ $produkDitemukan['current_stock'] > 0 ? 'text-[#79C0FF]' : 'text-rose-400' }} text-sm font-black transition-colors duration-300 ease-in-out">{{ $produkDitemukan['current_stock'] }}</span></span>
-                        </div>
+                <div class="flex flex-col lg:flex-row gap-6 mb-6 pb-6 border-b border-slate-700/50">
+                    {{-- Product Image --}}
+                    <div class="shrink-0">
+                        @if($produkDitemukan['image_path'])
+                            <img src="{{ asset('storage/' . $produkDitemukan['image_path']) }}" alt="Foto Produk" class="w-24 h-24 lg:w-32 lg:h-32 object-cover rounded-2xl border-2 border-slate-700 ring-4 ring-[#238636]/10 shadow-lg" />
+                        @else
+                            <div class="w-24 h-24 lg:w-32 lg:h-32 bg-slate-800 border-2 border-slate-700 rounded-2xl flex items-center justify-center text-slate-500 shadow-inner">
+                                <i data-lucide="image-off" class="w-10 h-10"></i>
+                            </div>
+                        @endif
                     </div>
-                    
-                    <button wire:click="resetScan" class="py-2.5 px-5 bg-white/10 hover:bg-white/20 text-white font-bold border border-white/20 rounded-xl transition-all flex items-center justify-center shrink-0 w-full lg:w-auto">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i> Scan Ulang
-                    </button>
+
+                    <div class="flex-1 flex flex-col lg:flex-row justify-between lg:items-center gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2 text-[#3FB950] font-bold text-xs uppercase tracking-widest transition-colors duration-300 ease-in-out">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i> Produk Dikenali
+                            </div>
+                            <h2 class="text-2xl font-black text-white leading-tight mb-2 transition-colors duration-300 ease-in-out">{{ $produkDitemukan['name'] }}</h2>
+                            <div class="flex gap-4 text-xs font-mono text-slate-400 transition-colors duration-300 ease-in-out">
+                                <span>SKU/Barcode: <span class="text-white transition-colors duration-300 ease-in-out">{{ $produkDitemukan['barcode'] }}</span></span>
+                                <span>&bull;</span>
+                                <span>Stok Valid: <span class="{{ $produkDitemukan['current_stock'] > 0 ? 'text-[#79C0FF]' : 'text-rose-400' }} text-sm font-black transition-colors duration-300 ease-in-out">{{ $produkDitemukan['current_stock'] }}</span></span>
+                            </div>
+                        </div>
+                        
+                        <button wire:click="resetScan" class="py-2.5 px-5 bg-white/10 hover:bg-white/20 text-white font-bold border border-white/20 rounded-xl transition-all flex items-center justify-center shrink-0 w-full lg:w-auto">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i> Scan Ulang
+                        </button>
+                    </div>
                 </div>
 
                 <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-4 transition-colors duration-300 ease-in-out">Pilih Tujuan</p>

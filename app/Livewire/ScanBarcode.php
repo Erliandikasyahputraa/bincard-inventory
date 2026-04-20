@@ -58,6 +58,7 @@ class ScanBarcode extends Component
                 'name' => $p->name,
                 'barcode' => $p->barcode,
                 'current_stock' => $p->current_stock,
+                'image_path' => $p->image_path,
             ];
             $this->barcodeTerpilih = $p->barcode;
             $this->hasilPencarian = [];

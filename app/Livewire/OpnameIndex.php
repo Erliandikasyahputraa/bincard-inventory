@@ -223,7 +223,15 @@ class OpnameIndex extends Component
                 'barcode'  => $query->join('products as pb', 'stock_opname_details.product_id', '=', 'pb.id')
                                      ->orderBy('pb.barcode', $dir)->select('stock_opname_details.*'),
                 'location' => $query->join('products as pl', 'stock_opname_details.product_id', '=', 'pl.id')
-                                     ->orderBy('pl.location', $dir)->select('stock_opname_details.*'),
+                                     ->orderByRaw("pl.loc_aisle = '---' ASC")
+                                     ->orderBy('pl.loc_aisle', $dir)
+                                     ->orderByRaw("LENGTH(pl.loc_floor) " . $dir)
+                                     ->orderBy('pl.loc_floor', $dir)
+                                     ->orderByRaw("LENGTH(pl.loc_row) " . $dir)
+                                     ->orderBy('pl.loc_row', $dir)
+                                     ->orderByRaw("LENGTH(pl.loc_col) " . $dir)
+                                     ->orderBy('pl.loc_col', $dir)
+                                     ->select('stock_opname_details.*'),
                 'selisih'  => $query->orderByRaw('ABS(selisih) ' . ($dir === 'asc' ? 'ASC' : 'DESC')),
                 default    => $query->join('products as pn', 'stock_opname_details.product_id', '=', 'pn.id')
                                      ->orderBy('pn.name', $dir)->select('stock_opname_details.*'),

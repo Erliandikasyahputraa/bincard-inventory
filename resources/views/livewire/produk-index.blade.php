@@ -234,9 +234,36 @@
                             <input type="checkbox" x-model="selectAll" @change="toggleAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
                         </th>
                         <th class="px-6 py-4 font-semibold whitespace-nowrap">Barcode / SKU</th>
-                        <th class="px-6 py-4 font-semibold">Nama Produk</th>
-                        <th class="px-6 py-4 font-semibold text-center whitespace-nowrap transition-colors duration-300 ease-in-out">Stok Saat Ini</th>
-                        <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">Lokasi Rak</th>
+                        <th class="px-6 py-4 font-semibold">
+                            <button type="button" wire:click="toggleSort('name')" class="flex items-center gap-1.5 hover:text-blue-500 transition-colors uppercase tracking-wider">
+                                Nama Produk
+                                @if($sortField === 'name')
+                                    <i data-lucide="{{ $sortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5 text-blue-500"></i>
+                                @else
+                                    <i data-lucide="arrow-up-down" class="w-3 h-3 text-slate-300 opacity-50"></i>
+                                @endif
+                            </button>
+                        </th>
+                        <th class="px-6 py-4 font-semibold text-center whitespace-nowrap transition-colors duration-300 ease-in-out">
+                            <button type="button" wire:click="toggleSort('stock')" class="flex items-center justify-center gap-1.5 hover:text-blue-500 transition-colors uppercase tracking-wider w-full">
+                                Stok Saat Ini
+                                @if($sortField === 'stock')
+                                    <i data-lucide="{{ $sortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5 text-blue-500"></i>
+                                @else
+                                    <i data-lucide="arrow-up-down" class="w-3 h-3 text-slate-300 opacity-50"></i>
+                                @endif
+                            </button>
+                        </th>
+                        <th class="px-6 py-4 font-semibold text-center transition-colors duration-300 ease-in-out">
+                            <button type="button" wire:click="toggleSort('location')" class="flex items-center justify-center gap-1.5 hover:text-blue-500 transition-colors uppercase tracking-wider w-full">
+                                Lokasi Rak
+                                @if($sortField === 'location')
+                                    <i data-lucide="{{ $sortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5 text-blue-500"></i>
+                                @else
+                                    <i data-lucide="arrow-up-down" class="w-3 h-3 text-slate-300 opacity-50"></i>
+                                @endif
+                            </button>
+                        </th>
                         <th class="px-6 py-4 font-semibold text-right transition-colors duration-300 ease-in-out">Opsi</th>
                     </tr>
                 </thead>

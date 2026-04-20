@@ -144,6 +144,28 @@
         </div>
         @endif
 
+        {{-- Filter Lorong (New) --}}
+        @php
+            $aisles = \App\Models\Product::whereNotNull('loc_aisle')
+                ->where('loc_aisle', '!=', '---')
+                ->distinct()
+                ->orderBy('loc_aisle')
+                ->pluck('loc_aisle');
+        @endphp
+        @if($aisles->count() > 0)
+        <div class="relative shrink-0">
+            <i data-lucide="split" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
+            <select name="aisle" onchange="this.form.submit()"
+                class="pl-9 pr-8 py-2.5 bg-white dark:bg-slate-950 border border-emerald-200 dark:border-emerald-900/30 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none text-emerald-700 dark:text-emerald-400 font-bold transition-all cursor-pointer">
+                <option value="">Semua Lorong</option>
+                @foreach($aisles as $a)
+                    <option value="{{ $a }}" {{ request('aisle') == $a ? 'selected' : '' }}>Lorong {{ $a }}</option>
+                @endforeach
+            </select>
+            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 w-4 h-4 pointer-events-none"></i>
+        </div>
+        @endif
+
         <button type="submit" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors">
             Cari
         </button>
@@ -173,23 +195,19 @@
                 $href = route('qr.print', array_merge(request()->except(['sort','dir','page']), ['sort'=>$key,'dir'=>$nextDir]));
             @endphp
             <a href="{{ $href }}"
-               class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all
                    {{ $isActive
                        ? 'bg-blue-600 text-white border-blue-600'
-                       : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
+                       : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600 shadow-sm' }}">
                 {{ $label }}
                 @if($isActive)
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        @if($curDir === 'asc')
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
-                        @else
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                        @endif
-                    </svg>
+                    @if($curDir === 'asc')
+                        <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                    @else
+                        <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                    @endif
                 @else
-                    <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
-                    </svg>
+                    <i data-lucide="arrow-up-down" class="w-2.5 h-2.5 text-slate-300 opacity-50"></i>
                 @endif
             </a>
         @endforeach

@@ -53,6 +53,10 @@ class QRController extends Controller
             $query->where('location', $location);
         }
 
+        if ($aisle = $request->input('aisle')) {
+            $query->where('loc_aisle', $aisle);
+        }
+
         // Toggle sort: sort=field, dir=asc|desc
         $sortField = $request->input('sort', 'name');
         $sortDir   = $request->input('dir', 'asc');
@@ -66,13 +70,21 @@ class QRController extends Controller
                 $query->orderBy('current_stock', $sortDir);
                 break;
             case 'location':
-                $query->orderBy('location', $sortDir);
+                // Complex natural sort for multi-part location
+                $query->orderByRaw("loc_aisle = '---' ASC")
+                      ->orderBy('loc_aisle', $sortDir)
+                      ->orderByRaw("LENGTH(loc_floor) " . $sortDir)
+                      ->orderBy('loc_floor', $sortDir)
+                      ->orderByRaw("LENGTH(loc_row) " . $sortDir)
+                      ->orderBy('loc_row', $sortDir)
+                      ->orderByRaw("LENGTH(loc_col) " . $sortDir)
+                      ->orderBy('loc_col', $sortDir);
                 break;
             case 'status_kritis':
-                $query->whereColumn('current_stock', '<=', 'min_stock')->where('current_stock', '>', 0)->orderBy('name', 'asc');
+                $query->whereColumn('current_stock', '<=', 'min_stock')->where('current_stock', '>', 0)->orderBy('name', $sortDir);
                 break;
             case 'status_habis':
-                $query->where('current_stock', 0)->orderBy('name', 'asc');
+                $query->where('current_stock', 0)->orderBy('name', $sortDir);
                 break;
             case 'name':
             default:

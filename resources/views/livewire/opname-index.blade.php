@@ -87,17 +87,9 @@
                             : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
                     {{ $label }}
                     @if($detailSortField === $field)
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            @if($detailSortDir === 'asc')
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
-                            @else
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            @endif
-                        </svg>
+                        <i data-lucide="{{ $detailSortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5"></i>
                     @else
-                        <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
-                        </svg>
+                        <i data-lucide="arrow-up-down" class="w-2.5 h-2.5 text-slate-300 opacity-50"></i>
                     @endif
                 </button>
             @endforeach
@@ -109,28 +101,56 @@
                 <table class="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            <th class="px-5 py-4 w-12">Foto</th>
                             <th class="px-5 py-4">Nama Produk</th>
                             <th class="px-5 py-4">Rak / Barcode</th>
 
                             @if($opname->status === 'draft')
-                                <th class="px-5 py-4 text-center bg-emerald-500 text-white">Input Stok Fisik (Aktual)</th>
+                                <th class="px-5 py-4 text-center bg-emerald-500 text-white w-40">Input Stok Fisik</th>
                             @else
-                                <th class="px-5 py-4 text-center">Stok Sistem</th>
-                                <th class="px-5 py-4 text-center bg-emerald-500 text-white">Stok Fisik</th>
-                                <th class="px-5 py-4 text-center">Selisih</th>
+                                <th class="px-5 py-4 text-center w-28">Stok Sistem</th>
+                                <th class="px-5 py-4 text-center bg-emerald-500 text-white w-28">Stok Fisik</th>
+                                <th class="px-5 py-4 text-center w-28">Selisih</th>
                             @endif
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800" x-data="{ showImg: false, imgUrl: '' }">
+                        {{-- Modal Image Popup --}}
+                        <div x-show="showImg" @click.away="showImg = false" 
+                             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
+                             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                             style="display: none;">
+                            <div class="relative bg-white dark:bg-slate-900 p-2 rounded-3xl shadow-2xl max-w-lg w-full">
+                                <button @click="showImg = false" class="absolute -top-4 -right-4 w-10 h-10 bg-rose-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-rose-700 transition-colors">
+                                    <i data-lucide="x" class="w-6 h-6"></i>
+                                </button>
+                                <img :src="imgUrl" class="w-full h-auto rounded-2xl object-contain max-h-[70vh]" />
+                            </div>
+                        </div>
+
                         @forelse($details as $d)
                             <tr wire:key="detail-{{ $d->id }}" class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                <td class="px-5 py-3 text-slate-800 dark:text-slate-200 text-sm font-medium">{{ $d->product->name }}</td>
+                                <td class="px-5 py-3">
+                                    @if($d->product->image_path)
+                                        <button @click="imgUrl = '{{ asset('storage/' . $d->product->image_path) }}'; showImg = true"
+                                                class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all">
+                                            <img src="{{ asset('storage/' . $d->product->image_path) }}" class="w-full h-full object-cover" />
+                                        </button>
+                                    @else
+                                        <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-950 flex items-center justify-center text-slate-300">
+                                            <i data-lucide="image" class="w-5 h-5"></i>
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="px-5 py-3 text-slate-800 dark:text-slate-200 text-sm font-medium">
+                                    {{ $d->product->name }}
+                                </td>
                                 <td class="px-5 py-3 text-slate-500 dark:text-slate-400 text-xs">
                                     @if($d->product->location)
-                                        <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $d->product->location }}</span>
-                                        <span class="text-slate-400 mx-1">·</span>
+                                        <span class="text-slate-700 dark:text-slate-300 font-medium px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">{{ $d->product->location }}</span>
                                     @endif
-                                    <span class="font-mono">{{ $d->product->barcode }}</span>
+                                    <div class="font-mono mt-1">{{ $d->product->barcode }}</div>
                                 </td>
 
                                 @if($opname->status === 'draft')
@@ -139,21 +159,21 @@
                                             <input type="number" x-model="val"
                                                 x-on:input.debounce.800ms="$wire.setStokFisik({{ $d->product_id }}, val)"
                                                 x-on:blur="$wire.setStokFisik({{ $d->product_id }}, val)"
-                                                class="w-24 text-center bg-white dark:bg-slate-950 border-2 border-transparent focus:border-emerald-400 rounded-lg shadow-sm text-sm text-slate-900 dark:text-white outline-none"
+                                                class="w-24 text-center bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 rounded-xl shadow-sm text-sm text-slate-900 dark:text-white outline-none py-2 font-bold"
                                                 min="0" placeholder="—">
                                         </div>
                                     </td>
                                 @else
                                     <td class="px-5 py-3 text-center">
-                                        <span class="inline-block px-2 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-bold font-mono text-sm">{{ $d->stok_sistem }}</span>
+                                        <span class="inline-block px-2 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-bold font-mono text-sm shadow-inner">{{ $d->stok_sistem }}</span>
                                     </td>
                                     <td class="px-5 py-3 text-center bg-emerald-50 dark:bg-emerald-500/5">
-                                        <span class="font-bold font-mono text-sm text-slate-700 dark:text-slate-300">{{ $d->stok_fisik ?? '—' }}</span>
+                                        <span class="font-bold font-mono text-sm text-slate-800 dark:text-slate-200">{{ $d->stok_fisik ?? '—' }}</span>
                                     </td>
                                     @php $sel = ($d->stok_fisik !== null) ? ($d->stok_fisik - $d->stok_sistem) : null; @endphp
                                     <td class="px-5 py-3 text-center">
-                                        <span class="font-bold font-mono text-sm
-                                            {{ $sel === null ? 'text-slate-400' : ($sel > 0 ? 'text-emerald-600' : ($sel < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-400')) }}">
+                                        <span class="px-2 py-1 rounded-lg font-bold font-mono text-sm
+                                            {{ $sel === null ? 'text-slate-400' : ($sel > 0 ? 'bg-emerald-100 text-emerald-700' : ($sel < 0 ? 'bg-rose-100 text-rose-700' : 'text-slate-400')) }}">
                                             {{ $sel === null ? '—' : ($sel > 0 ? '+'.$sel : $sel) }}
                                         </span>
                                     </td>
