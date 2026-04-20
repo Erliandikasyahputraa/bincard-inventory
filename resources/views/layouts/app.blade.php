@@ -182,8 +182,8 @@
             <!-- User Profile (Hidden in smaller widths or when collapsed, but hoverable/clickable) -->
             @auth
             <div x-data="{ openProfile: false }" class="px-6 py-4 border-t border-slate-200 dark:border-[#21262D] relative transition-colors duration-300">
-                <div @click="openProfile = !openProfile" @click.outside="openProfile = false" class="flex items-center p-2 rounded-xl bg-slate-50 dark:bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-200 dark:border-slate-800 relative z-50">
-                    <div class="w-9 h-9 flex-shrink-0 rounded-xl bg-white border border-slate-200 dark:border-transparent dark:bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-800 dark:text-slate-300 font-bold text-xs uppercase transition-colors duration-300 ease-in-out">
+                <div @click="openProfile = !openProfile" @click.outside="openProfile = false" class="flex items-center p-2 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-800 relative z-50">
+                    <div class="w-9 h-9 flex-shrink-0 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-transparent flex items-center justify-center text-slate-800 dark:text-slate-300 font-bold text-xs uppercase transition-colors duration-300 ease-in-out">
                         {{ substr(auth()->user()->name, 0, 2) }}
                     </div>
                     <div x-show="sidebarOpen" class="ml-3 overflow-hidden text-left flex-1 transition-colors duration-300 ease-in-out" style="display: none;" x-transition>

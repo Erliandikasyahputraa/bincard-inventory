@@ -18,11 +18,12 @@ class QRController extends Controller
         return view('qr.index', compact('products', 'totalProdukSistem', 'locations'));
     }
 
-    /** Cetak semua produk tanpa pagination */
+    /** Cetak semua produk tanpa pagination (gunakan paginate besar agar view kompatibel) */
     public function printAll(Request $request)
     {
         $query = $this->buildQuery($request);
-        $products = $query->get();
+        // Gunakan paginate dengan angka besar agar view->links() tidak error
+        $products = $query->paginate(9999)->withQueryString();
         $totalProdukSistem = Product::count();
         $locations = Product::whereNotNull('location')->where('location', '!=', '')->distinct()->orderBy('location')->pluck('location');
 

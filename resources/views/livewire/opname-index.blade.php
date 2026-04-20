@@ -220,8 +220,8 @@
                         {{-- Baris 2: Status + Urutan --}}
                         <div class="flex items-center gap-1.5 justify-end flex-wrap">
                             <button type="button" wire:click="$set('historyStatus', '')"
-                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
-                                    {{ $historyStatus === '' ? 'bg-slate-700 text-white border-slate-700' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-400' }}">
+                                class="px-3 py-1.5 text-[11px] font-bold rounded-md border transition-all whitespace-nowrap
+                                    {{ $historyStatus === '' ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-emerald-400' }}">
                                 Semua
                             </button>
                             <button type="button" wire:click="$set('historyStatus', 'draft')"

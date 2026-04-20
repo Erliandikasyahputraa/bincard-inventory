@@ -3,24 +3,38 @@
 @section('content')
 
 {{-- ═══ Size Picker Modal (pure JS - works everywhere, no Alpine issues) ═══ --}}
+{{-- ═══ Size Picker Modal (pure JS - works everywhere, no Alpine issues) ═══ --}}
 <div id="sizeModal"
      style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:1rem;">
-    <div style="background:#fff; border-radius:1.25rem; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); padding:1.5rem; width:100%; max-width:340px;">
+    <div style="background:#fff; border-radius:1.25rem; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); padding:1.5rem; width:100%; max-width:380px;">
         <h3 style="font-size:1rem; font-weight:700; color:#1e293b; margin-bottom:0.25rem;">Pilih Ukuran Label</h3>
         <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:1.25rem;">Klik ukuran yang diinginkan, lalu klik Cetak.</p>
-        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; margin-bottom:1.25rem;" id="sizeOptions">
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; margin-bottom:1.25rem;" id="sizeOptions">
+            <button onclick="selectModalSize('a4')" id="sz_a4"
+                style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#fff; color:#475569; font-weight:600; font-size:0.75rem; cursor:pointer;"
+                >📄 A4 Penuh</button>
             <button onclick="selectModalSize('10x7')" id="sz_10x7"
-                style="border:2px solid #3b82f6; border-radius:0.75rem; padding:0.875rem 0.5rem; background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.8rem; cursor:pointer;"
+                style="border:2px solid #3b82f6; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.75rem; cursor:pointer;"
                 >🏷️ 10×7 cm</button>
             <button onclick="selectModalSize('5x5')" id="sz_5x5"
-                style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.5rem; background:#fff; color:#475569; font-weight:600; font-size:0.8rem; cursor:pointer;"
-                >🏷️ 5×5 cm</button>
+                style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#fff; color:#475569; font-weight:600; font-size:0.75rem; cursor:pointer;"
+                >🔖 5×5 cm</button>
         </div>
         <div style="display:flex; gap:0.5rem;">
             <button onclick="closeModal()" style="flex:1; padding:0.75rem; border-radius:0.75rem; border:1.5px solid #e2e8f0; font-weight:600; font-size:0.875rem; color:#64748b; background:#fff; cursor:pointer;">Batal</button>
             <button onclick="doConfirmPrint()" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:#2563eb; color:#fff; font-weight:700; font-size:0.875rem; border:none; cursor:pointer;">🖨 Cetak</button>
         </div>
     </div>
+</div>
+
+{{-- ═══ Loading Overlay for Bulk Print (smooth UX for 5000+ items) ═══ --}}
+<div id="printLoading" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(255,255,255,0.9); backdrop-filter:blur(8px); align-items:center; justify-content:center; flex-direction:column; gap:1.5rem;">
+    <div style="width:64px; height:64px; border:6px solid #f3f4f6; border-top:6px solid #10b981; border-radius:50%; animation:spin 1s linear infinite;"></div>
+    <div style="text-align:center;">
+        <h3 style="font-size:1.25rem; font-weight:800; color:#0f172a; margin-bottom:0.5rem;">Menyiapkan Label...</h3>
+        <p style="font-size:0.875rem; color:#64748b; max-width:280px;">Mohon tunggu sebentar, kami sedang memproses data produk dalam jumlah besar agar siap dicetak.</p>
+    </div>
+    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
 </div>
 
 <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -36,7 +50,7 @@
             Cetak Terpilih
         </button>
         <button onclick="openModal('all')" type="button"
-            class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 rounded-xl transition-colors shadow-md">
+            class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl transition-colors shadow-md border-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             Cetak Semua ({{ $totalProdukSistem ?? $products->count() }})
         </button>
@@ -268,7 +282,9 @@
 
 {{-- Pagination --}}
 <div class="mt-6 print:hidden">
-    {{ $products->links() }}
+    @if(is_object($products) && method_exists($products, 'links'))
+        {{ $products->links() }}
+    @endif
 </div>
 
 @push('scripts')
@@ -372,7 +388,7 @@
 
     function selectModalSize(size) {
         _chosenSize = size;
-        ['10x7','5x5'].forEach(s => {
+        ['a4', '10x7', '5x5'].forEach(s => {
             const btn = document.getElementById('sz_' + s);
             if (!btn) return;
             if (s === size) {
@@ -390,13 +406,15 @@
     }
 
     function doConfirmPrint() {
-        closeModal();
-        if (_pendingAction === 'selected') {
-            doPrintSelected();
-        } else if (_pendingAction === 'all') {
+        if (_pendingAction === 'all') {
+            closeModal();
+            document.getElementById('printLoading').style.display = 'flex';
             const base = '{{ route('qr.print.all', request()->except('page')) }}';
             const sep  = base.includes('?') ? '&' : '?';
             window.location.href = base + sep + 'size=' + _chosenSize;
+        } else if (_pendingAction === 'selected') {
+            closeModal();
+            doPrintSelected();
         }
     }
 
