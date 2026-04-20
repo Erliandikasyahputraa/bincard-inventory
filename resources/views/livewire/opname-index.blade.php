@@ -6,21 +6,7 @@
 </x-slot:header>
 
 <div class="w-full" x-data="{ showImg: false, imgUrl: '' }" wire:key="opname-root-container">
-    {{-- 1. Modal Image Popup - Single Root-Level Source of Truth --}}
-    <div x-show="showImg" 
-         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
-         style="display: none;" @keydown.escape.window="showImg = false">
-        
-        <button @click="showImg = false" class="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-all group z-[1001]">
-            <i data-lucide="x" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
-        </button>
 
-        <div class="relative max-w-4xl w-full flex items-center justify-center" @click.away="showImg = false">
-            <img :src="imgUrl" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-4 border-white/10" />
-        </div>
-    </div>
 
     {{-- ═══════════════════════════════ TAMPILAN SESI AKTIF ═══════════════════════════════ --}}
     @if($opname)
@@ -361,4 +347,21 @@
         </div>
 
     @endif
+</div>
+
+    {{-- 1. Modal Image Popup - RELOCATED TO BOTTOM FOR STACKING STABILITY --}}
+    <div x-show="showImg" 
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+         style="display: none;" @keydown.escape.window="showImg = false">
+        
+        <button @click="showImg = false" class="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-all group z-[10001]">
+            <i data-lucide="x" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+        </button>
+
+        <div class="relative max-w-4xl w-full flex items-center justify-center" @click.away="showImg = false">
+            <img :src="imgUrl" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-4 border-white/10" />
+        </div>
+    </div>
 </div>
