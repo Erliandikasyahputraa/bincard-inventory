@@ -2,6 +2,27 @@
 @section('title', 'Cetak QR Code - BINGO')
 @section('content')
 
+{{-- ═══ Size Picker Modal (pure JS - works everywhere, no Alpine issues) ═══ --}}
+<div id="sizeModal"
+     style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:1rem;">
+    <div style="background:#fff; border-radius:1.25rem; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); padding:1.5rem; width:100%; max-width:340px;">
+        <h3 style="font-size:1rem; font-weight:700; color:#1e293b; margin-bottom:0.25rem;">Pilih Ukuran Label</h3>
+        <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:1.25rem;">Klik ukuran yang diinginkan, lalu klik Cetak.</p>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; margin-bottom:1.25rem;" id="sizeOptions">
+            <button onclick="selectModalSize('10x7')" id="sz_10x7"
+                style="border:2px solid #3b82f6; border-radius:0.75rem; padding:0.875rem 0.5rem; background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.8rem; cursor:pointer;"
+                >🏷️ 10×7 cm</button>
+            <button onclick="selectModalSize('5x5')" id="sz_5x5"
+                style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.5rem; background:#fff; color:#475569; font-weight:600; font-size:0.8rem; cursor:pointer;"
+                >🏷️ 5×5 cm</button>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+            <button onclick="closeModal()" style="flex:1; padding:0.75rem; border-radius:0.75rem; border:1.5px solid #e2e8f0; font-weight:600; font-size:0.875rem; color:#64748b; background:#fff; cursor:pointer;">Batal</button>
+            <button onclick="doConfirmPrint()" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:#2563eb; color:#fff; font-weight:700; font-size:0.875rem; border:none; cursor:pointer;">🖨 Cetak</button>
+        </div>
+    </div>
+</div>
+
 <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
     <div>
         <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Cetak QR Code</h1>
@@ -9,10 +30,15 @@
     </div>
     <div class="flex items-center gap-2 print:hidden" id="floatBar">
         <span class="text-xs text-slate-500 dark:text-slate-400 hidden" id="selectedCount"></span>
-        <button onclick="printSelected()" id="btnPrintSelected"
+        <button onclick="openModal('selected')" id="btnPrintSelected"
             class="hidden items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-md">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
             Cetak Terpilih
+        </button>
+        <button onclick="openModal('all')" type="button"
+            class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 rounded-xl transition-colors shadow-md">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            Cetak Semua ({{ $totalProdukSistem ?? $products->count() }})
         </button>
         <button onclick="window.print()"
             class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-md">
@@ -162,86 +188,12 @@
             {{ is_object($products) && method_exists($products, 'total') ? $products->total() : $products->count() }} produk
         </span>
 
-        {{-- ═══ Aksi Pilih & Cetak (Alpine modal untuk ukuran label) ══════ --}}
-        <div class="flex items-center gap-2 ml-auto"
-             x-data="{
-                selectMode: 'page',
-                printSize: '10x7',
-                showModal: false,
-                pendingAction: null,
-                openPrint(action) {
-                    this.pendingAction = action;
-                    this.showModal = true;
-                },
-                confirmPrint() {
-                    this.showModal = false;
-                    if (this.pendingAction === 'selected') {
-                        printSelected();
-                    } else if (this.pendingAction === 'all') {
-                        let url = '{{ route('qr.print.all', request()->except('page')) }}';
-                        url += (url.includes('?') ? '&' : '?') + 'size=' + this.printSize;
-                        window.location.href = url;
-                    }
-                }
-            }">
-
-            {{-- Pilih Halaman / Semua --}}
-            <div class="flex items-center gap-1.5">
-                <label class="flex items-center gap-1.5 cursor-pointer select-none text-xs text-slate-500">
-                    <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                    <span class="font-medium whitespace-nowrap">Pilih halaman</span>
-                </label>
-                <span id="selectedCount" class="hidden text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold"></span>
-            </div>
-
-            {{-- Tombol Cetak Terpilih (muncul saat ada yang dipilih) --}}
-            <button id="btnPrintSelected"
-                onclick="Alpine.store && false; $el.closest('[x-data]').__x.$data.openPrint('selected')"
-                class="hidden items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors">
-                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Terpilih
-            </button>
-
-            {{-- Cetak Semua dari DB --}}
-            <button type="button" @click="openPrint('all')"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition-colors">
-                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-                Cetak Semua ({{ $totalProdukSistem }})
-            </button>
-
-            {{-- Modal Pilih Ukuran --}}
-            <div x-show="showModal" x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                 class="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
-                 style="display:none;">
-                <div @click.stop x-transition:enter="transition ease-out duration-200"
-                     x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                     class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 w-full max-w-xs">
-                    <h3 class="text-base font-bold text-slate-800 dark:text-white mb-1">Pilih Ukuran Label</h3>
-                    <p class="text-xs text-slate-400 mb-4">Ukuran label yang akan dicetak untuk setiap produk.</p>
-                    <div class="grid grid-cols-3 gap-2 mb-5">
-                        @foreach(['10x7' => '10×7 cm', '5x5' => '5×5 cm', 'card' => 'Kartu Grid'] as $sz => $szLabel)
-                            <button type="button" @click="printSize = '{{ $sz }}'"
-                                :class="printSize === '{{ $sz }}'
-                                    ? 'border-blue-500 ring-2 ring-blue-500/30 text-blue-600 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-300'"
-                                class="flex flex-col items-center gap-1 p-3 border-2 rounded-xl transition-all text-center">
-                                <i data-lucide="file-text" class="w-5 h-5"></i>
-                                <span class="text-[11px] font-semibold">{{ $szLabel }}</span>
-                            </button>
-                        @endforeach
-                    </div>
-                    <div class="flex gap-2">
-                        <button type="button" @click="showModal = false"
-                            class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                            Batal
-                        </button>
-                        <button type="button" @click="confirmPrint()"
-                            class="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors">
-                            Cetak
-                        </button>
-                    </div>
-                </div>
-            </div>
+        {{-- Pilih halaman (checkbox) --}}
+        <div class="flex items-center gap-2 ml-auto">
+            <label class="flex items-center gap-1.5 cursor-pointer select-none text-xs text-slate-600 dark:text-slate-300">
+                <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                <span class="font-medium whitespace-nowrap">Pilih halaman</span>
+            </label>
         </div>
     </div>
 </div>
@@ -403,7 +355,57 @@
         }
     }
 
-    function printSelected() {
+    // ─── Pure-JS modal untuk pilih ukuran sebelum cetak ───────────────────
+    let _pendingAction = null;
+    let _chosenSize    = '10x7';
+
+    function openModal(action) {
+        _pendingAction = action;
+        _chosenSize    = '10x7';
+        selectModalSize('10x7');                          // reset highlight
+        document.getElementById('sizeModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('sizeModal').style.display = 'none';
+    }
+
+    function selectModalSize(size) {
+        _chosenSize = size;
+        ['10x7','5x5'].forEach(s => {
+            const btn = document.getElementById('sz_' + s);
+            if (!btn) return;
+            if (s === size) {
+                btn.style.border      = '2px solid #3b82f6';
+                btn.style.background  = '#eff6ff';
+                btn.style.color       = '#2563eb';
+                btn.style.fontWeight  = '700';
+            } else {
+                btn.style.border      = '2px solid #e2e8f0';
+                btn.style.background  = '#fff';
+                btn.style.color       = '#475569';
+                btn.style.fontWeight  = '600';
+            }
+        });
+    }
+
+    function doConfirmPrint() {
+        closeModal();
+        if (_pendingAction === 'selected') {
+            doPrintSelected();
+        } else if (_pendingAction === 'all') {
+            const base = '{{ route('qr.print.all', request()->except('page')) }}';
+            const sep  = base.includes('?') ? '&' : '?';
+            window.location.href = base + sep + 'size=' + _chosenSize;
+        }
+    }
+
+    // Close modal when clicking backdrop
+    document.getElementById('sizeModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    function doPrintSelected() {
         // Force-load semua QR images pada kartu terpilih sebelum print
         const toLoad = [];
         document.querySelectorAll('.qr-card').forEach(card => {
@@ -412,7 +414,6 @@
                 card.classList.add('not-selected');
             } else {
                 card.classList.remove('not-selected');
-                // Queue lazy images to load
                 card.querySelectorAll('.qr-img[data-src]').forEach(img => toLoad.push(img));
             }
         });
@@ -423,7 +424,6 @@
             return;
         }
 
-        // Load semua gambar, tunggu selesai baru print
         let loaded = 0;
         toLoad.forEach(img => {
             const src = img.dataset.src;
@@ -438,6 +438,9 @@
             img.src = src;
         });
     }
+
+    // Legacy alias (masih dipakai beberapa bagian lama)
+    function printSelected() { openModal('selected'); }
 
     function restoreAfterPrint() {
         setTimeout(() => {

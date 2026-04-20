@@ -184,17 +184,18 @@
     {{-- ═══════════════════════════════ HALAMAN UTAMA / RIWAYAT ═══════════════════════════════ --}}
 
         {{-- Tombol buat sesi baru --}}
-        <div class="mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:justify-end">
-            <div class="relative w-full sm:w-44 shrink-0">
+        <div class="mb-6 flex items-center justify-end gap-3">
+            <span class="text-sm text-slate-500 dark:text-slate-400">Tanggal sesi:</span>
+            <div class="relative shrink-0">
                 <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
                 <input type="date" wire:model.live="tanggalBaru"
-                    class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+                    class="pl-9 pr-4 py-2 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
             </div>
             <button type="button" wire:click="buatOpname" wire:loading.attr="disabled"
-                class="inline-flex justify-center items-center px-4 py-2.5 bg-emerald-500 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg text-sm whitespace-nowrap shrink-0">
+                class="inline-flex justify-center items-center px-5 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-md text-sm whitespace-nowrap shrink-0">
                 <i data-lucide="folder-plus" class="w-4 h-4 mr-2" wire:loading.remove wire:target="buatOpname"></i>
                 <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin hidden" wire:loading wire:target="buatOpname"></i>
-                Buat Sesi Opname Baru
+                Buat Sesi Baru
             </button>
         </div>
 
@@ -204,47 +205,48 @@
                 <div class="flex items-center justify-between gap-2">
                     <h2 class="text-base font-bold text-slate-800 dark:text-slate-200 shrink-0">Riwayat Sesi</h2>
 
-                    {{-- Filter compact row --}}
-                    <div class="flex items-center gap-2 flex-wrap justify-end">
-                        {{-- Search --}}
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                            <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
-                                wire:model.live.debounce.300ms="historySearch"
-                                placeholder="Cari sesi..."
-                                class="pl-9 pr-3 py-1.5 w-36 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder-slate-400">
+                    {{-- Filter row: 2 baris agar tidak terpotong --}}
+                    <div class="flex flex-col gap-2 min-w-0">
+                        {{-- Baris 1: Search --}}
+                        <div class="flex items-center gap-2 justify-end">
+                            <div class="relative">
+                                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+                                <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
+                                    wire:model.live.debounce.300ms="historySearch"
+                                    placeholder="Cari sesi..."
+                                    class="pl-9 pr-3 py-1.5 w-44 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder-slate-400">
+                            </div>
                         </div>
-                        {{-- Filter tanggal --}}
-                        <input type="date" wire:model.live="historyDate"
-                            class="px-2 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white w-32" style="color-scheme:dark">
-                        {{-- Status pills: 3 tombol terpisah, tidak overflow-hidden --}}
-                        <button type="button" wire:click="$set('historyStatus', '')"
-                            class="px-2.5 py-1.5 text-[11px] font-semibold rounded-md border transition-colors
-                                {{ $historyStatus === '' ? 'bg-slate-700 text-white border-slate-700' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-slate-400' }}">
-                            Semua
-                        </button>
-                        <button type="button" wire:click="$set('historyStatus', 'draft')"
-                            class="px-2.5 py-1.5 text-[11px] font-semibold rounded-md border transition-colors
-                                {{ $historyStatus === 'draft' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600' }}">
-                            Draft
-                        </button>
-                        <button type="button" wire:click="$set('historyStatus', 'selesai')"
-                            class="px-2.5 py-1.5 text-[11px] font-semibold rounded-md border transition-colors
-                                {{ $historyStatus === 'selesai' ? 'bg-teal-600 text-white border-teal-600' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-teal-400 hover:text-teal-600' }}">
-                            Selesai
-                        </button>
-                        {{-- Urutan toggle --}}
-                        <button type="button" wire:click="toggleHistoryDir"
-                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all whitespace-nowrap">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                @if($historySortDir === 'desc')
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
-                                @else
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l-4 4m4-4H7"/>
-                                @endif
-                            </svg>
-                            {{ $historySortDir === 'desc' ? 'Terbaru' : 'Terlama' }}
-                        </button>
+                        {{-- Baris 2: Status + Urutan --}}
+                        <div class="flex items-center gap-1.5 justify-end flex-wrap">
+                            <button type="button" wire:click="$set('historyStatus', '')"
+                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
+                                    {{ $historyStatus === '' ? 'bg-slate-700 text-white border-slate-700' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-400' }}">
+                                Semua
+                            </button>
+                            <button type="button" wire:click="$set('historyStatus', 'draft')"
+                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
+                                    {{ $historyStatus === 'draft' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600' }}">
+                                Draft
+                            </button>
+                            <button type="button" wire:click="$set('historyStatus', 'selesai')"
+                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
+                                    {{ $historyStatus === 'selesai' ? 'bg-teal-600 text-white border-teal-600' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-400 hover:text-teal-600' }}">
+                                Selesai
+                            </button>
+                            <span class="w-px h-5 bg-slate-200 dark:bg-slate-700"></span>
+                            <button type="button" wire:click="toggleHistoryDir"
+                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all whitespace-nowrap">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    @if($historySortDir === 'desc')
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
+                                    @else
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l-4 4m4-4H7"/>
+                                    @endif
+                                </svg>
+                                {{ $historySortDir === 'desc' ? 'Terbaru' : 'Terlama' }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
