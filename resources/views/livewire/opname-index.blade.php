@@ -10,7 +10,7 @@
     <div x-show="showImg" 
          x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
          x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
          style="display: none;" @keydown.escape.window="showImg = false">
         
         <button @click="showImg = false" class="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-all group z-[1001]">
@@ -79,10 +79,10 @@
             </div>
         </div>
 
-        {{-- Filter & search dalam sesi - compact 1 baris --}}
-        <div class="flex flex-wrap items-center gap-2 mb-4">
+        {{-- Filter & search dalam sesi - Responsive Grid --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-3 mb-6">
             {{-- Search --}}
-            <div class="relative flex-1 min-w-[160px]">
+            <div class="relative w-full lg:flex-1">
                 <i data-lucide="search" wire:loading.remove wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
                 <i data-lucide="loader-2" wire:loading wire:target="cariBarang" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
                 <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
@@ -108,25 +108,23 @@
 
 
 
-            {{-- Sort pills --}}
-            @php
-                $sortPills = ['name' => 'Nama', 'barcode' => 'Barcode', 'location' => 'Rak'];
-                if($opname->status === 'selesai') $sortPills['selisih'] = 'Selisih';
-            @endphp
-            @foreach($sortPills as $field => $label)
-                <button type="button" wire:click="toggleDetailSort('{{ $field }}')"
-                    class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold border transition-all
-                        {{ $detailSortField === $field
-                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
-                    {{ $label }}
-                    @if($detailSortField === $field)
-                        <i data-lucide="{{ $detailSortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5"></i>
-                    @else
-                        <i data-lucide="arrow-up-down" class="w-2.5 h-2.5 text-slate-300 opacity-50"></i>
-                    @endif
-                </button>
-            @endforeach
+            {{-- Sort Pills - Hidden on very small if needed, or wrapped --}}
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+                @foreach($sortPills as $field => $label)
+                    <button type="button" wire:click="toggleDetailSort('{{ $field }}')"
+                        class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-[10px] sm:text-xs font-semibold border transition-all whitespace-nowrap
+                            {{ $detailSortField === $field
+                                ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
+                        {{ $label }}
+                        @if($detailSortField === $field)
+                            <i data-lucide="{{ $detailSortDir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3.5 h-3.5"></i>
+                        @else
+                            <i data-lucide="arrow-up-down" class="w-2.5 h-2.5 text-slate-300 opacity-50"></i>
+                        @endif
+                    </button>
+                @endforeach
+            </div>
         </div>
 
         {{-- Tabel detail sesi --}}
@@ -225,19 +223,23 @@
     {{-- WRAPPER RIWAYAT - Untuk stabilitas morphing Livewire --}}
     <div wire:key="history-list-wrapper" class="space-y-4">
         {{-- Tombol buat sesi baru --}}
-        <div class="mb-6 flex items-center justify-end gap-3">
-            <span class="text-sm text-slate-500 dark:text-slate-400">Tanggal sesi:</span>
-            <div class="relative shrink-0">
-                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
-                <input type="date" wire:model.live="tanggalBaru"
-                    class="pl-9 pr-4 py-2 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white" style="color-scheme: dark;">
+        <div class="mb-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap">Tanggal sesi:</span>
             </div>
-            <button type="button" wire:click="buatOpname" wire:loading.attr="disabled"
-                class="inline-flex justify-center items-center px-5 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-md text-sm whitespace-nowrap shrink-0">
-                <i data-lucide="folder-plus" class="w-4 h-4 mr-2" wire:loading.remove wire:target="buatOpname"></i>
-                <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin hidden" wire:loading wire:target="buatOpname"></i>
-                Buat Sesi Baru
-            </button>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="relative flex-1 sm:flex-none">
+                    <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
+                    <input type="date" wire:model.live="tanggalBaru"
+                        class="pl-9 pr-4 py-2.5 w-full sm:w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none text-slate-900 dark:text-white shadow-sm transition-all" style="color-scheme: dark;">
+                </div>
+                <button type="button" wire:click="buatOpname" wire:loading.attr="disabled"
+                    class="flex-1 sm:flex-none inline-flex justify-center items-center px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-emerald-500/20 text-sm whitespace-nowrap">
+                    <i data-lucide="folder-plus" class="w-4 h-4 mr-2" wire:loading.remove wire:target="buatOpname"></i>
+                    <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin hidden" wire:loading wire:target="buatOpname"></i>
+                    Buat Sesi Baru
+                </button>
+            </div>
         </div>
 
         {{-- Riwayat sesi --}}
@@ -246,45 +248,37 @@
                 <div class="flex items-center justify-between gap-2">
                     <h2 class="text-base font-bold text-slate-800 dark:text-slate-200 shrink-0">Riwayat Sesi</h2>
 
-                    {{-- Filter row: 2 baris agar tidak terpotong --}}
-                    <div class="flex flex-col gap-2 min-w-0">
+                    {{-- Filter row: Responsive Stack --}}
+                    <div class="flex flex-col gap-3 min-w-0">
                         {{-- Baris 1: Search --}}
-                        <div class="flex items-center gap-2 justify-end">
-                            <div class="relative">
-                                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
-                                <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
-                                    wire:model.live.debounce.300ms="historySearch"
-                                    placeholder="Cari sesi..."
-                                    class="pl-9 pr-3 py-1.5 w-44 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder-slate-400">
-                            </div>
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none"></i>
+                            <input type="text" enterkeyhint="search" x-data x-on:keydown.enter="$el.blur()"
+                                wire:model.live.debounce.300ms="historySearch"
+                                placeholder="Cari sesi..."
+                                class="pl-9 pr-3 py-2.5 w-full sm:w-64 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder-slate-400 transition-all">
                         </div>
                         {{-- Baris 2: Status + Urutan --}}
-                        <div class="flex items-center gap-1.5 justify-end flex-wrap">
+                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
                             <button type="button" wire:click="$set('historyStatus', '')"
-                                class="px-3 py-1.5 text-[11px] font-bold rounded-md border transition-all whitespace-nowrap
+                                class="px-4 py-2 text-xs font-bold rounded-xl border transition-all whitespace-nowrap
                                     {{ $historyStatus === '' ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-emerald-400' }}">
                                 Semua
                             </button>
                             <button type="button" wire:click="$set('historyStatus', 'draft')"
-                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
+                                class="px-4 py-2 text-xs font-semibold rounded-xl border transition-colors whitespace-nowrap
                                     {{ $historyStatus === 'draft' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600' }}">
                                 Draft
                             </button>
                             <button type="button" wire:click="$set('historyStatus', 'selesai')"
-                                class="px-3 py-1.5 text-[11px] font-semibold rounded-md border transition-colors whitespace-nowrap
+                                class="px-4 py-2 text-xs font-semibold rounded-xl border transition-colors whitespace-nowrap
                                     {{ $historyStatus === 'selesai' ? 'bg-teal-600 text-white border-teal-600' : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-400 hover:text-teal-600' }}">
                                 Selesai
                             </button>
-                            <span class="w-px h-5 bg-slate-200 dark:bg-slate-700"></span>
+                            <span class="w-px h-6 bg-slate-200 dark:bg-slate-700 hidden sm:block"></span>
                             <button type="button" wire:click="toggleHistoryDir"
-                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all whitespace-nowrap">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    @if($historySortDir === 'desc')
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
-                                    @else
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l-4 4m4-4H7"/>
-                                    @endif
-                                </svg>
+                                class="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 transition-all whitespace-nowrap">
+                                <i data-lucide="{{ $historySortDir === 'desc' ? 'sort-desc' : 'sort-asc' }}" class="w-4 h-4"></i>
                                 {{ $historySortDir === 'desc' ? 'Terbaru' : 'Terlama' }}
                             </button>
                         </div>
