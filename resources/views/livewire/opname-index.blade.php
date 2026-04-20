@@ -109,6 +109,10 @@
 
 
             {{-- Sort Pills - Hidden on very small if needed, or wrapped --}}
+            @php
+                $sortPills = ['name' => 'Nama', 'barcode' => 'Barcode', 'location' => 'Rak'];
+                if($opname->status === 'selesai') $sortPills['selisih'] = 'Selisih';
+            @endphp
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
                 @foreach($sortPills as $field => $label)
                     <button type="button" wire:click="toggleDetailSort('{{ $field }}')"
