@@ -19,15 +19,22 @@ class QRController extends Controller
     }
 
     /** Cetak semua produk tanpa pagination (gunakan paginate besar agar view kompatibel) */
+    /** Cetak massal dengan view minimalis (high performance) */
     public function printAll(Request $request)
     {
         $query = $this->buildQuery($request);
-        // Gunakan paginate dengan angka besar agar view->links() tidak error
-        $products = $query->paginate(9999)->withQueryString();
-        $totalProdukSistem = Product::count();
-        $locations = Product::whereNotNull('location')->where('location', '!=', '')->distinct()->orderBy('location')->pluck('location');
 
-        return view('qr.index', compact('products', 'totalProdukSistem', 'locations'));
+        // Jika ada ID terpilih, batasi hanya pada ID tersebut
+        if ($request->has('ids') && $request->ids) {
+            $ids = explode(',', $request->ids);
+            $query->whereIn('id', $ids);
+        }
+
+        // Ambil semua produk tanpa pagination (karena view bulk menangani ribuan item)
+        $products = $query->get();
+        $size     = $request->get('size', '10x7');
+
+        return view('qr.bulk', compact('products', 'size'));
     }
 
     private function buildQuery(Request $request)

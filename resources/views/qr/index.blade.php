@@ -406,15 +406,18 @@
     }
 
     function doConfirmPrint() {
+        closeModal();
+        document.getElementById('printLoading').style.display = 'flex';
+
         if (_pendingAction === 'all') {
-            closeModal();
-            document.getElementById('printLoading').style.display = 'flex';
             const base = '{{ route('qr.print.all', request()->except('page')) }}';
             const sep  = base.includes('?') ? '&' : '?';
             window.location.href = base + sep + 'size=' + _chosenSize;
         } else if (_pendingAction === 'selected') {
-            closeModal();
-            doPrintSelected();
+            const ids  = Array.from(selectedIds).join(',');
+            const base = '{{ route('qr.print.all', request()->except('page')) }}';
+            const sep  = base.includes('?') ? '&' : '?';
+            window.location.href = base + sep + 'size=' + _chosenSize + '&ids=' + ids;
         }
     }
 
