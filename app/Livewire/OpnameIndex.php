@@ -240,13 +240,15 @@ class OpnameIndex extends Component
                                      ->orderBy('pb.barcode', $dir)->select('stock_opname_details.*'),
                 'location' => $query->join('products as pl', 'stock_opname_details.product_id', '=', 'pl.id')
                                      ->orderByRaw("pl.loc_aisle = '---' ASC")
-                                     // Alphabetical Priority: Letters first, then symbols/numbers
                                      ->orderByRaw("IF(pl.loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
                                      ->orderBy('pl.loc_aisle', $dir)
+                                     ->orderByRaw("IF(pl.loc_floor REGEXP '^[a-zA-Z]', 0, 1) ASC")
                                      ->orderByRaw("LENGTH(pl.loc_floor) " . $dir)
                                      ->orderBy('pl.loc_floor', $dir)
+                                     ->orderByRaw("IF(pl.loc_row REGEXP '^[a-zA-Z]', 0, 1) ASC")
                                      ->orderByRaw("LENGTH(pl.loc_row) " . $dir)
                                      ->orderBy('pl.loc_row', $dir)
+                                     ->orderByRaw("IF(pl.loc_col REGEXP '^[a-zA-Z]', 0, 1) ASC")
                                      ->orderByRaw("LENGTH(pl.loc_col) " . $dir)
                                      ->orderBy('pl.loc_col', $dir)
                                      ->select('stock_opname_details.*'),
