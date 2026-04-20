@@ -113,6 +113,8 @@ class ProdukIndex extends Component
         match ($this->sortField) {
             'name'     => $query->orderBy('name', $this->sortDir),
             'location' => $query->orderByRaw("loc_aisle = '---' ASC")
+                                // Alphabetical Priority: Letters first
+                                ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
                                 ->orderBy('loc_aisle', $this->sortDir)
                                 ->orderByRaw("LENGTH(loc_floor) " . $this->sortDir)
                                 ->orderBy('loc_floor', $this->sortDir)
@@ -132,6 +134,8 @@ class ProdukIndex extends Component
             ->where('loc_aisle', '!=', '---')
             ->where('loc_aisle', '!=', '')
             ->distinct()
+            // Alphabetical Priority: Letters first
+            ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
             ->orderBy('loc_aisle')
             ->pluck('loc_aisle');
 

@@ -17,6 +17,8 @@ class QRController extends Controller
             ->where('loc_aisle', '!=', '---')
             ->where('loc_aisle', '!=', '')
             ->distinct()
+            // Alphabetical Priority: Letters first, then numbers
+            ->orderByRaw("IF(loc_aisle REGEXP '^[a-zA-Z]', 0, 1) ASC")
             ->orderBy('loc_aisle')
             ->pluck('loc_aisle');
 
