@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
 
     // QR Print
     Route::get('/qr-print', [App\Http\Controllers\QRController::class, 'index'])->name('qr.print');
+    Route::get('/qr-print-all', [App\Http\Controllers\QRController::class, 'printAll'])->name('qr.print.all');
     Route::get('/qr-print/{id}', [App\Http\Controllers\QRController::class, 'single'])->name('qr.print.single');
 
     Route::middleware('role.admin')->group(function() {

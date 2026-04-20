@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
-
 use Livewire\Attributes\Title;
 
 #[Title('Data Produk')]
@@ -13,80 +12,84 @@ class ProdukIndex extends Component
 {
     use WithPagination;
 
-    public string $cari = '';
-    public string $sortBy = 'newest';
+    public string $cari       = '';
+    public string $sortField  = 'newest'; // newest|name|location|stock|status
+    public string $sortDir    = 'desc';   // asc|desc
+    public string $filterStatus = '';     // ''|kritis|habis
+
     public array $selectedIds = [];
-    public bool $selectAll = false;
+    public bool  $selectAll   = false;
+
+    /** Toggle sort: klik field sama → balik dir; klik field baru → asc (kecuali 'newest'→desc) */
+    public function toggleSort(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDir = $this->sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            // newest default desc, yang lain default asc
+            $this->sortDir = $field === 'newest' ? 'desc' : 'asc';
+        }
+        $this->resetPage();
+    }
+
+    public function setFilter(string $status): void
+    {
+        $this->filterStatus = $this->filterStatus === $status ? '' : $status;
+        $this->resetPage();
+    }
 
     public function hapus(int $id): void
     {
-        $produk = Product::findOrFail($id);
-        $produk->delete();
+        Product::findOrFail($id)->delete();
         $this->dispatch('sukses', 'Produk dihapus.');
     }
 
     public function mount(): void
     {
         if (request()->query('filter') === 'kritis') {
-            $this->sortBy = 'filter_kritis';
+            $this->filterStatus = 'kritis';
         } elseif (request()->query('filter') === 'habis') {
-            $this->sortBy = 'filter_habis';
+            $this->filterStatus = 'habis';
         }
     }
 
     public function updatedSelectAll(bool $value): void
     {
-        if (!$value) {
-            $this->selectedIds = [];
-            return;
-        }
-
-        $this->selectedIds = $this->getCurrentQuery()->pluck('id')->map(fn ($id) => (int) $id)->all();
+        $this->selectedIds = $value
+            ? $this->getCurrentQuery()->pluck('id')->map(fn($id) => (int)$id)->all()
+            : [];
     }
 
-    public function updatedCari(): void
-    {
-        $this->resetPage();
-    }
-
-    public function updatedSortBy(): void
-    {
-        $this->resetPage();
-    }
-
-
+    public function updatedCari(): void    { $this->resetPage(); }
 
     public function hapusTerpilih(array $ids = []): void
     {
         $ids = array_filter(array_map('intval', $ids));
-        if (count($ids) === 0) {
-            return;
-        }
+        if (empty($ids)) return;
 
         Product::whereIn('id', $ids)->delete();
-        $deleted = count($ids);
         $this->selectedIds = [];
-        $this->selectAll = false;
-        $this->dispatch('sukses', "{$deleted} produk berhasil dihapus.");
+        $this->selectAll   = false;
+        $this->dispatch('sukses', count($ids) . ' produk berhasil dihapus.');
     }
 
     private function getCurrentQuery()
     {
         $query = Product::query();
 
-        $query->when($this->cari !== '', function ($q) {
-            $q->where(function ($subQ) {
-                $subQ->where('name', 'like', '%' . $this->cari . '%')
-                    ->orWhere('barcode', 'like', '%' . $this->cari . '%')
-                    ->orWhere('sku', 'like', '%' . $this->cari . '%');
-            });
-        });
+        $query->when($this->cari !== '', fn($q) =>
+            $q->where(fn($s) =>
+                $s->where('name', 'like', '%' . $this->cari . '%')
+                  ->orWhere('barcode', 'like', '%' . $this->cari . '%')
+                  ->orWhere('sku', 'like', '%' . $this->cari . '%')
+            )
+        );
 
-        if ($this->sortBy === 'filter_habis') {
+        if ($this->filterStatus === 'habis') {
             $query->where('current_stock', '=', 0);
-        } elseif ($this->sortBy === 'filter_kritis') {
-            $query->whereColumn('current_stock', '<=', 'min_stock')
-                  ->where('current_stock', '>', 0);
+        } elseif ($this->filterStatus === 'kritis') {
+            $query->whereColumn('current_stock', '<=', 'min_stock')->where('current_stock', '>', 0);
         }
 
         return $query;
@@ -96,26 +99,13 @@ class ProdukIndex extends Component
     {
         $query = $this->getCurrentQuery();
 
-        switch ($this->sortBy) {
-            case 'newest':
-                $query->orderBy('id', 'desc');
-                break;
-            case 'rack_asc':
-                $query->orderBy('location', 'asc');
-                break;
-            case 'stock_highest':
-                $query->orderBy('current_stock', 'desc');
-                break;
-            case 'name_desc':
-                $query->orderBy('name', 'desc');
-                break;
-            case 'filter_habis':
-            case 'filter_kritis':
-            case 'name_asc':
-            default:
-                $query->orderBy('name', 'asc');
-                break;
-        }
+        match ($this->sortField) {
+            'name'     => $query->orderBy('name', $this->sortDir),
+            'location' => $query->orderBy('location', $this->sortDir),
+            'stock'    => $query->orderBy('current_stock', $this->sortDir),
+            'newest'   => $query->orderBy('id', $this->sortDir),
+            default    => $query->orderBy('id', 'desc'),
+        };
 
         $produk = $query->paginate(15);
         return view('livewire.produk-index', ['produk' => $produk])

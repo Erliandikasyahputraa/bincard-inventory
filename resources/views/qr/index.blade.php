@@ -38,73 +38,145 @@
             page-break-inside: avoid;
             break-inside: avoid;
             border: 1px solid #d1d5db !important;
-            padding: 6px !important;
+            padding: 8px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
         }
         .qr-card.not-selected { display: none !important; }
-        /* Saat print: foto dan QR berdampingan di dalam card */
-        .photo-layer { position: relative !important; opacity: 1 !important; width: 3rem !important; height: 3rem !important; }
-        .qr-layer   { position: relative !important; opacity: 1 !important; width: 5rem !important; height: 5rem !important; }
-        .card-images { display: flex !important; gap: 4px !important; align-items: center !important; justify-content: center !important; }
-        /* parent container dari kedua layer — jadikan flex row saat print */
-        .image-wrap  { position: static !important; display: flex !important; flex-direction: row !important; gap: 4px !important; align-items: center !important; justify-content: center !important; height: auto !important; width: auto !important; }
+        /* Saat print: image-wrap jadi row, foto & QR berdampingan, sama besar */
+        .image-wrap {
+            position: static !important;
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 6px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: auto !important;
+            width: auto !important;
+        }
+        .photo-layer {
+            position: static !important;
+            opacity: 1 !important;
+            width: 4rem !important;
+            height: 4rem !important;
+            flex-shrink: 0 !important;
+        }
+        .qr-layer {
+            position: static !important;
+            opacity: 1 !important;
+            width: 4rem !important;
+            height: 4rem !important;
+            flex-shrink: 0 !important;
+        }
+        .qr-layer img { width: 4rem !important; height: 4rem !important; }
     }
 </style>
 
 {{-- Search & filter bar --}}
-<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 mb-4 print:hidden shadow-sm">
-    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-        <form method="GET" action="{{ route('qr.print') }}" class="relative flex-1 w-full max-w-md">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk, SKU, atau barcode..."
-                class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-white dark:placeholder-slate-500">
-            @if(request('search'))
-                <a href="{{ route('qr.print') }}" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
-                    <i data-lucide="x-circle" class="w-4 h-4"></i>
-                </a>
-            @endif
-        </form>
-        </form>
-        
-        <form method="GET" action="{{ route('qr.print') }}" class="flex items-center gap-2">
-            <input type="hidden" name="search" value="{{ request('search') }}">
-            
-            <div class="relative w-full sm:w-48 flex-shrink-0">
-                <i data-lucide="filter" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
-                <select name="sort" onchange="this.form.submit()" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
-                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama (A-Z)</option>
-                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama (Z-A)</option>
-                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
-                    <option value="filter_kritis" {{ request('sort') == 'filter_kritis' ? 'selected' : '' }}>Hanya Stok Kritis</option>
-                    <option value="filter_habis" {{ request('sort') == 'filter_habis' ? 'selected' : '' }}>Hanya Stok Habis</option>
-                    <option value="stock_highest" {{ request('sort') == 'stock_highest' ? 'selected' : '' }}>Stok Terbanyak</option>
-                    <option value="rack_asc" {{ request('sort') == 'rack_asc' ? 'selected' : '' }}>Urut Lokasi / Rak</option>
-                </select>
-                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
-            </div>
-            
-            @if(count($locations) > 0)
-            <div class="relative w-full sm:w-48 flex-shrink-0">
-                <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
-                <select name="location" onchange="this.form.submit()" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
-                    <option value="">Semua Lokasi</option>
-                    @foreach($locations as $loc)
-                        <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
-                    @endforeach
-                </select>
-                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
-            </div>
-            @endif
-        </form>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 mb-4 print:hidden shadow-sm">
+    {{-- Row 1: Search + Cetak actions --}}
+    <form method="GET" action="{{ route('qr.print') }}" class="flex flex-wrap gap-3 items-center">
+        {{-- Hidden preserve params --}}
+        <input type="hidden" name="sort" value="{{ request('sort', 'name') }}">
+        <input type="hidden" name="dir" value="{{ request('dir', 'asc') }}">
+        <input type="hidden" name="location" value="{{ request('location') }}">
 
-        <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 shrink-0 ml-auto">
-            <label class="flex items-center gap-2 cursor-pointer select-none">
+        {{-- Search --}}
+        <div class="relative flex-1 min-w-[180px]">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="Cari nama produk, SKU, atau barcode..."
+                class="pl-9 pr-4 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white dark:placeholder-slate-500">
+        </div>
+
+        {{-- Location filter --}}
+        @if(count($locations) > 0)
+        <div class="relative w-36 shrink-0">
+            <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+            <select name="location" onchange="this.form.submit()" class="pl-9 pr-7 py-2.5 w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-800 dark:text-slate-200 appearance-none cursor-pointer">
+                <option value="">Semua Rak</option>
+                @foreach($locations as $loc)
+                    <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
+                @endforeach
+            </select>
+            <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5 pointer-events-none"></i>
+        </div>
+        @endif
+
+        <button type="submit" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors">
+            Cari
+        </button>
+    </form>
+
+    {{-- Row 2: Sort toggle pills + Cetak actions --}}
+    <div class="flex flex-wrap items-center gap-2 mt-3">
+        {{-- Sort pills: satu tombol per field, klik toggle asc/desc --}}
+        @php
+            $curSort = request('sort', 'name');
+            $curDir  = request('dir', 'asc');
+            $sortOptions = [
+                'name'    => 'Nama',
+                'newest'  => 'Terbaru',
+                'location'=> 'Rak',
+                'stock'   => 'Stok',
+            ];
+        @endphp
+        <span class="text-xs text-slate-400 font-medium mr-1 shrink-0">Urut:</span>
+        @foreach($sortOptions as $key => $label)
+            @php
+                $isActive = $curSort === $key;
+                // Klik field aktif → toggle dir; klik field lain → asc (kecuali newest → desc)
+                $nextDir = $isActive
+                    ? ($curDir === 'asc' ? 'desc' : 'asc')
+                    : ($key === 'newest' ? 'desc' : 'asc');
+                $href = route('qr.print', array_merge(request()->except(['sort','dir','page']), ['sort'=>$key,'dir'=>$nextDir]));
+            @endphp
+            <a href="{{ $href }}"
+               class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
+                   {{ $isActive
+                       ? 'bg-blue-600 text-white border-blue-600'
+                       : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
+                {{ $label }}
+                @if($isActive)
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        @if($curDir === 'asc')
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+                        @else
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        @endif
+                    </svg>
+                @else
+                    <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                @endif
+            </a>
+        @endforeach
+
+        {{-- Separator --}}
+        <span class="text-slate-200 dark:text-slate-700">|</span>
+
+        {{-- Info count --}}
+        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">
+            {{ is_object($products) && method_exists($products, 'total') ? $products->total() : $products->count() }} produk
+        </span>
+
+        {{-- Aksi cetak --}}
+        <div class="flex items-center gap-2 ml-auto">
+            <label class="flex items-center gap-1.5 cursor-pointer select-none text-xs text-slate-500">
                 <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                <span class="text-xs font-medium whitespace-nowrap">Pilih semua</span>
+                <span class="font-medium whitespace-nowrap">Pilih semua</span>
             </label>
-            <span class="text-slate-300 dark:text-slate-700">|</span>
-            <div class="flex flex-col">
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">{{ $products->total() }} produk</span>
-            </div>
+            <button onclick="printSelected()" id="btnPrintSelected"
+                class="hidden items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Terpilih
+            </button>
+            <a href="{{ route('qr.print.all', request()->except('page')) }}"
+               onclick="return confirm('Ini akan memuat SEMUA {{ $totalProdukSistem }} produk. Proses bisa memakan waktu. Lanjutkan?')"
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition-colors">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i> Cetak Semua ({{ $totalProdukSistem }})
+            </a>
         </div>
     </div>
 </div>

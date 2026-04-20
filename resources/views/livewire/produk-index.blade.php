@@ -33,44 +33,76 @@
             await $wire.hapusTerpilih(ids);
         }
     }">
-    <div class="flex flex-col lg:flex-row justify-end lg:items-center gap-4 mb-4 lg:mb-6">
-        <div class="flex flex-col sm:flex-row w-full lg:w-auto gap-3 flex-1 lg:flex-none">
+    <div class="flex flex-col lg:flex-row justify-end lg:items-start gap-3 mb-4 lg:mb-6">
+        {{-- Row 1: Search + Tombol aksi --}}
+        <div class="flex flex-col sm:flex-row w-full gap-3 flex-1">
             <div class="relative group flex-1 md:w-80 lg:w-96">
-                <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-all duration-300 ease-in-out"></i>
+                <i data-lucide="search" wire:loading.remove wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4"></i>
                 <i data-lucide="loader-2" wire:loading wire:target="cari" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-4 h-4 animate-spin"></i>
-                <input type="text" enterkeyhint="search" x-on:keydown.enter="$el.blur()" wire:model.live.debounce.500ms="cari" placeholder="Cari nama, barcode, SKU..."
-                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm">
+                <input type="text" enterkeyhint="search" x-on:keydown.enter="$el.blur()" wire:model.live.debounce.500ms="cari"
+                    placeholder="Cari nama, barcode, SKU..."
+                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all text-sm">
                 <button x-show="$wire.cari !== ''" wire:click="$set('cari', '')" type="button"
                     class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                     <i data-lucide="x" class="w-3.5 h-3.5"></i>
                 </button>
             </div>
 
-            <div class="relative w-full sm:w-48 flex-shrink-0">
-                <i data-lucide="filter" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4 transition-colors duration-300 ease-in-out"></i>
-                <select wire:model.live="sortBy" class="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 dark:bg-slate-900 focus:border-blue-500 dark:border-blue-400 focus:ring-1 focus:ring-blue-500 outline-none transition-all duration-300 text-sm appearance-none cursor-pointer">
-                    <option value="newest">Terbaru</option>
-                    <option value="filter_kritis">Hanya Stok Kritis</option>
-                    <option value="filter_habis">Hanya Stok Habis</option>
-                    <option value="name_asc">Nama (A-Z)</option>
-                    <option value="name_desc">Nama (Z-A)</option>
-                    <option value="stock_highest">Stok Terbanyak</option>
-                    <option value="rack_asc">Lokasi / Rak</option>
-                </select>
-                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none transition-colors duration-300 ease-in-out"></i>
-            </div>
-            
-            <div class="flex gap-2 w-full sm:w-auto">
-                <a href="{{ route('produk.import') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-slate-500 dark:text-slate-400 transition-colors duration-300 ease-in-out"></i> Import
+            <div class="flex gap-2 shrink-0">
+                <a href="{{ route('produk.import') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium rounded-xl transition-colors text-sm whitespace-nowrap">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-2 text-slate-500"></i> Import
                 </a>
-                <a href="{{ route('produk.tambah') }}" class="flex-1 sm:flex-none inline-flex justify-center items-center px-4 py-2.5 bg-[#10B981] dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-[#10B981] text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 dark:shadow-emerald-500/20 text-sm whitespace-nowrap">
+                <a href="{{ route('produk.tambah') }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-[#10B981] hover:bg-emerald-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-600/20 text-sm whitespace-nowrap">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah
                 </a>
             </div>
         </div>
+
+        {{-- Row 2: Sort toggle pills + filter status --}}
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs text-slate-400 font-medium shrink-0">Urut:</span>
+
+            @php
+                $sortPills = ['newest' => 'Terbaru', 'name' => 'Nama', 'stock' => 'Stok', 'location' => 'Rak'];
+            @endphp
+            @foreach($sortPills as $field => $label)
+                <button type="button" wire:click="toggleSort('{{ $field }}')"
+                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
+                        {{ $sortField === $field
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400 hover:text-blue-600' }}">
+                    {{ $label }}
+                    @if($sortField === $field)
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            @if($sortDir === 'asc')
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+                            @else
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                            @endif
+                        </svg>
+                    @else
+                        <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                        </svg>
+                    @endif
+                </button>
+            @endforeach
+
+            {{-- Filter status chips --}}
+            <span class="text-slate-200 dark:text-slate-700">|</span>
+            <button type="button" wire:click="setFilter('kritis')"
+                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
+                    {{ $filterStatus === 'kritis' ? 'bg-amber-400 text-white border-amber-400' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-amber-300 hover:text-amber-600' }}">
+                ⚠ Kritis
+            </button>
+            <button type="button" wire:click="setFilter('habis')"
+                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all
+                    {{ $filterStatus === 'habis' ? 'bg-rose-500 text-white border-rose-500' : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-700 hover:border-rose-300 hover:text-rose-600' }}">
+                ✕ Habis
+            </button>
+        </div>
     </div>
-    <div wire:loading wire:target="cari,sortBy,gotoPage,nextPage,previousPage" class="mb-4">
+    <div wire:loading wire:target="cari,sortField,sortDir,filterStatus,gotoPage,nextPage,previousPage" class="mb-4">
         <div class="animate-pulse h-16 rounded-xl bg-slate-100 dark:bg-slate-800"></div>
     </div>
     {{-- Bulk action bar (Alpine-driven, no server roundtrip) --}}
