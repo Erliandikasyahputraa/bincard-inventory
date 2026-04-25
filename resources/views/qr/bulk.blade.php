@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cetak Massal QR Code ({{ $products->count() }})</title>
+    <title>Cetak Label — {{ config('app.name', 'BINGO') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -163,12 +164,12 @@
                 @elseif($size === '3x10.5')
                     <div class="label-3x10 bg-white shadow-md border-2 border-slate-900 flex overflow-hidden">
                         <!-- Left: QR & Photo -->
-                        <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-1.5 bg-white">
+                        <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-2 bg-white">
                             @if($product->image_path)
-                                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[1.2cm] h-[1.2cm] object-cover rounded-sm border border-slate-200" />
+                                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[1.3cm] h-[1.3cm] object-cover rounded-sm border border-slate-200" />
                             @endif
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" 
-                                 class="{{ $product->image_path ? 'w-[1.4cm] h-[1.4cm]' : 'w-8/12 h-8/12' }} object-contain" />
+                                 class="{{ $product->image_path ? 'w-[1.3cm] h-[1.3cm]' : 'w-9/12 h-9/12' }} object-contain" />
                         </div>
                         <!-- Right: Info -->
                         <div class="flex-1 flex flex-col">
