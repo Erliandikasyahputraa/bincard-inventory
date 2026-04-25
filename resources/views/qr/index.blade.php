@@ -9,13 +9,16 @@
     <div style="background:#fff; border-radius:1.25rem; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); padding:1.5rem; width:100%; max-width:380px;">
         <h3 style="font-size:1rem; font-weight:700; color:#1e293b; margin-bottom:0.25rem;">Pilih Ukuran Label</h3>
         <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:1.25rem;">Klik ukuran yang diinginkan, lalu klik Cetak.</p>
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; margin-bottom:1.25rem;" id="sizeOptions">
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; margin-bottom:1.25rem;" id="sizeOptions">
             <button onclick="selectModalSize('a4')" id="sz_a4"
                 style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#fff; color:#475569; font-weight:600; font-size:0.75rem; cursor:pointer;"
                 >📄 A4 Penuh</button>
             <button onclick="selectModalSize('10x7')" id="sz_10x7"
-                style="border:2px solid #3b82f6; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.75rem; cursor:pointer;"
+                style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#fff; color:#475569; font-weight:600; font-size:0.75rem; cursor:pointer;"
                 >🏷️ 10×7 cm</button>
+            <button onclick="selectModalSize('3x10.5')" id="sz_3x10.5"
+                style="border:2px solid #3b82f6; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.75rem; cursor:pointer;"
+                >📏 3×10.5 cm</button>
             <button onclick="selectModalSize('5x5')" id="sz_5x5"
                 style="border:2px solid #e2e8f0; border-radius:0.75rem; padding:0.875rem 0.25rem; background:#fff; color:#475569; font-weight:600; font-size:0.75rem; cursor:pointer;"
                 >🔖 5×5 cm</button>
@@ -373,12 +376,12 @@
 
     // ─── Pure-JS modal untuk pilih ukuran sebelum cetak ───────────────────
     let _pendingAction = null;
-    let _chosenSize    = '10x7';
+    let _chosenSize    = '3x10.5';
 
     function openModal(action) {
         _pendingAction = action;
-        _chosenSize    = '10x7';
-        selectModalSize('10x7');                          // reset highlight
+        _chosenSize    = '3x10.5';
+        selectModalSize('3x10.5');                          // reset highlight
         document.getElementById('sizeModal').style.display = 'flex';
     }
 
@@ -388,7 +391,7 @@
 
     function selectModalSize(size) {
         _chosenSize = size;
-        ['a4', '10x7', '5x5'].forEach(s => {
+        ['a4', '10x7', '3x10.5', '5x5'].forEach(s => {
             const btn = document.getElementById('sz_' + s);
             if (!btn) return;
             if (s === size) {

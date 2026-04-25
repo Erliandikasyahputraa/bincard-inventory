@@ -293,6 +293,12 @@
             }
         });
     </script>
+    {{-- Session Keeper - Prevent 419 Page Expired --}}
+    <script>
+        setInterval(function() {
+            fetch('{{ route('ping') }}').catch(e => console.log('Session ping failed'));
+        }, 300000); // Ping every 5 minutes
+    </script>
     @stack('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {

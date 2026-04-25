@@ -13,6 +13,7 @@
         /* ── Label Size Targets ── */
         .label-a4      { width: 21cm;   height: 29.7cm; }
         .label-10x7    { width: 10cm;   height: 7cm; }
+        .label-3x10    { width: 10.5cm; height: 3cm; }
         .label-5x5     { width: 5cm;    height: 5cm; }
 
         @media print {
@@ -58,6 +59,10 @@
                 <button onclick="setSize('10x7')" data-size="10x7"
                     class="size-btn px-4 py-2.5 rounded-xl text-sm font-bold border-2 transition-colors border-slate-300 text-slate-700 bg-white">
                     🏷️ Label 10×7 cm
+                </button>
+                <button onclick="setSize('3x10')" data-size="3x10"
+                    class="size-btn px-4 py-2.5 rounded-xl text-sm font-bold border-2 transition-colors border-slate-300 text-slate-700 bg-white">
+                    📏 Label 3×10.5 cm
                 </button>
                 <button onclick="setSize('5x5')" data-size="5x5"
                     class="size-btn px-4 py-2.5 rounded-xl text-sm font-bold border-2 transition-colors border-slate-300 text-slate-700 bg-white">
@@ -222,25 +227,62 @@
                 </div>
             </div>
         </div>
+
+        {{-- 3×10.5 cm layout: industrial --}}
+        <div id="label-3x10" class="print-label label-3x10 bg-white shadow-2xl border-2 border-slate-900 hidden overflow-hidden">
+            <div class="flex h-full w-full">
+                <!-- Left: QR & Photo -->
+                <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-1.5 bg-white">
+                    @if($product->image_path)
+                        <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[1.2cm] h-[1.2cm] object-cover rounded-sm border border-slate-200" />
+                    @endif
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" 
+                         class="{{ $product->image_path ? 'w-[1.4cm] h-[1.4cm]' : 'w-8/12 h-8/12' }} object-contain" />
+                </div>
+                <!-- Right: Info -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Product Name -->
+                    <div class="border-b-2 border-slate-900 p-1.5 px-3 h-[1.35cm] flex flex-col justify-center">
+                        <p class="text-[8px] font-bold text-slate-500 uppercase leading-none mb-1">NAMA BARANG:</p>
+                        <h2 class="text-[12px] font-black text-slate-900 uppercase leading-tight line-clamp-2">{{ $product->name }}</h2>
+                    </div>
+                    <!-- Barcode & Location -->
+                    <div class="flex flex-1">
+                        <div class="flex-1 border-r-2 border-slate-900 p-1.5 px-3 flex flex-col justify-center">
+                            <p class="text-[8px] font-bold text-slate-500 uppercase leading-none mb-1">KODE BARANG:</p>
+                            <p class="mono text-[10px] font-bold text-slate-900 tracking-wider">{{ $product->barcode }}</p>
+                        </div>
+                        <div class="w-[4cm] p-1.5 px-3 flex flex-col justify-center bg-slate-50">
+                            <p class="text-[8px] font-bold text-slate-500 uppercase leading-none mb-1">KODE RAK:</p>
+                            <p class="mono text-[11px] font-black text-slate-900 truncate">{{ $product->location ?? '---' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 <script>
     // Active size button styling
-    const currentSize = localStorage.getItem('qr_label_size') || 'a4';
-    const allLabels = { 'a4': 'a4', '10x7': '10x7', '5x5': '5x5' };
+    const currentSize = localStorage.getItem('qr_label_size') || '3x10';
+    const allLabels = { 'a4': 'a4', '10x7': '10x7', '3x10': '3x10', '5x5': '5x5' };
 
     function setSize(size) {
         localStorage.setItem('qr_label_size', size);
         // Hide all labels
         Object.keys(allLabels).forEach(k => {
             const el = document.getElementById('label-' + k);
-            el.classList.add('hidden');
-            el.classList.remove('flex');
+            if(el) {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            }
         });
         // Show selected
         const target = document.getElementById('label-' + size);
-        target.classList.remove('hidden');
-        target.classList.add('flex');
+        if(target) {
+            target.classList.remove('hidden');
+            target.classList.add('flex');
+        }
 
         // Update button styles
         document.querySelectorAll('.size-btn').forEach(btn => {
@@ -303,7 +345,7 @@
     // @media print: set correct @page size
     window.addEventListener('beforeprint', function() {
         const size = localStorage.getItem('qr_label_size') || 'a4';
-        const sizeMap = { 'a4': 'A4', '10x7': '100mm 70mm', '5x5': '50mm 50mm' };
+        const sizeMap = { 'a4': 'A4', '10x7': '100mm 70mm', '3x10': '105mm 30mm', '5x5': '50mm 50mm' };
         const style = document.createElement('style');
         style.id = 'print-page-size';
         style.textContent = `@page { size: ${sizeMap[size] || 'A4'}; }`;

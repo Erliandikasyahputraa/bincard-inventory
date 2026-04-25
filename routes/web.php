@@ -96,4 +96,5 @@ Route::middleware('auth')->group(function () {
         
     Route::get('/profil', ProfileForm::class)->name('profil');
     Route::get('/panduan', App\Livewire\PanduanSistem::class)->name('panduan');
+    Route::get('/ping', function () { return response()->json(['status' => 'ok']); })->name('ping');
 });
