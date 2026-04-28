@@ -45,14 +45,22 @@
 
         /* Print grid logic for small labels */
         @media print {
-            .bulk-container { padding: 0; gap: 0; display: block; text-align: left; }
+            .bulk-container { padding: 0; gap: 0; display: block; text-align: center; }
             .print-item { 
                 page-break-inside: avoid; 
                 break-inside: avoid;
-                margin: 0.25cm !important;
+                margin: 0.15cm !important;
                 display: inline-block !important;
                 vertical-align: top;
             }
+            /* Force 2-per-row for 3x10 by slightly shrinking the width in print mode */
+            .label-3x10 {
+                width: 9.1cm !important;
+                height: auto !important;
+            }
+            /* Adjust inner fixed widths so they don't overflow the shrunken container */
+            .label-3x10 .w-\[3cm\] { width: 2.7cm !important; }
+            .label-3x10 .w-\[4cm\] { width: 3.1cm !important; }
         }
     </style>
 </head>
