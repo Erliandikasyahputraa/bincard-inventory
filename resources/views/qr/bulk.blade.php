@@ -162,14 +162,18 @@
 
                 {{-- 3x10.5 Case (Industrial Horizontal) --}}
                 @elseif($size === '3x10.5')
-                    <div class="label-3x10 bg-white shadow-md border-2 border-slate-900 flex overflow-hidden">
+                    <div class="label-3x10 bg-white shadow-md border-2 border-slate-900 flex overflow-hidden mb-[0.2cm]">
                         <!-- Left: QR & Photo -->
-                        <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-2 bg-white">
+                        <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-1.5 bg-white">
                             @if($product->image_path)
-                                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[1.3cm] h-[1.3cm] object-cover rounded-sm border border-slate-200" />
+                                <div class="w-[1.25cm] h-[1.25cm] border border-slate-300 rounded-[4px] p-0.5 bg-slate-50 flex items-center justify-center">
+                                    <img src="{{ asset('storage/' . $product->image_path) }}" class="w-full h-full object-cover rounded-sm" />
+                                </div>
                             @endif
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" 
-                                 class="{{ $product->image_path ? 'w-[1.3cm] h-[1.3cm]' : 'w-9/12 h-9/12' }} object-contain" />
+                            <div class="border border-slate-300 rounded-[4px] p-0.5 bg-slate-50 flex items-center justify-center {{ $product->image_path ? 'w-[1.25cm] h-[1.25cm]' : 'w-9/12 h-9/12' }}">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('scan.index', ['barcode' => $product->barcode])) }}&margin=0" 
+                                     class="w-full h-full object-contain mix-blend-multiply" />
+                            </div>
                         </div>
                         <!-- Right: Info -->
                         <div class="flex-1 flex flex-col">
