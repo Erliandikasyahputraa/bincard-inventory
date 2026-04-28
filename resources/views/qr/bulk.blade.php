@@ -49,10 +49,16 @@
             .print-item { 
                 page-break-inside: avoid; 
                 break-inside: avoid;
-                margin: 0.15cm !important;
                 display: inline-block !important;
                 vertical-align: top;
             }
+            
+            /* Specific margins for different label sizes to maximize spacing without breaking rows */
+            .print-item[data-size="3x10.5"] { margin: 0.15cm !important; }
+            .print-item[data-size="5x5"] { margin: 0.4cm !important; }
+            .print-item[data-size="10x7"] { margin: 0.3cm !important; }
+            .print-item[data-size="a4"] { margin: 0 auto !important; display: block !important; }
+
             /* Force 2-per-row for 3x10 by slightly shrinking the width in print mode */
             .label-3x10 {
                 width: 9.1cm !important;
@@ -89,7 +95,7 @@
 
     <div class="bulk-container">
         @foreach($products as $product)
-            <div class="print-item mb-4">
+            <div class="print-item mb-4" data-size="{{ $size }}">
                 {{-- A4 Case --}}
                 @if($size === 'a4')
                     <div class="label-a4 bg-white shadow-xl flex flex-col items-center justify-center p-12 text-center {{ !$loop->last ? 'label-page-break' : '' }}">
