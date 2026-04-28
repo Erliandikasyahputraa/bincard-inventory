@@ -57,7 +57,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             Cetak Semua ({{ $totalProdukSistem ?? $products->count() }})
         </button>
-        <button onclick="window.print()"
+        <button onclick="openModal('page')"
             class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-md">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
             Cetak Halaman Ini
@@ -418,6 +418,11 @@
             window.location.href = base + sep + 'size=' + _chosenSize;
         } else if (_pendingAction === 'selected') {
             const ids  = Array.from(selectedIds).join(',');
+            const base = '{{ route('qr.print.all', request()->except('page')) }}';
+            const sep  = base.includes('?') ? '&' : '?';
+            window.location.href = base + sep + 'size=' + _chosenSize + '&ids=' + ids;
+        } else if (_pendingAction === 'page') {
+            const ids = Array.from(document.querySelectorAll('.qr-card')).map(el => el.dataset.id).join(',');
             const base = '{{ route('qr.print.all', request()->except('page')) }}';
             const sep  = base.includes('?') ? '&' : '?';
             window.location.href = base + sep + 'size=' + _chosenSize + '&ids=' + ids;
