@@ -20,10 +20,27 @@
         @media print {
             @page { margin: 0; }
             body  { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; background: transparent !important; }
-            body > *:not(#printWrapper) { display: none !important; }
+            body > *:not(#printWrapper):not(#tempPrintArea) { display: none !important; }
             .no-print { display: none !important; }
             .print-label { box-shadow: none !important; border-radius: 0 !important; transform: none !important; margin: 0 !important; }
             .print-wrapper { transform: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+
+            /* Grid layout for multiple copies on A4 */
+            .bulk-container { padding: 0; gap: 0; display: block; text-align: center; }
+            .print-item { 
+                page-break-inside: avoid; 
+                break-inside: avoid;
+                display: inline-block !important;
+                vertical-align: top;
+            }
+            .print-item[data-size="3x10.5"] { margin: 0.15cm !important; }
+            .print-item[data-size="5x5"] { margin: 0.4cm !important; }
+            .print-item[data-size="10x7"] { margin: 0.3cm !important; }
+            .print-item[data-size="a4"] { margin: 0 auto !important; display: block !important; }
+
+            .label-3x10 { width: 9.1cm !important; height: auto !important; }
+            .label-3x10 .w-\[3cm\] { width: 2.7cm !important; }
+            .label-3x10 .w-\[4cm\] { width: 3.1cm !important; }
         }
 
         /* barcode striped lines (purely CSS decorative) */
@@ -72,8 +89,17 @@
             </div>
         </div>
 
+        {{-- Copy count --}}
+        <div class="mb-5">
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Jumlah Cetak (Perbanyak)</p>
+            <div class="flex items-center gap-3">
+                <input type="number" id="copyCount" value="1" min="1" max="100" class="w-24 px-4 py-2 border-2 border-slate-300 rounded-xl text-center font-bold text-slate-700 outline-none focus:border-blue-500 transition-colors">
+                <span class="text-xs font-medium text-slate-500 leading-tight">Lembar label<br/>(Isi lebih dari 1 untuk cetak massal di HVS)</span>
+            </div>
+        </div>
+
         <div class="flex gap-3">
-            <button onclick="window.print()"
+            <button onclick="triggerPrint()"
                 class="flex-1 py-2.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                 Cetak Sekarang
@@ -350,16 +376,62 @@
     // @media print: set correct @page size
     window.addEventListener('beforeprint', function() {
         const size = localStorage.getItem('qr_label_size') || 'a4';
+        const copies = parseInt(document.getElementById('copyCount').value) || 1;
         const sizeMap = { 'a4': 'A4', '10x7': '100mm 70mm', '3x10': '105mm 30mm', '5x5': '50mm 50mm' };
+        
         const style = document.createElement('style');
         style.id = 'print-page-size';
-        style.textContent = `@page { size: ${sizeMap[size] || 'A4'}; }`;
+        // If printing multiple copies, force A4 page size to fill the sheet
+        style.textContent = `@page { size: ${copies > 1 ? 'A4' : (sizeMap[size] || 'A4')}; margin: ${copies > 1 ? '1cm' : '0'}; }`;
         document.head.appendChild(style);
     });
     window.addEventListener('afterprint', function() {
         const s = document.getElementById('print-page-size');
         if (s) s.remove();
     });
+
+    function triggerPrint() {
+        const copies = parseInt(document.getElementById('copyCount').value) || 1;
+        
+        if (copies <= 1) {
+            window.print();
+            return;
+        }
+
+        const size = localStorage.getItem('qr_label_size') || 'a4';
+        const activeLabel = document.querySelector('.print-label:not(.hidden)');
+        
+        if (!activeLabel) return;
+
+        // Create temporary print container for bulk layout
+        const printArea = document.createElement('div');
+        printArea.className = 'bulk-container';
+        printArea.id = 'tempPrintArea';
+        
+        for (let i = 0; i < copies; i++) {
+            const clone = activeLabel.cloneNode(true);
+            clone.id = ''; // remove id to avoid duplicates
+            clone.style.transform = 'none'; // reset any scaling
+            clone.style.margin = '0';
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'print-item';
+            wrapper.setAttribute('data-size', size === '3x10' ? '3x10.5' : size);
+            wrapper.appendChild(clone);
+            
+            printArea.appendChild(wrapper);
+        }
+        
+        // Hide main wrapper, show temp area
+        document.getElementById('printWrapper').style.display = 'none';
+        document.body.appendChild(printArea);
+        
+        window.print();
+        
+        // Cleanup after print dialog closes
+        printArea.remove();
+        document.getElementById('printWrapper').style.display = '';
+    }
 </script>
 </body>
 </html>
