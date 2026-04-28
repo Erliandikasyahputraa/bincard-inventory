@@ -12,7 +12,7 @@
         .mono { font-family: 'JetBrains Mono', monospace; }
 
         @media print {
-            @page { margin: 0; }
+            @page { margin: 1cm; }
             body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
             .no-print { display: none !important; }
             .label-page-break { page-break-after: always; }
@@ -22,8 +22,8 @@
         .bulk-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+            gap: 15px;
+            justify-content: flex-start;
             padding: 20px;
         }
 
@@ -45,11 +45,11 @@
 
         /* Print grid logic for small labels */
         @media print {
-            .bulk-container { padding: 0; gap: 0; display: block; }
+            .bulk-container { padding: 0; gap: 0; display: block; text-align: left; }
             .print-item { 
                 page-break-inside: avoid; 
                 break-inside: avoid;
-                margin: 0 !important;
+                margin: 0.25cm !important;
                 display: inline-block !important;
                 vertical-align: top;
             }
@@ -162,7 +162,7 @@
 
                 {{-- 3x10.5 Case (Industrial Horizontal) --}}
                 @elseif($size === '3x10.5')
-                    <div class="label-3x10 bg-white shadow-md border-2 border-slate-900 flex overflow-hidden mb-[0.2cm]">
+                    <div class="label-3x10 bg-white shadow-md border-2 border-slate-900 flex overflow-hidden">
                         <!-- Left: QR & Photo -->
                         <div class="w-[3cm] h-[3cm] border-r-2 border-slate-900 flex items-center justify-center p-1.5 gap-1.5 bg-white">
                             @if($product->image_path)
