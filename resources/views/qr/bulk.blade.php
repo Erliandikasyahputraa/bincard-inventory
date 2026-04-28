@@ -192,7 +192,7 @@
                         <!-- Right: Info -->
                         <div class="flex-1 flex flex-col">
                             <!-- Product Name -->
-                            <div class="border-b-2 border-slate-900 p-1.5 px-3 h-[1.35cm] flex flex-col justify-center">
+                            <div class="border-b-2 border-slate-900 p-1.5 px-3 flex-1 flex flex-col justify-center">
                                 <p class="text-[8px] font-bold text-slate-500 uppercase leading-none mb-1">NAMA BARANG:</p>
                                 <h2 class="text-[12px] font-black text-slate-900 uppercase leading-tight line-clamp-2">{{ $product->name }}</h2>
                             </div>
