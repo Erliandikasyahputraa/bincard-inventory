@@ -37,7 +37,16 @@ class ImportProdukExcel extends Component
         $this->menungguKonfirmasi = false;
 
         $preview = new ProdukImportPreview();
-        Excel::import($preview, $this->file->getRealPath());
+        $realPath = $this->file->getRealPath();
+
+        try {
+            // Deteksi tipe file asli dari isinya (menghindari error jika ekstensi .xls padahal aslinya .xlsx)
+            $readerType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($realPath);
+            Excel::import($preview, $realPath, null, $readerType);
+        } catch (\Exception $e) {
+            $this->dispatch('transaksi-gagal', message: 'Gagal membaca file: Format tidak dikenali atau file rusak. Pastikan file Excel Anda valid.');
+            return;
+        }
 
         $normalizedRows = [];
         $validBarcodes = [];
@@ -81,7 +90,7 @@ class ImportProdukExcel extends Component
 
             $changes = $this->buildChangeSet($existing->toArray(), $payload);
             $this->totalDuplikat++;
-            
+
             if (count($this->duplikatDitemukan) < 50) {
                 $this->duplikatDitemukan[] = [
                     'baris' => $row['baris'],
@@ -125,9 +134,16 @@ class ImportProdukExcel extends Component
     private function prosesImport(string $duplicateMode): void
     {
         $import = new ProdukImport($duplicateMode);
+        $realPath = $this->file->getRealPath();
         
-        // Baca dan import ulang dari file Excel secara langsung untuk menghemat memory
-        Excel::import($import, $this->file->getRealPath());
+        try {
+            // Baca dan import ulang dari file Excel secara langsung untuk menghemat memory
+            $readerType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($realPath);
+            Excel::import($import, $realPath, null, $readerType);
+        } catch (\Exception $e) {
+            $this->dispatch('transaksi-gagal', message: 'Gagal memproses import data. Silakan coba unggah kembali file Excel Anda.');
+            return;
+        }
 
         $this->barisSukses = $import->barisSukses;
         $this->totalGagal += count($import->barisGagal);

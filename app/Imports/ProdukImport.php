@@ -95,7 +95,8 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
     {
         $data = is_array($row) ? $row : (method_exists($row, 'toArray') ? $row->toArray() : []);
 
-        $barcode = trim((string) ($data['komat'] ?? $data['barcode'] ?? $data['material'] ?? ''));
+        // Mendukung KOMAT dari template (komat, barcode) maupun Kode Material dari hasil export (kode_material)
+        $barcode = trim((string) ($data['komat'] ?? $data['barcode'] ?? $data['material'] ?? $data['kode_material'] ?? ''));
         $name = trim((string) ($data['material_description'] ?? $data['name'] ?? $data['nama'] ?? ''));
 
         if ($barcode === '') {
@@ -113,12 +114,14 @@ class ProdukImport implements ToCollection, WithHeadingRow, WithChunkReading
             $uom = 'PCS';
         }
 
-        $location = trim((string) ($data['mapping'] ?? $data['location'] ?? $data['storage_location'] ?? ''));
+        // Mendukung MAPPING dari template maupun Mapping / Lokasi dari hasil export (mapping_lokasi / mapping__lokasi)
+        $location = trim((string) ($data['mapping'] ?? $data['location'] ?? $data['storage_location'] ?? $data['mapping_lokasi'] ?? $data['mapping__lokasi'] ?? $data['lokasi'] ?? ''));
         $location = $location !== '' ? $location : 'Lantai 1';
 
-        $minRaw = $data['min_stock'] ?? null;
-        $maxRaw = $data['max_stock'] ?? null;
-        $stockRaw = $data['stock_sap'] ?? $data['stok_awal'] ?? $data['current_stock'] ?? $data['unrestricted'] ?? null;
+        // Mendukung Stock SAP dari template maupun Stok Saat Ini dari hasil export
+        $minRaw = $data['min_stock'] ?? $data['stok_min'] ?? null;
+        $maxRaw = $data['max_stock'] ?? $data['stok_max'] ?? null;
+        $stockRaw = $data['stock_sap'] ?? $data['stok_awal'] ?? $data['current_stock'] ?? $data['unrestricted'] ?? $data['stok_saat_ini'] ?? null;
 
         return [
             'is_invalid' => false,
